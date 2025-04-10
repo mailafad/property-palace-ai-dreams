@@ -1,8 +1,7 @@
-
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { Property, PropertyFilter } from '@/types/property';
 import { properties as initialProperties } from '@/data/properties';
-import { toast } from '@/components/ui/sonner';
+import { toast } from 'sonner';
 
 interface PropertyContextType {
   properties: Property[];
@@ -27,7 +26,6 @@ export const PropertyProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const [activeProperty, setActiveProperty] = useState<Property | null>(null);
   const [filter, setFilter] = useState<PropertyFilter>({});
 
-  // Apply filters whenever the filter state or properties change
   useEffect(() => {
     setLoading(true);
     

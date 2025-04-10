@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -21,7 +20,7 @@ import {
 } from "@/components/ui/card";
 import { Separator } from '@/components/ui/separator';
 import { Switch } from '@/components/ui/switch';
-import { toast } from '@/components/ui/sonner';
+import { toast } from 'sonner';
 import { useProperty } from '@/contexts/PropertyContext';
 import { Property, PropertyType } from '@/types/property';
 import { generateUniqueId, getImagePlaceholder } from '@/lib/utils';
@@ -101,7 +100,6 @@ const PropertyFormPage = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     
-    // Handle numeric inputs
     if (['price', 'bedrooms', 'bathrooms', 'area', 'yearBuilt'].includes(name)) {
       setFormData({
         ...formData,
@@ -151,13 +149,9 @@ const PropertyFormPage = () => {
         });
         toast.success('Property updated successfully');
       } else {
-        // Create a new property
         if (formData.title && formData.address && formData.price) {
           addProperty({
-            ...formData as Omit<Property, 'id' | 'createdAt' | 'updatedAt'>,
-            id: generateUniqueId(),
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString()
+            ...formData as Omit<Property, "id" | "createdAt" | "updatedAt">,
           });
           toast.success('Property added successfully');
         } else {
@@ -167,7 +161,6 @@ const PropertyFormPage = () => {
         }
       }
       
-      // Navigate back to properties list
       navigate('/admin/properties');
     } catch (error) {
       console.error('Error saving property:', error);
@@ -186,7 +179,11 @@ const PropertyFormPage = () => {
     
     try {
       const featureNames = formData.features
-        ?.filter(f => typeof f.value === 'boolean' ? f.value : f.value > 0)
+        ?.filter(f => {
+          if (typeof f.value === 'boolean') return f.value;
+          if (typeof f.value === 'number') return f.value > 0;
+          return false;
+        })
         .map(f => f.name) || [];
         
       const aiDescription = await generateAIDescription({
@@ -213,6 +210,20 @@ const PropertyFormPage = () => {
     }
   };
   
+  const handleRealtorChange = (field: keyof Property['realtor'], value: string) => {
+    setFormData({
+      ...formData,
+      realtor: {
+        name: formData.realtor?.name || '',
+        phone: formData.realtor?.phone || '',
+        email: formData.realtor?.email || '',
+        photo: formData.realtor?.photo || '',
+        ...formData.realtor,
+        [field]: value
+      }
+    });
+  };
+  
   return (
     <div className="min-h-screen bg-gray-50">
       <AdminHeader />
@@ -233,7 +244,6 @@ const PropertyFormPage = () => {
         <form onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-6">
             <div className="space-y-6">
-              {/* Basic Information */}
               <Card>
                 <CardHeader>
                   <CardTitle>Basic Information</CardTitle>
@@ -330,7 +340,6 @@ const PropertyFormPage = () => {
                 </CardContent>
               </Card>
               
-              {/* Property Details */}
               <Card>
                 <CardHeader>
                   <CardTitle>Property Details</CardTitle>
@@ -409,7 +418,6 @@ const PropertyFormPage = () => {
                 </CardContent>
               </Card>
               
-              {/* Description */}
               <Card>
                 <CardHeader>
                   <CardTitle>Property Description</CardTitle>
@@ -465,14 +473,12 @@ const PropertyFormPage = () => {
             </div>
             
             <div className="space-y-6">
-              {/* Images */}
               <Card>
                 <CardHeader>
                   <CardTitle>Property Images</CardTitle>
                   <CardDescription>Add images of the property</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  {/* In a real app, this would use a file upload component */}
                   <div className="space-y-2">
                     <Label htmlFor="image1">Main Image URL</Label>
                     <Input
@@ -517,7 +523,6 @@ const PropertyFormPage = () => {
                 </CardContent>
               </Card>
               
-              {/* Realtor Information */}
               <Card>
                 <CardHeader>
                   <CardTitle>Realtor Information</CardTitle>
@@ -530,10 +535,7 @@ const PropertyFormPage = () => {
                       id="realtorName"
                       value={formData.realtor?.name || ''}
                       onChange={(e) => {
-                        setFormData({
-                          ...formData,
-                          realtor: { ...(formData.realtor || {}), name: e.target.value }
-                        });
+                        handleRealtorChange('name', e.target.value);
                       }}
                     />
                   </div>
@@ -545,10 +547,7 @@ const PropertyFormPage = () => {
                       type="email"
                       value={formData.realtor?.email || ''}
                       onChange={(e) => {
-                        setFormData({
-                          ...formData,
-                          realtor: { ...(formData.realtor || {}), email: e.target.value }
-                        });
+                        handleRealtorChange('email', e.target.value);
                       }}
                     />
                   </div>
@@ -559,10 +558,7 @@ const PropertyFormPage = () => {
                       id="realtorPhone"
                       value={formData.realtor?.phone || ''}
                       onChange={(e) => {
-                        setFormData({
-                          ...formData,
-                          realtor: { ...(formData.realtor || {}), phone: e.target.value }
-                        });
+                        handleRealtorChange('phone', e.target.value);
                       }}
                     />
                   </div>
@@ -574,17 +570,13 @@ const PropertyFormPage = () => {
                       placeholder="https://example.com/photo.jpg"
                       value={formData.realtor?.photo || ''}
                       onChange={(e) => {
-                        setFormData({
-                          ...formData,
-                          realtor: { ...(formData.realtor || {}), photo: e.target.value }
-                        });
+                        handleRealtorChange('photo', e.target.value);
                       }}
                     />
                   </div>
                 </CardContent>
               </Card>
               
-              {/* Property Status */}
               <Card>
                 <CardHeader>
                   <CardTitle>Property Status</CardTitle>

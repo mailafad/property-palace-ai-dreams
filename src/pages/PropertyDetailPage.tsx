@@ -1,4 +1,3 @@
-
 import { useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import NavBar from '@/components/NavBar';
@@ -26,7 +25,7 @@ import {
 } from "@/components/ui/card";
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { toast } from '@/components/ui/sonner';
+import { toast } from 'sonner';
 
 const PropertyDetailPage = () => {
   const { id } = useParams<{ id: string }>();
