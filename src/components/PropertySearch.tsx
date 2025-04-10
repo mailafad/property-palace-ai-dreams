@@ -29,7 +29,7 @@ const PropertySearch = () => {
   const handleSelectChange = (value: string, name: string) => {
     setLocalFilter(prev => ({
       ...prev,
-      [name]: value === '' ? undefined : value,
+      [name]: value === 'any' ? undefined : name === 'bedrooms' || name === 'bathrooms' ? Number(value) : value,
     }));
   };
 
@@ -85,14 +85,14 @@ const PropertySearch = () => {
           <div className="space-y-2">
             <Label htmlFor="propertyType">Property Type</Label>
             <Select
-              value={localFilter.propertyType || ''}
+              value={localFilter.propertyType || 'any'}
               onValueChange={(value) => handleSelectChange(value, 'propertyType')}
             >
               <SelectTrigger id="propertyType">
                 <SelectValue placeholder="Any type" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">Any type</SelectItem>
+                <SelectItem value="any">Any type</SelectItem>
                 <SelectItem value="house">House</SelectItem>
                 <SelectItem value="apartment">Apartment</SelectItem>
                 <SelectItem value="condo">Condo</SelectItem>
@@ -108,14 +108,14 @@ const PropertySearch = () => {
           <div className="space-y-2">
             <Label htmlFor="bedrooms">Bedrooms</Label>
             <Select
-              value={localFilter.bedrooms?.toString() || ''}
+              value={localFilter.bedrooms?.toString() || 'any'}
               onValueChange={(value) => handleSelectChange(value, 'bedrooms')}
             >
               <SelectTrigger id="bedrooms">
                 <SelectValue placeholder="Any bedrooms" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">Any bedrooms</SelectItem>
+                <SelectItem value="any">Any bedrooms</SelectItem>
                 <SelectItem value="1">1+</SelectItem>
                 <SelectItem value="2">2+</SelectItem>
                 <SelectItem value="3">3+</SelectItem>
@@ -127,14 +127,14 @@ const PropertySearch = () => {
           <div className="space-y-2">
             <Label htmlFor="bathrooms">Bathrooms</Label>
             <Select
-              value={localFilter.bathrooms?.toString() || ''}
+              value={localFilter.bathrooms?.toString() || 'any'}
               onValueChange={(value) => handleSelectChange(value, 'bathrooms')}
             >
               <SelectTrigger id="bathrooms">
                 <SelectValue placeholder="Any bathrooms" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">Any bathrooms</SelectItem>
+                <SelectItem value="any">Any bathrooms</SelectItem>
                 <SelectItem value="1">1+</SelectItem>
                 <SelectItem value="2">2+</SelectItem>
                 <SelectItem value="3">3+</SelectItem>
