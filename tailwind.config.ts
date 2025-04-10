@@ -29,6 +29,8 @@ export default {
 					DEFAULT: 'hsl(var(--primary))',
 					foreground: 'hsl(var(--primary-foreground))'
 				},
+				'primary-dark': 'hsl(var(--primary-dark))',
+				'primary-base': 'hsl(var(--primary-base))',
 				secondary: {
 					DEFAULT: 'hsl(var(--secondary))',
 					foreground: 'hsl(var(--secondary-foreground))'
@@ -53,6 +55,17 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
+				'footer-bg': 'hsl(var(--footer-bg))',
+				'footer-text': 'hsl(var(--footer-text))',
+				'footer-link-base': 'hsl(var(--footer-link-base))',
+				'footer-link-hover': 'hsl(var(--footer-link-hover))',
+				'nav-bg': 'hsl(var(--nav-bg))',
+				'nav-text': 'hsl(var(--nav-text))',
+				'hover-bg': 'hsl(var(--hover-bg))',
+				'card-hover-glow': 'hsl(var(--card-hover-glow))',
+			},
+			boxShadow: {
+				'card-glow': '0 0 15px var(--card-glow-shadow)',
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
