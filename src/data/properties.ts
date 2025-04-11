@@ -34,6 +34,7 @@ export const properties: Property[] = [
     createdAt: '2023-03-15T10:30:00Z',
     updatedAt: '2023-04-01T14:20:00Z',
     realtor: {
+      id: 'r1',
       name: 'Jane Smith',
       phone: '(206) 555-1234',
       email: 'jane.smith@realestate.com',
@@ -72,6 +73,7 @@ export const properties: Property[] = [
     createdAt: '2023-02-28T09:15:00Z',
     updatedAt: '2023-03-20T11:10:00Z',
     realtor: {
+      id: 'r2',
       name: 'Michael Johnson',
       phone: '(503) 555-7890',
       email: 'michael.johnson@realestate.com',
@@ -110,6 +112,7 @@ export const properties: Property[] = [
     createdAt: '2023-03-05T14:00:00Z',
     updatedAt: '2023-03-25T16:45:00Z',
     realtor: {
+      id: 'r3',
       name: 'Sarah Williams',
       phone: '(425) 555-4321',
       email: 'sarah.williams@realestate.com',
@@ -148,6 +151,7 @@ export const properties: Property[] = [
     createdAt: '2023-02-20T11:30:00Z',
     updatedAt: '2023-03-15T13:25:00Z',
     realtor: {
+      id: 'r4',
       name: 'Robert Chen',
       phone: '(360) 555-8765',
       email: 'robert.chen@realestate.com',
@@ -187,6 +191,7 @@ export const properties: Property[] = [
     createdAt: '2023-03-01T08:45:00Z',
     updatedAt: '2023-03-30T15:30:00Z',
     realtor: {
+      id: 'r5',
       name: 'Emily Wilson',
       phone: '(425) 555-2222',
       email: 'emily.wilson@realestate.com',
@@ -225,6 +230,7 @@ export const properties: Property[] = [
     createdAt: '2023-02-15T13:20:00Z',
     updatedAt: '2023-03-10T10:15:00Z',
     realtor: {
+      id: 'r6',
       name: 'David Park',
       phone: '(206) 555-9876',
       email: 'david.park@realestate.com',
