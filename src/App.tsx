@@ -15,7 +15,7 @@ import PropertyDetailPage from "./pages/PropertyDetailPage";
 import ContactPage from "./pages/ContactPage";
 import AuthPage from "./pages/AuthPage";
 import AdminLoginPage from "./pages/AdminLoginPage";
-import AdminDashboard from "./pages/admin/AdminDashboard";
+import AdminDashboard from "./pages/admin/index";
 import AdminPropertiesPage from "./pages/admin/AdminPropertiesPage";
 import PropertyFormPage from "./pages/admin/PropertyFormPage";
 import NotFound from "./pages/NotFound";
