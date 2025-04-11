@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { Property, PropertyFilter } from '@/types/property';
 import { supabase } from '@/lib/supabase';
@@ -12,7 +11,7 @@ interface PropertyContextType {
   activeProperty: Property | null;
   filter: PropertyFilter;
   setFilter: (filter: PropertyFilter) => void;
-  getPropertyById: (id: string) => Promise<Property | undefined>;
+  getPropertyById: (id: string) => Property | undefined;
   addProperty: (property: Omit<Property, 'id' | 'createdAt' | 'updatedAt'>) => Promise<void>;
   updateProperty: (id: string, property: Partial<Property>) => Promise<void>;
   deleteProperty: (id: string) => Promise<void>;
@@ -31,51 +30,56 @@ export const PropertyProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const { data: properties = [], isLoading } = useQuery({
     queryKey: ['properties'],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('properties')
-        .select(`
-          *,
-          realtors:realtor_id (
-            id,
-            name,
-            phone,
-            email,
-            photo
-          )
-        `);
-      
-      if (error) {
-        toast.error('Error loading properties');
-        throw error;
+      try {
+        const { data, error } = await supabase
+          .from('properties')
+          .select(`
+            *,
+            realtors:realtor_id (
+              id,
+              name,
+              phone,
+              email,
+              photo
+            )
+          `);
+        
+        if (error) {
+          toast.error('Error loading properties');
+          throw error;
+        }
+        
+        return data.map(item => {
+          const { realtors, ...property } = item;
+          return {
+            ...property,
+            id: property.id,
+            title: property.title,
+            price: property.price,
+            address: property.address,
+            city: property.city,
+            state: property.state,
+            zipCode: property.zip_code,
+            description: property.description,
+            aiDescription: property.ai_description,
+            type: property.type,
+            bedrooms: property.bedrooms,
+            bathrooms: property.bathrooms,
+            area: property.area,
+            yearBuilt: property.year_built,
+            features: property.features,
+            images: property.images,
+            featured: property.featured,
+            status: property.status,
+            createdAt: property.created_at,
+            updatedAt: property.updated_at,
+            realtor: realtors || { id: '', name: '', phone: '', email: '', photo: null }
+          } as Property;
+        });
+      } catch (error) {
+        console.error('Error in queryFn:', error);
+        return [];
       }
-      
-      return data.map(item => {
-        const { realtors, ...property } = item;
-        return {
-          ...property,
-          id: property.id,
-          title: property.title,
-          price: property.price,
-          address: property.address,
-          city: property.city,
-          state: property.state,
-          zipCode: property.zip_code,
-          description: property.description,
-          aiDescription: property.ai_description,
-          type: property.type,
-          bedrooms: property.bedrooms,
-          bathrooms: property.bathrooms,
-          area: property.area,
-          yearBuilt: property.year_built,
-          features: property.features,
-          images: property.images,
-          featured: property.featured,
-          status: property.status,
-          createdAt: property.created_at,
-          updatedAt: property.updated_at,
-          realtor: realtors
-        } as Property;
-      });
     }
   });
 
@@ -245,59 +249,8 @@ export const PropertyProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     setFilteredProperties(filtered);
   }, [filter, properties]);
 
-  const getPropertyById = async (id: string) => {
-    try {
-      const { data, error } = await supabase
-        .from('properties')
-        .select(`
-          *,
-          realtors:realtor_id (
-            id,
-            name,
-            phone,
-            email,
-            photo
-          )
-        `)
-        .eq('id', id)
-        .single();
-      
-      if (error) {
-        throw error;
-      }
-      
-      if (!data) return undefined;
-      
-      const { realtors, ...property } = data;
-      
-      return {
-        ...property,
-        id: property.id,
-        title: property.title,
-        price: property.price,
-        address: property.address,
-        city: property.city,
-        state: property.state,
-        zipCode: property.zip_code,
-        description: property.description,
-        aiDescription: property.ai_description,
-        type: property.type,
-        bedrooms: property.bedrooms,
-        bathrooms: property.bathrooms,
-        area: property.area,
-        yearBuilt: property.year_built,
-        features: property.features,
-        images: property.images,
-        featured: property.featured,
-        status: property.status,
-        createdAt: property.created_at,
-        updatedAt: property.updated_at,
-        realtor: realtors
-      } as Property;
-    } catch (error) {
-      console.error('Error fetching property:', error);
-      return undefined;
-    }
+  const getPropertyById = (id: string): Property | undefined => {
+    return properties.find(property => property.id === id);
   };
 
   const addProperty = async (property: Omit<Property, 'id' | 'createdAt' | 'updatedAt'>) => {

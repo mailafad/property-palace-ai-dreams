@@ -1,9 +1,11 @@
-import { useEffect } from 'react';
+
+import { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import NavBar from '@/components/NavBar';
 import Footer from '@/components/Footer';
 import ContactForm from '@/components/ContactForm';
 import { useProperty } from '@/contexts/PropertyContext';
+import { Property } from '@/types/property';
 import { formatCurrency } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { 
@@ -31,17 +33,21 @@ const PropertyDetailPage = () => {
   const { id } = useParams<{ id: string }>();
   const { getPropertyById } = useProperty();
   const navigate = useNavigate();
-  
-  const property = getPropertyById(id || '');
+  const [property, setProperty] = useState<Property | undefined>(undefined);
   
   useEffect(() => {
-    if (!property) {
+    if (!id) return;
+    
+    const propertyData = getPropertyById(id);
+    setProperty(propertyData);
+    
+    if (!propertyData) {
       toast.error("Property not found");
       navigate('/properties');
     }
     
     window.scrollTo(0, 0);
-  }, [property, navigate]);
+  }, [id, getPropertyById, navigate]);
   
   if (!property) return null;
   
@@ -260,7 +266,7 @@ const PropertyDetailPage = () => {
               <CardContent>
                 <div className="flex items-center mb-4">
                   <div className="mr-3">
-                    {property.realtor.photo ? (
+                    {property.realtor?.photo ? (
                       <img 
                         src={property.realtor.photo} 
                         alt={property.realtor.name}
@@ -273,10 +279,10 @@ const PropertyDetailPage = () => {
                     )}
                   </div>
                   <div>
-                    <p className="font-medium">{property.realtor.name}</p>
+                    <p className="font-medium">{property.realtor?.name || 'Agent'}</p>
                     <div className="flex items-center text-sm text-muted-foreground">
                       <Phone className="h-3 w-3 mr-1" />
-                      <span>{property.realtor.phone}</span>
+                      <span>{property.realtor?.phone || 'N/A'}</span>
                     </div>
                   </div>
                 </div>
