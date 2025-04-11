@@ -28,6 +28,7 @@ export interface Property {
   createdAt: string;
   updatedAt: string;
   realtor: {
+    id: string;
     name: string;
     phone: string;
     email: string;
