@@ -8,7 +8,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Info } from 'lucide-react';
+import { isSupabaseConfigured } from '@/lib/supabase';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 
 const loginSchema = z.object({
   email: z.string().email({ message: 'Please enter a valid email address' }),
@@ -29,6 +31,7 @@ type RegisterFormValues = z.infer<typeof registerSchema>;
 const AuthForm = () => {
   const { signIn, signUp, loading } = useAuth();
   const [authMode, setAuthMode] = useState<'login' | 'register'>('login');
+  const supabaseConfigured = isSupabaseConfigured();
 
   const loginForm = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
@@ -64,6 +67,17 @@ const AuthForm = () => {
       console.error('Register error:', error);
     }
   };
+
+  if (!supabaseConfigured) {
+    return (
+      <Alert variant="default" className="bg-yellow-50 border-yellow-200">
+        <Info className="h-4 w-4 text-yellow-600" />
+        <AlertDescription className="text-sm text-yellow-800">
+          Authentication is currently in demo mode. Set up your Supabase project and configure environment variables for full functionality.
+        </AlertDescription>
+      </Alert>
+    );
+  }
 
   return (
     <div className="w-full max-w-md mx-auto">
