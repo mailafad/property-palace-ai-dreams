@@ -7,29 +7,29 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from 'sonner';
 import { Lock, LogIn } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
 
 const AdminLoginPage = () => {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  const { signIn, loading, isAdmin } = useAuth();
   const navigate = useNavigate();
   
-  const handleLogin = (e: React.FormEvent) => {
+  // Redirect if already logged in as admin
+  if (isAdmin) {
+    navigate('/admin/dashboard');
+    return null;
+  }
+  
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
     
-    // In a real app, you would validate against environment variables
-    // For demo purposes, we'll use hardcoded credentials
-    setTimeout(() => {
-      if (username === 'admin' && password === 'password') {
-        localStorage.setItem('adminAuthenticated', 'true');
-        toast.success('Login successful');
-        navigate('/admin/dashboard');
-      } else {
-        toast.error('Invalid credentials');
-      }
-      setIsLoading(false);
-    }, 1000);
+    try {
+      await signIn(email, password);
+      // Auth context will handle the navigation after successful login
+    } catch (error) {
+      // Error is already handled by the AuthContext with toast
+    }
   };
   
   return (
@@ -50,12 +50,13 @@ const AdminLoginPage = () => {
           <form onSubmit={handleLogin}>
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="username">Username</Label>
+                <Label htmlFor="email">Email</Label>
                 <Input
-                  id="username"
-                  placeholder="admin"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
+                  id="email"
+                  type="email"
+                  placeholder="admin@example.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   required
                 />
               </div>
@@ -72,8 +73,8 @@ const AdminLoginPage = () => {
               </div>
             </div>
           
-            <Button className="w-full mt-6" type="submit" disabled={isLoading}>
-              {isLoading ? (
+            <Button className="w-full mt-6" type="submit" disabled={loading}>
+              {loading ? (
                 <span>Logging in...</span>
               ) : (
                 <span className="flex items-center">
@@ -85,7 +86,7 @@ const AdminLoginPage = () => {
           </form>
         </CardContent>
         <CardFooter className="text-center text-sm text-muted-foreground">
-          <p className="w-full">For demo purposes, use username: admin and password: password</p>
+          <p className="w-full">For testing purposes, create an account with admin@example.com to get admin access</p>
         </CardFooter>
       </Card>
     </div>

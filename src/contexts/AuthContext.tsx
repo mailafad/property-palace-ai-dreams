@@ -51,6 +51,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     fetchSession();
 
     const { data: authListener } = supabase.auth.onAuthStateChange(async (event, session) => {
+      console.log('Auth state changed:', event, session);
       setSession(session);
       setUser(session?.user || null);
       
@@ -79,6 +80,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         throw error;
       }
       
+      console.log('Fetched profile:', data);
       setProfile(data);
       setIsAdmin(data?.role === 'admin');
     } catch (error) {
@@ -124,15 +126,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
       
       if (data.user) {
-        await supabase.from('profiles').insert({
-          user_id: data.user.id,
-          full_name: fullName,
-          email,
-          role: 'user'
-        });
+        // Profile will be created automatically by the database trigger
+        toast.success('Account created! Please check your email to confirm your account');
       }
-      
-      toast.success('Account created! Please check your email to confirm your account');
     } catch (error: any) {
       toast.error(error.message || 'Error signing up');
       throw error;

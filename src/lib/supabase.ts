@@ -1,21 +1,10 @@
 
-import { createClient } from '@supabase/supabase-js';
-import { Database } from '@/types/supabase';
-
-// Default to empty strings if environment variables are not available
-// These will be replaced with actual values when deployed
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://your-supabase-project.supabase.co';
-const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'your-supabase-anon-key';
-
-// Create a single supabase client for interacting with your database
-export const supabase = createClient<Database>(supabaseUrl, supabaseKey);
+// Re-export the supabase client from the integration
+import { supabase } from '@/integrations/supabase/client';
 
 // Helper function to check if Supabase is properly configured
 export const isSupabaseConfigured = () => {
-  return (
-    import.meta.env.VITE_SUPABASE_URL &&
-    import.meta.env.VITE_SUPABASE_URL !== 'https://your-supabase-project.supabase.co' &&
-    import.meta.env.VITE_SUPABASE_ANON_KEY &&
-    import.meta.env.VITE_SUPABASE_ANON_KEY !== 'your-supabase-anon-key'
-  );
+  return true; // We're using the integration so Supabase is configured
 };
+
+export { supabase };

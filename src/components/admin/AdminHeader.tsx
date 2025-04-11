@@ -9,17 +9,19 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Menu, Home, LogOut, User, Building, LayoutDashboard } from 'lucide-react';
+import { Menu, Home, LogOut, Building, LayoutDashboard } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useAuth } from '@/contexts/AuthContext';
 
 const AdminHeader = () => {
   const navigate = useNavigate();
   const isMobile = useIsMobile();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { signOut } = useAuth();
   
-  const handleLogout = () => {
-    localStorage.removeItem('adminAuthenticated');
-    navigate('/admin');
+  const handleLogout = async () => {
+    await signOut();
+    // Auth context will handle navigation
   };
   
   return (

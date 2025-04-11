@@ -31,6 +31,7 @@ type RegisterFormValues = z.infer<typeof registerSchema>;
 const AuthForm = () => {
   const { signIn, signUp, loading } = useAuth();
   const [authMode, setAuthMode] = useState<'login' | 'register'>('login');
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const supabaseConfigured = isSupabaseConfigured();
 
   const loginForm = useForm<LoginFormValues>({
@@ -53,18 +54,23 @@ const AuthForm = () => {
 
   const onLoginSubmit = async (data: LoginFormValues) => {
     try {
+      setErrorMessage(null);
       await signIn(data.email, data.password);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Login error:', error);
+      // Error is already handled by the AuthContext with toast
     }
   };
 
   const onRegisterSubmit = async (data: RegisterFormValues) => {
     try {
+      setErrorMessage(null);
       await signUp(data.email, data.password, data.fullName);
       setAuthMode('login');
-    } catch (error) {
+      registerForm.reset();
+    } catch (error: any) {
       console.error('Register error:', error);
+      // Error is already handled by the AuthContext with toast
     }
   };
 
@@ -81,6 +87,12 @@ const AuthForm = () => {
 
   return (
     <div className="w-full max-w-md mx-auto">
+      {errorMessage && (
+        <Alert variant="destructive" className="mb-4">
+          <AlertDescription>{errorMessage}</AlertDescription>
+        </Alert>
+      )}
+      
       <Tabs value={authMode} onValueChange={(value) => setAuthMode(value as 'login' | 'register')}>
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="login">Login</TabsTrigger>
@@ -194,6 +206,10 @@ const AuthForm = () => {
           </form>
         </TabsContent>
       </Tabs>
+      
+      <div className="mt-6 text-center text-sm text-muted-foreground">
+        <p>For testing purposes, you can create an admin user by registering with the email "admin@example.com"</p>
+      </div>
     </div>
   );
 };
