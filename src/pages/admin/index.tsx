@@ -1,13 +1,12 @@
-
-import { useEffect, useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useProperty } from '@/contexts/PropertyContext';
+import { useAuth } from '@/contexts/AuthContext';
 import {
   Home,
   Plus,
-  LogOut,
   DollarSign,
   Users,
   LayoutGrid,
@@ -18,19 +17,7 @@ import AdminHeader from '@/components/admin/AdminHeader';
 
 const AdminDashboard = () => {
   const { properties } = useProperty();
-  const navigate = useNavigate();
-  const [isAdmin, setIsAdmin] = useState(false);
-  
-  useEffect(() => {
-    const adminAuthenticated = localStorage.getItem('adminAuthenticated');
-    if (adminAuthenticated !== 'true') {
-      navigate('/admin');
-    } else {
-      setIsAdmin(true);
-    }
-  }, [navigate]);
-  
-  if (!isAdmin) return null;
+  const { isAdmin } = useAuth();
   
   const forSaleCount = properties.filter(p => p.status === 'for-sale').length;
   const soldCount = properties.filter(p => p.status === 'sold').length;
@@ -175,17 +162,6 @@ const AdminDashboard = () => {
                     Manage Properties
                   </Button>
                 </Link>
-                <Button 
-                  variant="outline" 
-                  className="w-full justify-start"
-                  onClick={() => {
-                    localStorage.removeItem('adminAuthenticated');
-                    navigate('/admin');
-                  }}
-                >
-                  <LogOut className="mr-2 h-4 w-4" />
-                  Log Out
-                </Button>
               </div>
             </CardContent>
           </Card>

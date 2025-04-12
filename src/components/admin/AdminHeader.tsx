@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -14,15 +14,9 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { useAuth } from '@/contexts/AuthContext';
 
 const AdminHeader = () => {
-  const navigate = useNavigate();
   const isMobile = useIsMobile();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { signOut } = useAuth();
-  
-  const handleLogout = async () => {
-    await signOut();
-    // Auth context will handle navigation
-  };
   
   return (
     <header className="bg-white border-b py-4 px-6 sticky top-0 z-10">
@@ -59,7 +53,7 @@ const AdminHeader = () => {
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={handleLogout} className="flex items-center text-red-600">
+              <DropdownMenuItem onClick={signOut} className="flex items-center text-red-600">
                 <LogOut className="mr-2 h-4 w-4" />
                 Log Out
               </DropdownMenuItem>
@@ -85,7 +79,7 @@ const AdminHeader = () => {
                 View Website
               </Button>
             </Link>
-            <Button variant="outline" onClick={handleLogout}>
+            <Button variant="outline" onClick={signOut}>
               <LogOut className="mr-2 h-4 w-4" />
               Log Out
             </Button>

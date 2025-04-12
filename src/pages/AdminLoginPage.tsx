@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -15,11 +15,12 @@ const AdminLoginPage = () => {
   const { signIn, loading, isAdmin } = useAuth();
   const navigate = useNavigate();
   
-  // Redirect if already logged in as admin
-  if (isAdmin) {
-    navigate('/admin/dashboard');
-    return null;
-  }
+  useEffect(() => {
+    // Redirect if already logged in as admin
+    if (isAdmin) {
+      navigate('/admin/dashboard');
+    }
+  }, [isAdmin, navigate]);
   
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
