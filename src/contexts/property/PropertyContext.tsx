@@ -6,6 +6,8 @@ import { fetchProperties, addPropertyToDb, updatePropertyInDb, deletePropertyFro
 import { applyFilters } from './filterUtils';
 import { toast } from 'sonner';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { supabase } from '@/lib/supabase';
+import { useAuth } from '@/contexts/AuthContext';
 
 const PropertyContext = createContext<PropertyContextType | undefined>(undefined);
 
@@ -13,13 +15,44 @@ export const PropertyProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const [activeProperty, setActiveProperty] = useState<Property | null>(null);
   const [filter, setFilter] = useState<PropertyFilter>({});
   const [filteredProperties, setFilteredProperties] = useState<Property[]>([]);
+  const [favorites, setFavorites] = useState<string[]>([]);
   const queryClient = useQueryClient();
+  const { user } = useAuth();
 
   // Fetch properties with React Query
   const { data: properties = [], isLoading } = useQuery({
     queryKey: ['properties'],
     queryFn: fetchProperties
   });
+
+  // Fetch user favorites from Supabase
+  useEffect(() => {
+    const fetchFavorites = async () => {
+      if (!user) {
+        setFavorites([]);
+        return;
+      }
+
+      try {
+        const { data, error } = await supabase
+          .from('favorites')
+          .select('property_id')
+          .eq('user_id', user.id);
+
+        if (error) {
+          console.error('Error fetching favorites:', error);
+          return;
+        }
+
+        const favoriteIds = data.map(item => item.property_id);
+        setFavorites(favoriteIds);
+      } catch (error) {
+        console.error('Error in fetching favorites:', error);
+      }
+    };
+
+    fetchFavorites();
+  }, [user]);
 
   // Add property mutation
   const addPropertyMutation = useMutation({
@@ -50,11 +83,67 @@ export const PropertyProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     }
   });
 
+  // Add to favorites mutation
+  const addToFavoritesMutation = useMutation({
+    mutationFn: async (propertyId: string) => {
+      if (!user) {
+        throw new Error('You must be logged in to add favorites');
+      }
+      
+      const { error } = await supabase
+        .from('favorites')
+        .insert({ user_id: user.id, property_id: propertyId });
+        
+      if (error) throw error;
+      return propertyId;
+    },
+    onSuccess: (propertyId) => {
+      setFavorites(prev => [...prev, propertyId]);
+      toast.success('Added to favorites');
+    },
+    onError: (error) => {
+      console.error('Error adding to favorites:', error);
+      toast.error('Failed to add to favorites');
+    }
+  });
+
+  // Remove from favorites mutation
+  const removeFromFavoritesMutation = useMutation({
+    mutationFn: async (propertyId: string) => {
+      if (!user) {
+        throw new Error('You must be logged in to remove favorites');
+      }
+      
+      const { error } = await supabase
+        .from('favorites')
+        .delete()
+        .eq('user_id', user.id)
+        .eq('property_id', propertyId);
+        
+      if (error) throw error;
+      return propertyId;
+    },
+    onSuccess: (propertyId) => {
+      setFavorites(prev => prev.filter(id => id !== propertyId));
+      toast.success('Removed from favorites');
+    },
+    onError: (error) => {
+      console.error('Error removing from favorites:', error);
+      toast.error('Failed to remove from favorites');
+    }
+  });
+
   // Apply filters
   useEffect(() => {
-    const filtered = applyFilters(properties, filter);
+    let filtered = applyFilters(properties, filter);
+    
+    // If on favorites page, filter by favorites
+    if (window.location.pathname === '/favorites' && user) {
+      filtered = filtered.filter(property => favorites.includes(property.id));
+    }
+    
     setFilteredProperties(filtered);
-  }, [filter, properties]);
+  }, [filter, properties, favorites, user]);
 
   const getPropertyById = (id: string): Property | undefined => {
     return properties.find(property => property.id === id);
@@ -72,6 +161,18 @@ export const PropertyProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     await deletePropertyMutation.mutateAsync(id);
   };
 
+  const addToFavorites = async (propertyId: string) => {
+    await addToFavoritesMutation.mutateAsync(propertyId);
+  };
+
+  const removeFromFavorites = async (propertyId: string) => {
+    await removeFromFavoritesMutation.mutateAsync(propertyId);
+  };
+
+  const isPropertyFavorite = (propertyId: string) => {
+    return favorites.includes(propertyId);
+  };
+
   return (
     <PropertyContext.Provider
       value={{
@@ -80,12 +181,16 @@ export const PropertyProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         loading: isLoading,
         activeProperty,
         filter,
+        favorites,
         setFilter,
         getPropertyById,
         addProperty,
         updateProperty,
         deleteProperty,
         setActiveProperty,
+        addToFavorites,
+        removeFromFavorites,
+        isPropertyFavorite,
       }}
     >
       {children}

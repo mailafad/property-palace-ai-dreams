@@ -18,6 +18,7 @@ import AdminLoginPage from "./pages/AdminLoginPage";
 import AdminDashboard from "./pages/admin";
 import AdminPropertiesPage from "./pages/admin/AdminPropertiesPage";
 import PropertyFormPage from "./pages/admin/PropertyFormPage";
+import FavoritesPage from "./pages/FavoritesPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -64,7 +65,7 @@ const AppRoutes = () => (
     {/* Protected Routes */}
     <Route path="/favorites" element={
       <ProtectedRoute>
-        <PropertiesPage />
+        <FavoritesPage />
       </ProtectedRoute>
     } />
     

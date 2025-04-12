@@ -1,82 +1,83 @@
 
-import { Property } from '@/types/property';
-import { Card, CardContent, CardFooter } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Bed, Bath, Square, MapPin } from 'lucide-react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { formatCurrency } from '@/lib/utils';
+import { Heart } from 'lucide-react';
+import { Property } from '@/types/property';
+import { Badge } from '@/components/ui/badge';
+import { useProperty } from '@/contexts/PropertyContext';
+import { useAuth } from '@/contexts/AuthContext';
+import { toast } from 'sonner';
 
 interface PropertyCardProps {
   property: Property;
 }
 
-const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
-  const statusColors = {
-    'for-sale': 'bg-green-500',
-    'for-rent': 'bg-blue-500',
-    'sold': 'bg-red-500',
-    'pending': 'bg-yellow-500'
+const PropertyCard = ({ property }: PropertyCardProps) => {
+  const { id, title, price, address, city, state, bedrooms, bathrooms, area, images, status } = property;
+  const { addToFavorites, removeFromFavorites, isPropertyFavorite } = useProperty();
+  const { user } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
+  
+  const isFavorite = isPropertyFavorite(id);
+  
+  const handleFavoriteClick = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    if (!user) {
+      toast.error('Please sign in to save properties');
+      return;
+    }
+    
+    setIsLoading(true);
+    try {
+      if (isFavorite) {
+        await removeFromFavorites(id);
+      } else {
+        await addToFavorites(id);
+      }
+    } catch (error) {
+      console.error('Error updating favorites:', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
-
+  
   return (
-    <Link to={`/property/${property.id}`}>
-      <Card className="property-card h-full hover:scale-[1.02] transition-all">
-        <div className="relative overflow-hidden h-48 w-full">
-          <img 
-            src={property.images[0]} 
-            alt={property.title} 
-            className="h-full w-full object-cover" 
+    <Link to={`/property/${id}`} className="group">
+      <div className="property-card overflow-hidden rounded-lg border bg-card shadow-sm transition-all hover:shadow-md">
+        <div className="relative">
+          <img
+            src={images[0] || '/placeholder.svg'}
+            alt={title}
+            className="h-48 w-full object-cover"
           />
-          <div className="absolute top-3 right-3">
-            <Badge variant="secondary" className={`${statusColors[property.status]} text-white`}>
-              {property.status.replace('-', ' ')}
+          <button
+            onClick={handleFavoriteClick}
+            disabled={isLoading}
+            className="absolute right-2 top-2 rounded-full bg-white/80 p-1.5 text-gray-700 backdrop-blur-sm transition-colors hover:bg-white hover:text-primary"
+          >
+            <Heart
+              className={`h-5 w-5 ${isFavorite ? 'fill-red-500 text-red-500' : ''}`}
+            />
+          </button>
+          <div className="absolute bottom-2 left-2">
+            <Badge variant={status === 'for-sale' ? 'default' : 'secondary'}>
+              {status === 'for-sale' ? 'For Sale' : status === 'for-rent' ? 'For Rent' : status === 'sold' ? 'Sold' : 'Pending'}
             </Badge>
           </div>
-          {property.featured && (
-            <div className="absolute top-3 left-3">
-              <Badge variant="secondary" className="bg-primary text-white">
-                Featured
-              </Badge>
-            </div>
-          )}
         </div>
-        <CardContent className="pt-4">
-          <h3 className="font-bold text-lg line-clamp-1">{property.title}</h3>
-          <div className="flex items-center text-muted-foreground mt-1">
-            <MapPin className="h-4 w-4 mr-1" />
-            <p className="text-sm line-clamp-1">{property.address}, {property.city}, {property.state}</p>
+        <div className="p-4">
+          <h3 className="font-semibold text-card-foreground">{title}</h3>
+          <p className="text-sm text-muted-foreground">{address}, {city}, {state}</p>
+          <p className="my-2 text-lg font-bold">${price.toLocaleString()}</p>
+          <div className="flex justify-between text-xs text-muted-foreground">
+            <span>{bedrooms} Beds</span>
+            <span>{bathrooms} Baths</span>
+            <span>{area.toLocaleString()} sqft</span>
           </div>
-          <p className="font-bold text-lg text-primary mt-2">
-            {formatCurrency(property.price)}
-          </p>
-          <div className="flex justify-between mt-3">
-            <div className="flex items-center">
-              <Bed className="h-4 w-4 mr-1 text-muted-foreground" />
-              <span className="text-sm">{property.bedrooms} beds</span>
-            </div>
-            <div className="flex items-center">
-              <Bath className="h-4 w-4 mr-1 text-muted-foreground" />
-              <span className="text-sm">{property.bathrooms} baths</span>
-            </div>
-            <div className="flex items-center">
-              <Square className="h-4 w-4 mr-1 text-muted-foreground" />
-              <span className="text-sm">{property.area} sqft</span>
-            </div>
-          </div>
-        </CardContent>
-        <CardFooter className="border-t pt-3 text-sm text-muted-foreground">
-          <div className="flex items-center">
-            {property.realtor.photo ? (
-              <img 
-                src={property.realtor.photo} 
-                alt={property.realtor.name}
-                className="h-6 w-6 rounded-full mr-2 object-cover"
-              />
-            ) : null}
-            <span>{property.realtor.name}</span>
-          </div>
-        </CardFooter>
-      </Card>
+        </div>
+      </div>
     </Link>
   );
 };
