@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -23,8 +22,9 @@ import { Separator } from '@/components/ui/separator';
 import { Switch } from '@/components/ui/switch';
 import { toast } from 'sonner';
 import { useProperty } from '@/contexts/PropertyContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { Property, PropertyType } from '@/types/property';
-import { generateUniqueId, getImagePlaceholder } from '@/lib/utils';
+import { getImagePlaceholder } from '@/lib/utils';
 import { generateAIDescription } from '@/utils/aiDescriptionGenerator';
 import { ArrowLeft, Loader2, Sparkles } from 'lucide-react';
 import AdminHeader from '@/components/admin/AdminHeader';
@@ -36,8 +36,8 @@ const PropertyFormPage = () => {
   const { getPropertyById, addProperty, updateProperty } = useProperty();
   const navigate = useNavigate();
   const isMobile = useIsMobile();
+  const { isAdmin } = useAuth();
   
-  const [isAdmin, setIsAdmin] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isGeneratingDescription, setIsGeneratingDescription] = useState(false);
   
@@ -77,13 +77,10 @@ const PropertyFormPage = () => {
   const [formData, setFormData] = useState<Partial<Property>>(emptyProperty);
   
   useEffect(() => {
-    const adminAuthenticated = localStorage.getItem('adminAuthenticated');
-    if (adminAuthenticated !== 'true') {
+    if (!isAdmin) {
       navigate('/admin');
-    } else {
-      setIsAdmin(true);
     }
-  }, [navigate]);
+  }, [isAdmin, navigate]);
   
   useEffect(() => {
     if (isEditing && id) {
@@ -139,20 +136,20 @@ const PropertyFormPage = () => {
     });
   };
   
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     
     try {
       if (isEditing && id) {
-        updateProperty(id, {
+        await updateProperty(id, {
           ...formData,
           updatedAt: new Date().toISOString()
         });
         toast.success('Property updated successfully');
       } else {
         if (formData.title && formData.address && formData.price) {
-          addProperty({
+          await addProperty({
             ...formData as Omit<Property, "id" | "createdAt" | "updatedAt">,
           });
           toast.success('Property added successfully');
