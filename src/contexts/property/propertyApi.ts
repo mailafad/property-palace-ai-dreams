@@ -28,8 +28,11 @@ export async function fetchProperties() {
       const { realtors, ...property } = item;
       
       // Convert the database features (Json) to our app's Feature[] type
-      const features = Array.isArray(property.features) 
-        ? property.features as Feature[]
+      const features: Feature[] = Array.isArray(property.features) 
+        ? property.features.map((item: any) => ({
+            name: item.name || '',
+            value: item.value !== undefined ? item.value : ''
+          }))
         : [];
       
       return {
