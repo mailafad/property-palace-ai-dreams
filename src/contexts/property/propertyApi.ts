@@ -1,7 +1,8 @@
 
-import { Property } from '@/types/property';
+import { Property, Feature } from '@/types/property';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import { Json } from '@/integrations/supabase/types';
 
 export async function fetchProperties() {
   try {
@@ -25,8 +26,13 @@ export async function fetchProperties() {
     
     return data.map(item => {
       const { realtors, ...property } = item;
+      
+      // Convert the database features (Json) to our app's Feature[] type
+      const features = Array.isArray(property.features) 
+        ? property.features as Feature[]
+        : [];
+      
       return {
-        ...property,
         id: property.id,
         title: property.title,
         price: property.price,
@@ -36,15 +42,15 @@ export async function fetchProperties() {
         zipCode: property.zip_code,
         description: property.description,
         aiDescription: property.ai_description,
-        type: property.type,
+        type: property.type as Property['type'],
         bedrooms: property.bedrooms,
         bathrooms: property.bathrooms,
         area: property.area,
         yearBuilt: property.year_built,
-        features: property.features,
+        features: features,
         images: property.images,
         featured: property.featured,
-        status: property.status,
+        status: property.status as Property['status'],
         createdAt: property.created_at,
         updatedAt: property.updated_at,
         realtor: realtors || { id: '', name: '', phone: '', email: '', photo: null }
@@ -58,6 +64,9 @@ export async function fetchProperties() {
 
 export async function addPropertyToDb(property: Omit<Property, 'id' | 'createdAt' | 'updatedAt'>) {
   const { realtor, ...propertyData } = property;
+  
+  // Convert our app's Feature[] to Json format for the database
+  const featuresJson = propertyData.features as unknown as Json;
   
   const propertyToInsert = {
     title: propertyData.title,
@@ -73,7 +82,7 @@ export async function addPropertyToDb(property: Omit<Property, 'id' | 'createdAt
     bathrooms: propertyData.bathrooms,
     area: propertyData.area,
     year_built: propertyData.yearBuilt,
-    features: propertyData.features,
+    features: featuresJson,
     images: propertyData.images,
     featured: propertyData.featured,
     status: propertyData.status,
@@ -121,7 +130,7 @@ export async function updatePropertyInDb(id: string, updatedFields: Partial<Prop
   if (propertyData.bathrooms !== undefined) propertyToUpdate.bathrooms = propertyData.bathrooms;
   if (propertyData.area !== undefined) propertyToUpdate.area = propertyData.area;
   if (propertyData.yearBuilt !== undefined) propertyToUpdate.year_built = propertyData.yearBuilt;
-  if (propertyData.features !== undefined) propertyToUpdate.features = propertyData.features;
+  if (propertyData.features !== undefined) propertyToUpdate.features = propertyData.features as unknown as Json;
   if (propertyData.images !== undefined) propertyToUpdate.images = propertyData.images;
   if (propertyData.featured !== undefined) propertyToUpdate.featured = propertyData.featured;
   if (propertyData.status !== undefined) propertyToUpdate.status = propertyData.status;
