@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { HeartOff } from 'lucide-react';
 
 const FavoritesPage = () => {
-  const { filteredProperties, loading } = useProperty();
+  const { properties, filteredProperties, loading, favorites } = useProperty();
   const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   
@@ -19,9 +19,12 @@ const FavoritesPage = () => {
     }
   }, [user, authLoading, navigate]);
   
-  if (authLoading) {
+  if (authLoading || loading) {
     return <div className="flex justify-center items-center h-screen">Loading...</div>;
   }
+  
+  // Filter properties to only show favorites
+  const favoriteProperties = properties.filter(property => favorites.includes(property.id));
   
   return (
     <div className="flex flex-col min-h-screen">
@@ -30,12 +33,12 @@ const FavoritesPage = () => {
       <main className="flex-1 container px-4 py-8">
         <h1 className="text-3xl font-bold mb-2">Your Favorite Properties</h1>
         <p className="text-muted-foreground mb-6">
-          {filteredProperties.length > 0 
-            ? `You have ${filteredProperties.length} saved properties`
+          {favoriteProperties.length > 0 
+            ? `You have ${favoriteProperties.length} saved properties`
             : 'You have no saved properties yet'}
         </p>
         
-        {!loading && filteredProperties.length === 0 ? (
+        {favoriteProperties.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-12 text-center">
             <HeartOff className="h-16 w-16 text-muted-foreground mb-4" />
             <h2 className="text-xl font-semibold mb-2">No Favorite Properties</h2>

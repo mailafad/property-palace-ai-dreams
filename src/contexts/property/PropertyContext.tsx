@@ -44,8 +44,10 @@ export const PropertyProvider: React.FC<{ children: React.ReactNode }> = ({ chil
           return;
         }
 
-        const favoriteIds = data.map(item => item.property_id);
-        setFavorites(favoriteIds);
+        if (data) {
+          const favoriteIds = data.map(item => item.property_id);
+          setFavorites(favoriteIds);
+        }
       } catch (error) {
         console.error('Error in fetching favorites:', error);
       }
@@ -92,7 +94,10 @@ export const PropertyProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       
       const { error } = await supabase
         .from('favorites')
-        .insert({ user_id: user.id, property_id: propertyId });
+        .insert({ 
+          user_id: user.id, 
+          property_id: propertyId 
+        });
         
       if (error) throw error;
       return propertyId;
