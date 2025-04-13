@@ -1,10 +1,18 @@
 
 import PropertyCard from './PropertyCard';
 import { useProperty } from '@/contexts/PropertyContext';
+import { Property } from '@/types/property';
 import { Skeleton } from '@/components/ui/skeleton';
 
-const PropertyList = () => {
+interface PropertyListProps {
+  properties?: Property[];
+}
+
+const PropertyList = ({ properties }: PropertyListProps = {}) => {
   const { filteredProperties, loading } = useProperty();
+  
+  // Use provided properties if available, otherwise use filteredProperties from context
+  const displayProperties = properties || filteredProperties;
   
   if (loading) {
     return (
@@ -28,7 +36,7 @@ const PropertyList = () => {
     );
   }
 
-  if (filteredProperties.length === 0) {
+  if (displayProperties.length === 0) {
     return (
       <div className="text-center py-12">
         <h3 className="text-lg font-medium">No properties match your search</h3>
@@ -39,7 +47,7 @@ const PropertyList = () => {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {filteredProperties.map(property => (
+      {displayProperties.map(property => (
         <PropertyCard key={property.id} property={property} />
       ))}
     </div>
