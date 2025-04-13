@@ -23,7 +23,7 @@ import { Switch } from '@/components/ui/switch';
 import { toast } from 'sonner';
 import { useProperty } from '@/contexts/PropertyContext';
 import { useAuth } from '@/contexts/AuthContext';
-import { Property, PropertyType } from '@/types/property';
+import { Property } from '@/types/property';
 import { getImagePlaceholder } from '@/lib/utils';
 import { generateAIDescription } from '@/utils/aiDescriptionGenerator';
 import { ArrowLeft, Loader2, Sparkles } from 'lucide-react';
@@ -65,13 +65,7 @@ const PropertyFormPage = () => {
     images: [getImagePlaceholder(), getImagePlaceholder()],
     featured: false,
     status: 'for-sale',
-    realtor: {
-      id: '',
-      name: '',
-      phone: '',
-      email: '',
-      photo: ''
-    }
+    realtor: null
   };
   
   const [formData, setFormData] = useState<Partial<Property>>(emptyProperty);
@@ -141,16 +135,21 @@ const PropertyFormPage = () => {
     setIsSubmitting(true);
     
     try {
+      const validatedFormData = {
+        ...formData,
+        realtor: formData.realtor?.name ? formData.realtor : null
+      };
+      
       if (isEditing && id) {
         await updateProperty(id, {
-          ...formData,
+          ...validatedFormData,
           updatedAt: new Date().toISOString()
         });
         toast.success('Property updated successfully');
       } else {
         if (formData.title && formData.address && formData.price) {
           await addProperty({
-            ...formData as Omit<Property, "id" | "createdAt" | "updatedAt">,
+            ...validatedFormData as Omit<Property, "id" | "createdAt" | "updatedAt">,
           });
           toast.success('Property added successfully');
         } else {
@@ -209,15 +208,11 @@ const PropertyFormPage = () => {
     }
   };
   
-  const handleRealtorChange = (field: keyof Property['realtor'], value: string) => {
+  const handleRealtorChange = (field: keyof NonNullable<Property['realtor']>, value: string) => {
     setFormData({
       ...formData,
       realtor: {
-        name: formData.realtor?.name || '',
-        phone: formData.realtor?.phone || '',
-        email: formData.realtor?.email || '',
-        photo: formData.realtor?.photo || '',
-        ...formData.realtor,
+        ...(formData.realtor || { id: '', name: '', phone: '', email: '', photo: null }),
         [field]: value
       }
     });

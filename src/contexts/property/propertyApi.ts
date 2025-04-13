@@ -71,6 +71,7 @@ export async function addPropertyToDb(property: Omit<Property, 'id' | 'createdAt
   // Convert our app's Feature[] to Json format for the database
   const featuresJson = propertyData.features as unknown as Json;
   
+  // Create the property object to insert, ensuring we don't pass empty UUID values
   const propertyToInsert = {
     title: propertyData.title,
     price: propertyData.price,
@@ -89,7 +90,8 @@ export async function addPropertyToDb(property: Omit<Property, 'id' | 'createdAt
     images: propertyData.images,
     featured: propertyData.featured,
     status: propertyData.status,
-    realtor_id: realtor?.id
+    // Only include realtor_id if it's a valid non-empty string
+    ...(realtor?.id && realtor.id !== '' ? { realtor_id: realtor.id } : {})
   };
   
   const { data, error } = await supabase
@@ -137,7 +139,11 @@ export async function updatePropertyInDb(id: string, updatedFields: Partial<Prop
   if (propertyData.images !== undefined) propertyToUpdate.images = propertyData.images;
   if (propertyData.featured !== undefined) propertyToUpdate.featured = propertyData.featured;
   if (propertyData.status !== undefined) propertyToUpdate.status = propertyData.status;
-  if (realtor?.id !== undefined) propertyToUpdate.realtor_id = realtor.id;
+  
+  // Only include realtor_id if it's a valid non-empty string
+  if (realtor?.id && realtor.id !== '') {
+    propertyToUpdate.realtor_id = realtor.id;
+  }
   
   propertyToUpdate.updated_at = new Date().toISOString();
   
