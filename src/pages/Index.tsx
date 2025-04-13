@@ -22,36 +22,28 @@ const Index = () => {
       <NavBar />
       
       {/* Hero Section with updated styling */}
-      <section className="hero-section relative py-20 md:py-32">
-        <div className="absolute inset-0 z-0">
-          <img 
-            src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=1200" 
-            alt="Hero Background" 
-            className="w-full h-full object-cover filter brightness-50"
-          />
-        </div>
+      <section className="relative py-20 md:py-32 hero" style={{backgroundImage: `url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=1200')`}}>
         <div className="absolute inset-0 bg-black bg-opacity-50"></div>
-        <div className="container relative z-10 px-4 md:px-6 mx-auto">
-          <div className="max-w-3xl">
-            <h1 className="text-4xl md:text-5xl font-extrabold mb-4 text-white animate-fade-in">Find Your Dream Home Today</h1>
-            <p className="text-lg md:text-xl mb-8 text-blue-100 animate-fade-in">
-              Browse thousands of properties across the country. We make buying, selling, and renting easy.
-            </p>
-            <div className="mt-10 animate-fade-in">
-              <div className="bg-white rounded-lg p-2 shadow-xl flex max-w-md">
-                <input 
-                  type="text" 
-                  placeholder="Search by city, neighborhood, or ZIP" 
-                  className="flex-1 px-4 py-3 focus:outline-none"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                />
-                <Link to={`/properties?search=${searchTerm}`}>
-                  <button className="btn-premium px-6 py-3 font-medium">
-                    <Search className="h-4 w-4" />
-                  </button>
-                </Link>
-              </div>
+        <div className="relative max-w-7xl mx-auto py-24 px-4 sm:py-32 sm:px-6 lg:px-8">
+          <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-5xl lg:text-6xl animate-fade-in">Find Your Dream Home Today</h1>
+          <p className="mt-6 text-xl text-blue-100 max-w-3xl animate-fade-in">
+            Browse thousands of properties across India. We make buying, selling, and renting easy.
+          </p>
+          <div className="mt-10 animate-fade-in">
+            <div className="bg-white rounded-lg p-2 shadow-xl flex max-w-md">
+              <input 
+                type="text" 
+                placeholder="Search by city, neighborhood, or PIN code" 
+                className="flex-1 px-4 py-3 focus:outline-none text-black"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                style={{caretColor: 'black'}}
+              />
+              <Link to={`/properties?search=${searchTerm}`}>
+                <button className="btn-premium px-6 py-3 font-medium">
+                  <i className="fas fa-search"></i>
+                </button>
+              </Link>
             </div>
           </div>
         </div>
@@ -150,7 +142,7 @@ const Index = () => {
             <div>
               <h2 className="text-2xl md:text-3xl font-bold mb-4">Ready to Find Your Dream Home?</h2>
               <p className="text-white/90 mb-6">
-                Our experts are ready to help you through every step of your property journey.
+                Our experts are ready to help you through every step of your property journey in India.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link to="/properties">
@@ -167,8 +159,8 @@ const Index = () => {
             </div>
             <div className="hidden md:block">
               <img 
-                src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=600" 
-                alt="Modern Home" 
+                src="https://images.unsplash.com/photo-1572635148818-ef6fd45eb394?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=600" 
+                alt="Modern Home in India" 
                 className="rounded-lg shadow-lg w-full h-[300px] object-cover"
               />
             </div>

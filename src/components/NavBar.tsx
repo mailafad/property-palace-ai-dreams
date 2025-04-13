@@ -1,9 +1,9 @@
 
-import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
-import { Search, Home, User, LogOut } from 'lucide-react';
-import { useIsMobile } from '@/hooks/use-mobile';
 import { useAuth } from '@/contexts/AuthContext';
+import { User, LogOut } from 'lucide-react';
+import { useIsMobile } from '@/hooks/use-mobile';
+import '@/styles/ad-realtor-styles.css';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -17,70 +17,58 @@ const NavBar = () => {
   const { user, profile, signOut, isAdmin } = useAuth();
 
   return (
-    <nav className="bg-nav-bg shadow-sm py-4 px-6 sticky top-0 z-10">
-      <div className="container mx-auto flex items-center justify-between">
-        <Link to="/" className="flex items-center space-x-2">
-          <Home className="h-6 w-6 text-primary" />
-          <span className="text-xl font-bold text-nav-text">PropertyPalace</span>
-        </Link>
-        
-        <div className="hidden md:flex items-center space-x-6">
-          <Link to="/" className="text-nav-text hover:text-primary">Home</Link>
-          <Link to="/properties" className="text-nav-text hover:text-primary">Properties</Link>
-          <Link to="/contact" className="text-nav-text hover:text-primary">Contact</Link>
-        </div>
-        
-        <div className="flex items-center space-x-4">
-          {!isMobile && (
-            <Link to="/properties">
-              <Button variant="outline" size="sm" className="flex items-center text-nav-text border-nav-text hover:bg-hover-bg hover:text-primary">
-                <Search className="h-4 w-4 mr-2" />
-                Search Properties
-              </Button>
-            </Link>
-          )}
-          
-          {user ? (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" className="rounded-full text-nav-text hover:bg-hover-bg hover:text-primary">
-                  <User className="h-5 w-5" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <div className="flex items-center px-2 py-2">
-                  <div className="ml-2">
-                    <p className="text-sm font-medium">{profile?.full_name || user.email}</p>
-                    <p className="text-xs text-muted-foreground">{user.email}</p>
+    <nav className="navbar shadow-lg">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between h-16">
+          <div className="flex items-center">
+            <div className="flex-shrink-0 flex items-center">
+              <i className="fas fa-home text-primary text-2xl mr-2"></i>
+              <Link to="/" className="text-xl font-bold brand">AD Realestate</Link>
+            </div>
+          </div>
+          <div className="hidden md:ml-6 md:flex md:items-center md:space-x-8">
+            <Link to="/properties?type=buy" className="nav-item px-3 py-2 text-sm font-medium">Buy</Link>
+            <Link to="/properties?type=sell" className="nav-item px-3 py-2 text-sm font-medium">Sell</Link>
+            <Link to="/properties?type=rent" className="nav-item px-3 py-2 text-sm font-medium">Rent</Link>
+            <Link to="/contact" className="nav-item px-3 py-2 text-sm font-medium">Contact</Link>
+            {user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button className="nav-item px-3 py-2 text-sm font-medium">Account</button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="bg-white">
+                  <div className="flex items-center px-2 py-2">
+                    <div className="ml-2">
+                      <p className="text-sm font-medium">{profile?.full_name || user.email}</p>
+                      <p className="text-xs text-muted-foreground">{user.email}</p>
+                    </div>
                   </div>
-                </div>
-                <DropdownMenuSeparator />
-                {isAdmin && (
+                  <DropdownMenuSeparator />
+                  {isAdmin && (
+                    <DropdownMenuItem asChild>
+                      <Link to="/admin/dashboard" className="cursor-pointer w-full">
+                        Admin Dashboard
+                      </Link>
+                    </DropdownMenuItem>
+                  )}
                   <DropdownMenuItem asChild>
-                    <Link to="/admin/dashboard" className="cursor-pointer w-full">
-                      Admin Dashboard
+                    <Link to="/favorites" className="cursor-pointer w-full">
+                      Saved Properties
                     </Link>
                   </DropdownMenuItem>
-                )}
-                <DropdownMenuItem asChild>
-                  <Link to="/favorites" className="cursor-pointer w-full">
-                    Saved Properties
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={signOut} className="cursor-pointer">
-                  <LogOut className="mr-2 h-4 w-4" />
-                  Sign Out
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          ) : (
-            <Link to="/auth">
-              <Button variant="ghost" size="sm" className="text-nav-text hover:bg-hover-bg hover:text-primary">
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={signOut} className="cursor-pointer">
+                    <LogOut className="mr-2 h-4 w-4" />
+                    Sign Out
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Link to="/auth" className="nav-item px-3 py-2 text-sm font-medium">
                 Sign In
-              </Button>
-            </Link>
-          )}
+              </Link>
+            )}
+          </div>
         </div>
       </div>
     </nav>

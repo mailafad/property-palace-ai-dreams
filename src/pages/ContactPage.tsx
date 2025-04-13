@@ -14,7 +14,7 @@ const ContactPage = () => {
         <div className="text-center mb-12">
           <h1 className="text-3xl font-bold mb-2">Contact Us</h1>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Our team of expert realtors is here to help you find your dream property. Reach out to us with any questions.
+            Our team of expert realtors is here to help you find your dream property in India. Reach out to us with any questions.
           </p>
         </div>
         
@@ -31,15 +31,15 @@ const ContactPage = () => {
               <div className="flex items-start space-x-3 mb-4">
                 <Clock className="h-5 w-5 text-primary mt-0.5" />
                 <div>
-                  <p className="font-medium">Monday - Friday</p>
-                  <p className="text-muted-foreground">9:00 AM - 6:00 PM</p>
+                  <p className="font-medium">Monday - Saturday</p>
+                  <p className="text-muted-foreground">10:00 AM - 7:00 PM IST</p>
                 </div>
               </div>
               <div className="flex items-start space-x-3">
                 <Clock className="h-5 w-5 text-primary mt-0.5" />
                 <div>
-                  <p className="font-medium">Saturday</p>
-                  <p className="text-muted-foreground">10:00 AM - 4:00 PM</p>
+                  <p className="font-medium">Sunday</p>
+                  <p className="text-muted-foreground">Closed</p>
                 </div>
               </div>
             </div>
@@ -56,7 +56,7 @@ const ContactPage = () => {
                 <div>
                   <h3 className="font-medium text-lg">Phone</h3>
                   <p className="text-muted-foreground mb-1">Our agents are available during business hours</p>
-                  <p className="font-medium">(123) 456-7890</p>
+                  <p className="font-medium">+91 9003111000</p>
                 </div>
               </div>
               
@@ -67,7 +67,7 @@ const ContactPage = () => {
                 <div>
                   <h3 className="font-medium text-lg">Email</h3>
                   <p className="text-muted-foreground mb-1">We'll respond as quickly as possible</p>
-                  <p className="font-medium">info@propertypalace.com</p>
+                  <p className="font-medium">info@afglobalenterprises.com</p>
                 </div>
               </div>
               
@@ -78,8 +78,9 @@ const ContactPage = () => {
                 <div>
                   <h3 className="font-medium text-lg">Office Location</h3>
                   <p className="text-muted-foreground mb-1">Come visit our main office</p>
-                  <p className="font-medium">123 Real Estate St</p>
-                  <p className="text-muted-foreground">Property City, PC 12345</p>
+                  <p className="font-medium">No.1, Kalaignar Road</p>
+                  <p className="text-muted-foreground">Anna Nagar, Pammal</p>
+                  <p className="text-muted-foreground">Chennai-75</p>
                 </div>
               </div>
             </div>
