@@ -1,0 +1,183 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In / Register - Property Palace</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen flex flex-col bg-gray-50">
+  <!-- Navigation -->
+  <nav class="bg-black text-white p-4">
+    <div class="container mx-auto flex justify-between items-center">
+      <a href="index.html" class="text-xl font-bold">PropertyPalace</a>
+      <div class="hidden md:flex space-x-6">
+        <a href="index.html" class="hover:text-lime-400">Home</a>
+        <a href="properties.html" class="hover:text-lime-400">Properties</a>
+        <a href="contact.html" class="hover:text-lime-400">Contact</a>
+      </div>
+      <div class="flex items-center space-x-4">
+        <a href="favorites.html" class="hover:text-lime-400">Favorites</a>
+        <a href="auth.html" class="bg-lime-400 text-black px-4 py-2 rounded-md hover:bg-lime-500">Sign In</a>
+      </div>
+    </div>
+  </nav>
+  
+  <main class="flex-1 container px-4 py-12">
+    <div class="max-w-md mx-auto">
+      <h1 class="text-3xl font-bold mb-6 text-center">Account Access</h1>
+      
+      <div class="bg-white p-6 rounded-lg shadow-sm border">
+        <div class="flex border-b mb-6">
+          <button id="signInBtn" class="tab-btn active pb-3 px-4 text-lime-500 border-b-2 border-lime-500 font-medium">Sign In</button>
+          <button id="registerBtn" class="tab-btn pb-3 px-4 text-gray-500 font-medium">Register</button>
+        </div>
+        
+        <!-- Sign In Form -->
+        <form id="signInForm" class="space-y-4">
+          <div>
+            <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+            <input type="email" id="email" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-lime-500 focus:border-lime-500">
+          </div>
+          <div>
+            <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+            <input type="password" id="password" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-lime-500 focus:border-lime-500">
+          </div>
+          <div class="flex items-center justify-between">
+            <label class="flex items-center">
+              <input type="checkbox" class="rounded text-lime-500 focus:ring-lime-500">
+              <span class="ml-2 text-sm text-gray-600">Remember me</span>
+            </label>
+            <a href="#" class="text-sm text-lime-500 hover:underline">Forgot password?</a>
+          </div>
+          <button type="submit" class="w-full bg-lime-400 text-black font-medium py-2 px-4 rounded-md hover:bg-lime-500 focus:outline-none focus:ring-2 focus:ring-lime-500 focus:ring-offset-2">
+            Sign In
+          </button>
+        </form>
+        
+        <!-- Register Form -->
+        <form id="registerForm" class="space-y-4 hidden">
+          <div>
+            <label for="fullName" class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+            <input type="text" id="fullName" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-lime-500 focus:border-lime-500">
+          </div>
+          <div>
+            <label for="regEmail" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+            <input type="email" id="regEmail" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-lime-500 focus:border-lime-500">
+          </div>
+          <div>
+            <label for="regPassword" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+            <input type="password" id="regPassword" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-lime-500 focus:border-lime-500">
+          </div>
+          <div>
+            <label for="confirmPassword" class="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
+            <input type="password" id="confirmPassword" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-lime-500 focus:border-lime-500">
+          </div>
+          <div>
+            <label class="flex items-start">
+              <input type="checkbox" class="rounded text-lime-500 focus:ring-lime-500 mt-1">
+              <span class="ml-2 text-sm text-gray-600">I agree to the <a href="#" class="text-lime-500 hover:underline">Terms of Service</a> and <a href="#" class="text-lime-500 hover:underline">Privacy Policy</a></span>
+            </label>
+          </div>
+          <button type="submit" class="w-full bg-lime-400 text-black font-medium py-2 px-4 rounded-md hover:bg-lime-500 focus:outline-none focus:ring-2 focus:ring-lime-500 focus:ring-offset-2">
+            Create Account
+          </button>
+        </form>
+        
+        <div class="mt-6 pt-6 border-t border-gray-200">
+          <div class="text-center text-sm text-gray-600 mb-4">Or continue with</div>
+          <div class="flex space-x-4">
+            <button class="flex-1 flex items-center justify-center bg-white border border-gray-300 text-gray-700 font-medium py-2 px-4 rounded-md hover:bg-gray-50 focus:outline-none">
+              <svg class="h-5 w-5 mr-2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20.283 10.356h-8.327v3.451h4.792c-.446 2.193-2.313 3.453-4.792 3.453a5.27 5.27 0 0 1-5.279-5.28 5.27 5.27 0 0 1 5.279-5.279c1.259 0 2.397.447 3.29 1.178l2.6-2.599c-1.584-1.381-3.615-2.233-5.89-2.233a8.908 8.908 0 0 0-8.934 8.934 8.907 8.907 0 0 0 8.934 8.934c4.467 0 8.529-3.249 8.529-8.934 0-.528-.081-1.097-.202-1.625z" fill="#4285F4"/>
+                <path d="M12.956 9.956h11.032C23.776 4.903 19.896 1 15.348 1 9.513 1 4.658 5.829 4.658 12c0 6.17 4.855 11 10.69 11 3.798 0 7.22-1.737 9.534-4.522l-3.01-2.647C20.795 17.4 18.318 18.5 15.348 18.5c-3.536 0-6.621-2.62-6.621-6.5s3.085-6.5 6.621-6.5c2.111 0 3.88 1.111 4.608 2.956z" fill="#34A853"/>
+              </svg>
+              Google
+            </button>
+            <button class="flex-1 flex items-center justify-center bg-[#1877F2] text-white font-medium py-2 px-4 rounded-md hover:bg-[#166FE5] focus:outline-none">
+              <svg class="h-5 w-5 mr-2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20.007 3H3.993C3.445 3 3 3.445 3 3.993v16.014c0 .548.445.993.993.993h8.621v-6.971h-2.346v-2.717h2.346V9.31c0-2.325 1.42-3.591 3.494-3.591.993 0 1.847.074 2.096.107v2.43h-1.438c-1.128 0-1.346.537-1.346 1.324v1.734h2.69l-.35 2.717h-2.34V21h4.587c.548 0 .993-.445.993-.993V3.993C21 3.445 20.555 3 20.007 3z" fill="white"/>
+              </svg>
+              Facebook
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  
+  <!-- Footer -->
+  <footer class="bg-gray-800 text-white py-12 mt-12">
+    <div class="container mx-auto px-4">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div>
+          <h3 class="text-xl font-bold mb-4">PropertyPalace</h3>
+          <p class="text-gray-300 mb-4">Your trusted partner in finding the perfect property. We've been helping people find their dream homes since 2010.</p>
+        </div>
+        <div>
+          <h4 class="font-semibold mb-4">Quick Links</h4>
+          <ul class="space-y-2">
+            <li><a href="index.html" class="text-gray-300 hover:text-white">Home</a></li>
+            <li><a href="properties.html" class="text-gray-300 hover:text-white">Properties</a></li>
+            <li><a href="contact.html" class="text-gray-300 hover:text-white">Contact</a></li>
+            <li><a href="auth.html" class="text-gray-300 hover:text-white">Sign In</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-semibold mb-4">Property Types</h4>
+          <ul class="space-y-2">
+            <li><a href="#" class="text-gray-300 hover:text-white">Houses</a></li>
+            <li><a href="#" class="text-gray-300 hover:text-white">Apartments</a></li>
+            <li><a href="#" class="text-gray-300 hover:text-white">Condos</a></li>
+            <li><a href="#" class="text-gray-300 hover:text-white">Commercial</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-semibold mb-4">Contact Us</h4>
+          <address class="not-italic text-gray-300">
+            <p class="mb-2">123 Real Estate St</p>
+            <p class="mb-2">Property City, PC 12345</p>
+            <p class="mb-2">Email: info@propertypalace.com</p>
+            <p>Phone: (123) 456-7890</p>
+          </address>
+        </div>
+      </div>
+      <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-300">
+        <p>&copy; 2023 PropertyPalace. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Tab switching functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const signInBtn = document.getElementById('signInBtn');
+      const registerBtn = document.getElementById('registerBtn');
+      const signInForm = document.getElementById('signInForm');
+      const registerForm = document.getElementById('registerForm');
+      
+      signInBtn.addEventListener('click', function() {
+        signInBtn.classList.add('active', 'text-lime-500', 'border-b-2', 'border-lime-500');
+        signInBtn.classList.remove('text-gray-500');
+        registerBtn.classList.remove('active', 'text-lime-500', 'border-b-2', 'border-lime-500');
+        registerBtn.classList.add('text-gray-500');
+        
+        signInForm.classList.remove('hidden');
+        registerForm.classList.add('hidden');
+      });
+      
+      registerBtn.addEventListener('click', function() {
+        registerBtn.classList.add('active', 'text-lime-500', 'border-b-2', 'border-lime-500');
+        registerBtn.classList.remove('text-gray-500');
+        signInBtn.classList.remove('active', 'text-lime-500', 'border-b-2', 'border-lime-500');
+        signInBtn.classList.add('text-gray-500');
+        
+        registerForm.classList.remove('hidden');
+        signInForm.classList.add('hidden');
+      });
+    });
+  </script>
+</body>
+</html>
