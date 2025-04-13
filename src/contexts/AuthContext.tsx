@@ -27,7 +27,28 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchSession = async () => {
+    // Set up the auth state listener first
+    const { data: authListener } = supabase.auth.onAuthStateChange(async (event, newSession) => {
+      console.log('Auth state changed:', event, newSession);
+      
+      // Update session and user states
+      setSession(newSession);
+      setUser(newSession?.user || null);
+      
+      // If user exists, fetch their profile
+      if (newSession?.user) {
+        // Avoid infinite loops by using setTimeout when fetching profile
+        setTimeout(() => {
+          fetchProfile(newSession.user.id);
+        }, 0);
+      } else {
+        setProfile(null);
+        setIsAdmin(false);
+      }
+    });
+    
+    // Then check for existing session
+    const initAuth = async () => {
       try {
         const { data, error } = await supabase.auth.getSession();
         
@@ -48,20 +69,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
     };
 
-    fetchSession();
-
-    const { data: authListener } = supabase.auth.onAuthStateChange(async (event, session) => {
-      console.log('Auth state changed:', event, session);
-      setSession(session);
-      setUser(session?.user || null);
-      
-      if (session?.user) {
-        await fetchProfile(session.user.id);
-      } else {
-        setProfile(null);
-        setIsAdmin(false);
-      }
-    });
+    initAuth();
 
     return () => {
       authListener.subscription.unsubscribe();

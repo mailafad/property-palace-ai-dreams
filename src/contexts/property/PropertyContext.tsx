@@ -53,7 +53,11 @@ export const PropertyProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       }
     };
 
-    fetchFavorites();
+    if (user) {
+      fetchFavorites();
+    } else {
+      setFavorites([]);
+    }
   }, [user]);
 
   // Add property mutation
@@ -148,7 +152,7 @@ export const PropertyProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     }
     
     setFilteredProperties(filtered);
-  }, [filter, properties, favorites, user]);
+  }, [filter, properties, favorites, user, window.location.pathname]);
 
   const getPropertyById = (id: string): Property | undefined => {
     return properties.find(property => property.id === id);
