@@ -58,6 +58,7 @@
 
   body {
     @apply bg-background text-foreground antialiased;
+    font-family: 'Poppins', sans-serif;
   }
 }
 
@@ -73,4 +74,14 @@
   .feature-icon {
     @apply w-5 h-5 text-primary;
   }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.animate-fade-in {
+  opacity: 0;
+  animation: fadeIn 0.5s forwards;
 }

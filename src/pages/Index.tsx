@@ -1,47 +1,57 @@
 
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import NavBar from '@/components/NavBar';
 import Footer from '@/components/Footer';
 import PropertyList from '@/components/PropertyList';
 import { Button } from '@/components/ui/button';
 import { useProperty } from '@/contexts/PropertyContext';
-import { Link } from 'react-router-dom';
 import { Search, MapPin, Home, Building, CheckSquare } from 'lucide-react';
+
+// Import the custom styles
+import '@/styles/ad-realtor-styles.css';
+import '@/styles/button-styles.css';
 
 const Index = () => {
   const { properties } = useProperty();
   const featuredProperties = properties.filter(property => property.featured);
+  const [searchTerm, setSearchTerm] = useState('');
 
   return (
     <div className="flex flex-col min-h-screen">
       <NavBar />
       
-      {/* Hero Section */}
-      <section className="hero-section py-20 md:py-32">
+      {/* Hero Section with updated styling */}
+      <section className="hero-section relative py-20 md:py-32">
         <div className="absolute inset-0 z-0">
           <img 
-            src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=1200" 
+            src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=1200" 
             alt="Hero Background" 
             className="w-full h-full object-cover filter brightness-50"
           />
         </div>
-        <div className="container relative z-10 px-4 md:px-6">
+        <div className="absolute inset-0 bg-black bg-opacity-50"></div>
+        <div className="container relative z-10 px-4 md:px-6 mx-auto">
           <div className="max-w-3xl">
-            <h1 className="text-3xl md:text-5xl font-bold mb-4 animate-fade-in">Find Your Dream Property</h1>
-            <p className="text-lg md:text-xl mb-8 text-white/90 animate-fade-in">
-              Discover the perfect home with our AI-powered property listings.
+            <h1 className="text-4xl md:text-5xl font-extrabold mb-4 text-white animate-fade-in">Find Your Dream Home Today</h1>
+            <p className="text-lg md:text-xl mb-8 text-blue-100 animate-fade-in">
+              Browse thousands of properties across the country. We make buying, selling, and renting easy.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 animate-fade-in">
-              <Link to="/properties">
-                <Button size="lg" className="w-full sm:w-auto">
-                  <Search className="mr-2 h-4 w-4" />
-                  Browse Properties
-                </Button>
-              </Link>
-              <Link to="/contact">
-                <Button size="lg" variant="outline" className="w-full sm:w-auto bg-white/10 hover:bg-white/20">
-                  Contact an Agent
-                </Button>
-              </Link>
+            <div className="mt-10 animate-fade-in">
+              <div className="bg-white rounded-lg p-2 shadow-xl flex max-w-md">
+                <input 
+                  type="text" 
+                  placeholder="Search by city, neighborhood, or ZIP" 
+                  className="flex-1 px-4 py-3 focus:outline-none"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+                <Link to={`/properties?search=${searchTerm}`}>
+                  <button className="btn-premium px-6 py-3 font-medium">
+                    <Search className="h-4 w-4" />
+                  </button>
+                </Link>
+              </div>
             </div>
           </div>
         </div>
@@ -49,7 +59,7 @@ const Index = () => {
       
       {/* Featured Properties */}
       <section className="py-16 bg-gray-50">
-        <div className="container px-4 md:px-6">
+        <div className="container px-4 md:px-6 mx-auto">
           <div className="flex justify-between items-center mb-10">
             <div>
               <h2 className="text-2xl md:text-3xl font-bold">Featured Properties</h2>
@@ -60,17 +70,17 @@ const Index = () => {
             </Link>
           </div>
           
-          <PropertyList />
+          <PropertyList properties={featuredProperties} />
         </div>
       </section>
       
       {/* Features Section */}
       <section className="py-16">
-        <div className="container px-4 md:px-6">
+        <div className="container px-4 md:px-6 mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-2xl md:text-3xl font-bold">Why Choose PropertyPalace</h2>
+            <h2 className="text-2xl md:text-3xl font-bold">Why Choose Us</h2>
             <p className="text-muted-foreground mt-2 max-w-2xl mx-auto">
-              We combine cutting-edge AI technology with personalized service to make your property search easier than ever
+              We combine cutting-edge technology with personalized service to make your property search easier than ever
             </p>
           </div>
           
@@ -108,9 +118,34 @@ const Index = () => {
         </div>
       </section>
       
-      {/* CTA Section */}
+      {/* Property Selling Section - New from custom template */}
+      <section className="bg-gradient-to-r from-blue-50 to-indigo-50 py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl font-bold text-gray-900 mb-4">Have a property to sell?</h2>
+          <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+            List your property & connect with clients faster!
+          </p>
+          <Link to="/contact">
+            <button className="btn-premium px-8 py-3 text-lg font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all">
+              Sell Your Property Now
+            </button>
+          </Link>
+        </div>
+      </section>
+      
+      {/* AF Global Section - New from custom template */}
+      <section className="bg-gradient-to-r from-blue-50 to-indigo-50 py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mt-12 flex justify-center items-center space-x-6">
+            <img src="https://www.afglobalenterprises.com/images/logoh1.jpg" alt="AF Global Logo" className="h-16" />
+            <span className="text-gray-1000 text-xl font-medium">Part of AF Global Enterprises</span>
+          </div>
+        </div>
+      </section>
+      
+      {/* CTA Section - Modified from original */}
       <section className="py-16 bg-primary text-white">
-        <div className="container px-4 md:px-6">
+        <div className="container px-4 md:px-6 mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
             <div>
               <h2 className="text-2xl md:text-3xl font-bold mb-4">Ready to Find Your Dream Home?</h2>

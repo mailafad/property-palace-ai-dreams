@@ -1,0 +1,117 @@
+
+:root {
+    --primary: #3b82f6;
+    --primary-dark: #2563eb;
+    --card-bg: #ffffff;
+    --footer-bg: #1f2937;
+    --footer-text: #f9fafb;
+}
+
+/* Navigation Styles */
+.navbar {
+    background-color: #000;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.brand {
+    color: #a5ff03;
+}
+
+.nav-item {
+    color: #fff;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    padding: 8px 12px;
+    border-radius: 4px;
+}
+
+.nav-item:hover {
+    color: #a5ff03;
+    background-color: rgba(165, 255, 3, 0.1);
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(165, 255, 3, 0.5);
+}
+
+/* Hero Section */
+.hero-section {
+    position: relative;
+    background: linear-gradient(90deg, rgba(34, 84, 133, 0.9), rgba(59, 130, 246, 0.9));
+    color: white;
+    min-height: 600px;
+}
+
+/* Property Cards */
+.property-card {
+    background: var(--card-bg);
+    border-radius: 0.5rem;
+    overflow: hidden;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+#property-grid div:hover {
+    box-shadow: 0 0 15px #00ff00; /* Fluorescent green glow */
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.property-card:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 10px 20px rgba(165, 255, 3, 0.4);
+    border: 5px solid rgba(55, 233, 43, 0.3);
+}
+
+.property-card:active {
+    transform: translateY(-2px) scale(0.98);
+    box-shadow: 0 5px 15px rgba(165, 255, 3, 0.6);
+}
+
+/* Carousel */
+#featured-carousel {
+    position: relative;
+    overflow: hidden;
+    padding: 20px 0;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+#carousel-track {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.carousel-slide {
+    flex: 0 0 300px;
+    padding: 0 10px;
+    height: 400px;
+}
+
+/* Property Selling Section */
+.bg-gradient-to-r {
+    background: linear-gradient(to right, #f0f9ff, #e0f2fe);
+}
+
+.text-gray-1000 {
+    color: #111827;
+}
+
+/* Footer */
+footer {
+    background: var(--footer-bg);
+    color: var(--footer-text);
+    padding: 3rem 0;
+}
+
+.footer-link {
+    color: #d1d5db;
+    transition: color 0.3s ease;
+}
+
+.footer-link:hover {
+    color: white;
+}
