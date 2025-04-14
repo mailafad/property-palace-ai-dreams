@@ -61,6 +61,7 @@ const Footer = () => {
         
         <div className="mt-8 pt-8 border-t border-gray-700 text-center text-gray-400">
           <p>&copy; {new Date().getFullYear()} AD Realestate. All rights reserved.</p>
+          <p className="mt-2 text-sm">Part of AF Global Enterprises</p>
         </div>
       </div>
     </footer>

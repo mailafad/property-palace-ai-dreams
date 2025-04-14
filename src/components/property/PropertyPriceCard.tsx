@@ -1,7 +1,7 @@
 
 import { Property } from '@/types/property';
 import { formatCurrency } from '@/lib/utils';
-import { Bed, Bath, Square } from 'lucide-react';
+import { Bed, Bath, Square, IndianRupee } from 'lucide-react';
 
 interface PropertyPriceCardProps {
   property: Property;
@@ -13,8 +13,9 @@ const PropertyPriceCard = ({ property }: PropertyPriceCardProps) => {
       <div className="flex flex-col md:flex-row md:items-center md:justify-between">
         <div>
           <p className="text-muted-foreground text-sm">Price</p>
-          <p className="text-2xl md:text-3xl font-bold text-primary">
-            {formatCurrency(property.price)}
+          <p className="text-2xl md:text-3xl font-bold text-primary flex items-center">
+            <IndianRupee className="h-5 w-5 mr-1" />
+            {new Intl.NumberFormat('en-IN').format(property.price)}
           </p>
         </div>
         

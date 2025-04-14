@@ -1,17 +1,24 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 import { Property } from '@/types/property';
+import { useAuth } from '@/contexts/AuthContext';
+import { useProperty } from '@/contexts/PropertyContext';
+import { useNavigate } from 'react-router-dom';
 
 interface ContactFormProps {
   property?: Property;
 }
 
 const ContactForm: React.FC<ContactFormProps> = ({ property }) => {
+  const { user, profile } = useAuth();
+  const { addToFavorites } = useProperty();
+  const navigate = useNavigate();
+  
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -22,6 +29,18 @@ const ContactForm: React.FC<ContactFormProps> = ({ property }) => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   
+  // Auto-fill form with user data if available
+  useEffect(() => {
+    if (user && profile) {
+      setFormData(prev => ({
+        ...prev,
+        name: profile.full_name || '',
+        email: user.email || '',
+        phone: profile.phone || '',
+      }));
+    }
+  }, [user, profile]);
+  
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
@@ -31,21 +50,36 @@ const ContactForm: React.FC<ContactFormProps> = ({ property }) => {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Simulate API call
-    setTimeout(() => {
+    try {
+      // If property exists and user is logged in, add to favorites
+      if (property && user) {
+        await addToFavorites(property.id);
+        toast.success('Property added to your favorites!');
+      } else if (property && !user) {
+        // If property exists but user is not logged in, prompt to login
+        toast.info('Please sign in to save this property to your favorites', {
+          action: {
+            label: 'Sign In',
+            onClick: () => navigate('/auth'),
+          },
+        });
+      }
+      
+      // Simulate API call for the contact form
       console.log('Form submitted:', formData);
       toast.success('Your message has been sent! A realtor will contact you shortly.');
       
-      // Reset form
-      setFormData({
-        name: '',
-        email: '',
-        phone: '',
+      // Only reset message part of the form
+      setFormData(prev => ({
+        ...prev,
         message: '',
-      });
-      
+      }));
+    } catch (error) {
+      console.error('Error:', error);
+      toast.error('There was an error sending your message. Please try again.');
+    } finally {
       setIsSubmitting(false);
-    }, 1000);
+    }
   };
   
   return (
@@ -82,7 +116,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ property }) => {
           name="phone"
           value={formData.phone}
           onChange={handleChange}
-          placeholder="(123) 456-7890"
+          placeholder="+91 98765 43210"
         />
       </div>
       
@@ -102,6 +136,12 @@ const ContactForm: React.FC<ContactFormProps> = ({ property }) => {
       <Button type="submit" className="w-full" disabled={isSubmitting}>
         {isSubmitting ? 'Sending...' : 'Send Message'}
       </Button>
+      
+      {property && !user && (
+        <p className="text-xs text-muted-foreground text-center mt-2">
+          Sign in to save this property to your favorites
+        </p>
+      )}
     </form>
   );
 };

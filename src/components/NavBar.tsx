@@ -1,7 +1,7 @@
 
 import { Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
-import { User, LogOut } from 'lucide-react';
+import { User, LogOut, Heart, Home, Phone, User as UserIcon } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import '@/styles/ad-realtor-styles.css';
 import {
@@ -52,8 +52,15 @@ const NavBar = () => {
                     </DropdownMenuItem>
                   )}
                   <DropdownMenuItem asChild>
-                    <Link to="/favorites" className="cursor-pointer w-full">
+                    <Link to="/favorites" className="cursor-pointer w-full flex items-center">
+                      <Heart className="mr-2 h-4 w-4 text-red-500" />
                       Saved Properties
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/realtor-profile" className="cursor-pointer w-full flex items-center">
+                      <UserIcon className="mr-2 h-4 w-4" />
+                      Realtor Profile
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
