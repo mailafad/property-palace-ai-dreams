@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabase';
 import AdminHeader from '@/components/admin/AdminHeader';
@@ -84,15 +83,12 @@ const AdminContactsPage = () => {
         .from('contact_inquiries')
         .select(`
           *,
-          properties:property_id (
-            title
-          )
-        `)
-        .order('created_at', { ascending: false });
+          properties(title)
+        `);
       
       if (error) throw error;
       
-      const formattedContacts = (data || []).map(contact => ({
+      const formattedContacts: ContactInquiry[] = (data || []).map(contact => ({
         ...contact,
         property_title: contact.properties?.title || 'N/A'
       }));
@@ -114,12 +110,10 @@ const AdminContactsPage = () => {
   useEffect(() => {
     let filtered = contacts;
     
-    // Apply status filter
     if (statusFilter !== 'all') {
       filtered = filtered.filter(contact => contact.status === statusFilter);
     }
     
-    // Apply search filter
     if (searchTerm) {
       filtered = filtered.filter(contact => 
         contact.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -164,7 +158,6 @@ const AdminContactsPage = () => {
     }
   };
 
-  // Pagination logic
   const totalPages = Math.ceil(filteredContacts.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const paginatedContacts = filteredContacts.slice(startIndex, startIndex + itemsPerPage);
@@ -345,7 +338,6 @@ const AdminContactsPage = () => {
         </div>
       </main>
       
-      {/* View/Edit Details Modal */}
       <Dialog open={isViewModalOpen} onOpenChange={setIsViewModalOpen}>
         <DialogContent className="max-w-3xl">
           <DialogHeader>

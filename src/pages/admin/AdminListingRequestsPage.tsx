@@ -58,6 +58,8 @@ interface ListingRequest {
   contact_phone: string;
   description: string;
   type: string;
+  zip_code?: string;
+  year_built?: number;
 }
 
 const AdminListingRequestsPage = () => {

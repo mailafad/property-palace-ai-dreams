@@ -9,6 +9,53 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      contact_inquiries: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          message: string
+          name: string
+          notes: string | null
+          phone: string
+          property_id: string | null
+          status: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          message: string
+          name: string
+          notes?: string | null
+          phone: string
+          property_id?: string | null
+          status?: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          message?: string
+          name?: string
+          notes?: string | null
+          phone?: string
+          property_id?: string | null
+          status?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "contact_inquiries_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       favorites: {
         Row: {
           created_at: string
@@ -38,6 +85,72 @@ export type Database = {
           },
         ]
       }
+      listing_requests: {
+        Row: {
+          address: string
+          area: number
+          bathrooms: number
+          bedrooms: number
+          city: string
+          contact_email: string
+          contact_name: string
+          contact_phone: string | null
+          created_at: string
+          description: string
+          id: string
+          price: number
+          state: string
+          status: string
+          title: string
+          type: string
+          user_id: string
+          year_built: number | null
+          zip_code: string | null
+        }
+        Insert: {
+          address: string
+          area: number
+          bathrooms: number
+          bedrooms: number
+          city: string
+          contact_email: string
+          contact_name: string
+          contact_phone?: string | null
+          created_at?: string
+          description: string
+          id?: string
+          price: number
+          state: string
+          status?: string
+          title: string
+          type: string
+          user_id: string
+          year_built?: number | null
+          zip_code?: string | null
+        }
+        Update: {
+          address?: string
+          area?: number
+          bathrooms?: number
+          bedrooms?: number
+          city?: string
+          contact_email?: string
+          contact_name?: string
+          contact_phone?: string | null
+          created_at?: string
+          description?: string
+          id?: string
+          price?: number
+          state?: string
+          status?: string
+          title?: string
+          type?: string
+          user_id?: string
+          year_built?: number | null
+          zip_code?: string | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -45,6 +158,7 @@ export type Database = {
           email: string
           full_name: string
           id: string
+          phone: string | null
           role: string
           user_id: string
         }
@@ -54,6 +168,7 @@ export type Database = {
           email: string
           full_name: string
           id: string
+          phone?: string | null
           role?: string
           user_id: string
         }
@@ -63,6 +178,7 @@ export type Database = {
           email?: string
           full_name?: string
           id?: string
+          phone?: string | null
           role?: string
           user_id?: string
         }
