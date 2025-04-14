@@ -1,126 +1,129 @@
-
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Session, User } from '@supabase/supabase-js';
 import { supabase } from '@/lib/supabase';
-import { toast } from 'sonner';
+import { useToast } from '@/components/ui/use-toast';
+import { User } from '@supabase/supabase-js';
+import { UserProfile } from '@/types/auth';
 
-interface AuthContextType {
-  session: Session | null;
+export type AuthContextType = {
   user: User | null;
-  profile: any | null;
+  profile: UserProfile | null;
+  isAdmin: boolean;
   loading: boolean;
   signIn: (email: string, password: string) => Promise<void>;
   signUp: (email: string, password: string, fullName: string, phone: string) => Promise<void>;
   signOut: () => Promise<void>;
-  isAdmin: boolean;
-}
+};
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [session, setSession] = useState<Session | null>(null);
+export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [profile, setProfile] = useState<any | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const navigate = useNavigate();
+  const { toast } = useToast();
 
+  // Load user on mount
   useEffect(() => {
-    // Set up the auth state listener first
-    const { data: authListener } = supabase.auth.onAuthStateChange(async (event, newSession) => {
-      console.log('Auth state changed:', event, newSession);
-      
-      // Update session and user states
-      setSession(newSession);
-      setUser(newSession?.user || null);
-      
-      // If user exists, fetch their profile
-      if (newSession?.user) {
-        // Avoid infinite loops by using setTimeout when fetching profile
-        setTimeout(() => {
-          fetchProfile(newSession.user.id);
-        }, 0);
-      } else {
-        setProfile(null);
-        setIsAdmin(false);
-      }
-    });
-    
-    // Then check for existing session
-    const initAuth = async () => {
-      try {
-        const { data, error } = await supabase.auth.getSession();
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        setLoading(true);
         
-        if (error) {
-          throw error;
+        if (session && session.user) {
+          setUser(session.user);
+          
+          // Fetch user profile
+          const { data: profileData, error: profileError } = await supabase
+            .from('profiles')
+            .select('*')
+            .eq('user_id', session.user.id)
+            .single();
+            
+          if (profileError) {
+            console.error('Error fetching profile:', profileError);
+          } else if (profileData) {
+            setProfile(profileData);
+            setIsAdmin(profileData.role === 'admin');
+          }
+        } else {
+          setUser(null);
+          setProfile(null);
+          setIsAdmin(false);
         }
         
-        setSession(data.session);
-        setUser(data.session?.user || null);
-        
-        if (data.session?.user) {
-          await fetchProfile(data.session.user.id);
-        }
-      } catch (error) {
-        console.error('Error fetching session:', error);
-      } finally {
         setLoading(false);
       }
+    );
+    
+    // Initial session check
+    const checkUser = async () => {
+      setLoading(true);
+      
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      if (session && session.user) {
+        setUser(session.user);
+        
+        // Fetch user profile
+        const { data: profileData, error: profileError } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('user_id', session.user.id)
+          .single();
+          
+        if (profileError) {
+          console.error('Error fetching profile:', profileError);
+        } else if (profileData) {
+          setProfile(profileData);
+          setIsAdmin(profileData.role === 'admin');
+        }
+      }
+      
+      setLoading(false);
     };
-
-    initAuth();
-
+    
+    checkUser();
+    
     return () => {
-      authListener.subscription.unsubscribe();
+      subscription.unsubscribe();
     };
   }, []);
-
-  const fetchProfile = async (userId: string) => {
-    try {
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('user_id', userId)
-        .single();
-      
-      if (error) {
-        throw error;
-      }
-      
-      console.log('Fetched profile:', data);
-      setProfile(data);
-      setIsAdmin(data?.role === 'admin');
-    } catch (error) {
-      console.error('Error fetching profile:', error);
-    }
-  };
-
+  
   const signIn = async (email: string, password: string) => {
+    setLoading(true);
+    
     try {
-      setLoading(true);
-      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
       
-      if (error) {
-        throw error;
-      }
+      if (error) throw error;
       
-      toast.success('Signed in successfully');
+      toast({
+        title: "Login successful",
+        description: "Welcome back!",
+      });
+      
       navigate('/');
     } catch (error: any) {
-      toast.error(error.message || 'Error signing in');
+      toast({
+        variant: "destructive",
+        title: "Login failed",
+        description: error.message || "Unable to sign in.",
+      });
       throw error;
     } finally {
       setLoading(false);
     }
   };
-
+  
   const signUp = async (email: string, password: string, fullName: string, phone: string) => {
+    setLoading(true);
+    
     try {
-      setLoading(true);
-      
-      const { data, error } = await supabase.auth.signUp({ 
-        email, 
+      // Sign up with Supabase Auth
+      const { data, error } = await supabase.auth.signUp({
+        email,
         password,
         options: {
           data: {
@@ -130,62 +133,53 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }
       });
       
-      if (error) {
-        throw error;
-      }
+      if (error) throw error;
       
-      if (data.user) {
-        // Profile will be created automatically by the database trigger
-        toast.success('Account created! Please check your email to confirm your account');
-      }
+      toast({
+        title: "Registration successful",
+        description: "Please check your email for confirmation.",
+      });
     } catch (error: any) {
-      toast.error(error.message || 'Error signing up');
+      toast({
+        variant: "destructive",
+        title: "Registration failed",
+        description: error.message || "Unable to sign up.",
+      });
       throw error;
     } finally {
       setLoading(false);
     }
   };
-
+  
   const signOut = async () => {
     try {
-      setLoading(true);
-      const { error } = await supabase.auth.signOut();
-      
-      if (error) {
-        throw error;
-      }
-      
-      toast.success('Signed out successfully');
+      await supabase.auth.signOut();
+      toast({
+        title: "Signed out successfully",
+      });
       navigate('/');
     } catch (error: any) {
-      toast.error(error.message || 'Error signing out');
-    } finally {
-      setLoading(false);
+      toast({
+        variant: "destructive",
+        title: "Sign out failed",
+        description: error.message,
+      });
     }
   };
-
+  
   return (
-    <AuthContext.Provider
-      value={{
-        session,
-        user,
-        profile,
-        loading,
-        signIn,
-        signUp,
-        signOut,
-        isAdmin
-      }}
-    >
+    <AuthContext.Provider value={{ user, profile, isAdmin, loading, signIn, signUp, signOut }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
-export const useAuth = (): AuthContextType => {
+export const useAuth = () => {
   const context = useContext(AuthContext);
+  
   if (context === undefined) {
     throw new Error('useAuth must be used within an AuthProvider');
   }
+  
   return context;
 };

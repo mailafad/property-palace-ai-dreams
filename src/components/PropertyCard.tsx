@@ -45,7 +45,7 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
   
   return (
     <Link to={`/property/${id}`} className="group">
-      <div className="property-card overflow-hidden rounded-lg border bg-card shadow-sm transition-all hover:shadow-md hover:shadow-green-400/50">
+      <div className="property-card overflow-hidden rounded-lg border bg-card shadow-sm transition-all hover:shadow-md">
         <div className="relative">
           <img
             src={images[0] || '/placeholder.svg'}

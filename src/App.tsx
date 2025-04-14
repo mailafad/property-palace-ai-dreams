@@ -19,6 +19,9 @@ import AdminDashboard from "./pages/admin";
 import AdminPropertiesPage from "./pages/admin/AdminPropertiesPage";
 import PropertyFormPage from "./pages/admin/PropertyFormPage";
 import FavoritesPage from "./pages/FavoritesPage";
+import RequestListingPage from "./pages/RequestListingPage";
+import AdminListingRequestsPage from "./pages/admin/AdminListingRequestsPage";
+import AdminContactsPage from "./pages/admin/AdminContactsPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -61,6 +64,7 @@ const AppRoutes = () => (
     <Route path="/property/:id" element={<PropertyDetailPage />} />
     <Route path="/contact" element={<ContactPage />} />
     <Route path="/auth" element={<AuthPage />} />
+    <Route path="/request-listing" element={<RequestListingPage />} />
     
     {/* Protected Routes */}
     <Route path="/favorites" element={
@@ -89,6 +93,16 @@ const AppRoutes = () => (
     <Route path="/admin/properties/edit/:id" element={
       <AdminRoute>
         <PropertyFormPage />
+      </AdminRoute>
+    } />
+    <Route path="/admin/listing-requests" element={
+      <AdminRoute>
+        <AdminListingRequestsPage />
+      </AdminRoute>
+    } />
+    <Route path="/admin/contacts" element={
+      <AdminRoute>
+        <AdminContactsPage />
       </AdminRoute>
     } />
     
