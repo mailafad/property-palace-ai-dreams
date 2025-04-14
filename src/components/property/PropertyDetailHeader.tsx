@@ -3,17 +3,52 @@ import { Property } from '@/types/property';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { MapPin, Heart, Share } from 'lucide-react';
+import { useProperty } from '@/contexts/PropertyContext';
+import { useAuth } from '@/contexts/AuthContext';
+import { toast } from 'sonner';
+import { useState } from 'react';
 
 interface PropertyDetailHeaderProps {
   property: Property;
 }
 
 const PropertyDetailHeader = ({ property }: PropertyDetailHeaderProps) => {
+  const { addToFavorites, removeFromFavorites, isPropertyFavorite } = useProperty();
+  const { user } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
+  const isFavorite = isPropertyFavorite(property.id);
+  
   const statusColors = {
     'for-sale': 'bg-green-500',
     'for-rent': 'bg-blue-500',
     'sold': 'bg-red-500',
     'pending': 'bg-yellow-500'
+  };
+  
+  const handleFavoriteClick = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    if (!user) {
+      toast.error('Please sign in to save properties');
+      return;
+    }
+    
+    setIsLoading(true);
+    try {
+      if (isFavorite) {
+        await removeFromFavorites(property.id);
+        toast.success('Removed from favorites');
+      } else {
+        await addToFavorites(property.id);
+        toast.success('Added to favorites');
+      }
+    } catch (error) {
+      console.error('Error updating favorites:', error);
+      toast.error('Could not update favorites');
+    } finally {
+      setIsLoading(false);
+    }
   };
   
   return (
@@ -37,8 +72,14 @@ const PropertyDetailHeader = ({ property }: PropertyDetailHeaderProps) => {
       </div>
       
       <div className="flex gap-2 mt-4 md:mt-0">
-        <Button variant="outline" size="icon">
-          <Heart className="h-4 w-4" />
+        <Button 
+          variant="outline" 
+          size="icon"
+          onClick={handleFavoriteClick}
+          disabled={isLoading}
+          className={isFavorite ? "text-red-500" : ""}
+        >
+          <Heart className={`h-4 w-4 ${isFavorite ? 'fill-red-500' : ''}`} />
         </Button>
         <Button variant="outline" size="icon">
           <Share className="h-4 w-4" />

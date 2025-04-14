@@ -18,11 +18,11 @@ const Index = () => {
   const [searchTerm, setSearchTerm] = useState('');
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen overflow-x-hidden">
       <NavBar />
       
       {/* Hero Section with updated styling */}
-      <section className="relative py-20 md:py-32 hero" style={{backgroundImage: `url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=1200')`}}>
+      <section className="relative py-20 md:py-32 hero max-w-full" style={{backgroundImage: `url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=1200')`}}>
         <div className="absolute inset-0 bg-black bg-opacity-50"></div>
         <div className="relative max-w-7xl mx-auto py-24 px-4 sm:py-32 sm:px-6 lg:px-8">
           <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-5xl lg:text-6xl animate-fade-in">Find Your Dream Home Today</h1>
@@ -30,7 +30,7 @@ const Index = () => {
             Browse thousands of properties across India. We make buying, selling, and renting easy.
           </p>
           <div className="mt-10 animate-fade-in">
-            <div className="bg-white rounded-lg p-2 shadow-xl flex max-w-md">
+            <div className="bg-white rounded-lg p-2 shadow-xl flex w-full max-w-md">
               <input 
                 type="text" 
                 placeholder="Search by city, neighborhood, or PIN code" 
@@ -41,7 +41,7 @@ const Index = () => {
               />
               <Link to={`/properties?search=${searchTerm}`}>
                 <button className="btn-premium px-6 py-3 font-medium">
-                  <i className="fas fa-search"></i>
+                  <Search className="h-4 w-4" />
                 </button>
               </Link>
             </div>

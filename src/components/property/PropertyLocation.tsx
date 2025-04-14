@@ -20,73 +20,76 @@ const PropertyLocation = ({ property }: PropertyLocationProps) => {
   const [hotspots, setHotspots] = useState<Hotspot[]>([]);
   
   useEffect(() => {
-    // Load the Google Maps script dynamically
-    const loadGoogleMapsScript = () => {
-      const googleMapsScript = document.createElement('script');
-      googleMapsScript.src = `https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places`;
-      googleMapsScript.async = true;
-      googleMapsScript.defer = true;
-      googleMapsScript.onload = initializeMap;
-      document.body.appendChild(googleMapsScript);
-    };
-    
-    // Initialize map
+    // Function to initialize the OpenStreetMap
     const initializeMap = () => {
-      if (!mapRef.current) return;
+      if (!mapRef.current || typeof window === 'undefined') return;
       
-      // Dummy coordinates - in a real app, you'd get these from the property
-      const propertyLatLng = { lat: 13.0827, lng: 80.2707 }; // Chennai coordinates
-      
-      const map = new google.maps.Map(mapRef.current, {
-        center: propertyLatLng,
-        zoom: 15,
-        mapTypeControl: false,
-      });
-      
-      // Add property marker
-      new google.maps.Marker({
-        position: propertyLatLng,
-        map,
-        icon: {
-          url: 'https://maps.google.com/mapfiles/ms/icons/red-dot.png',
-        },
-        title: property.title,
-      });
-      
-      // In a real implementation, you would use the Places API to find nearby amenities
-      // For now, we'll use mock data
-      const mockHotspots: Hotspot[] = [
-        { type: 'restaurant', name: 'Saravana Bhavan', distance: '0.3 km', icon: <Utensils className="h-4 w-4" /> },
-        { type: 'school', name: 'Chennai Public School', distance: '0.8 km', icon: <School className="h-4 w-4" /> },
-        { type: 'shopping', name: 'Phoenix Marketcity', distance: '1.2 km', icon: <ShoppingBag className="h-4 w-4" /> },
-        { type: 'hospital', name: 'Apollo Hospital', distance: '1.5 km', icon: <Ambulance className="h-4 w-4" /> },
-        { type: 'bus', name: 'Anna Nagar Bus Terminal', distance: '0.6 km', icon: <Bus className="h-4 w-4" /> },
-        { type: 'cafe', name: 'Cafe Coffee Day', distance: '0.4 km', icon: <Coffee className="h-4 w-4" /> },
-      ];
-      
-      setHotspots(mockHotspots);
-      setIsMapLoaded(true);
+      try {
+        // Create a variable to hold OSM libraries
+        const L = (window as any).L;
+        
+        if (!L) {
+          console.error('Leaflet library not loaded');
+          return;
+        }
+        
+        // Chennai coordinates (default) - in a real app, get from property
+        const propertyLatLng = [13.0827, 80.2707]; 
+        
+        // Initialize the map
+        const map = L.map(mapRef.current).setView(propertyLatLng, 15);
+        
+        // Add OpenStreetMap tile layer
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+        
+        // Add property marker
+        L.marker(propertyLatLng).addTo(map)
+          .bindPopup(`<b>${property.title}</b><br>${property.address}`);
+        
+        // Mock nearby places - in a real app, you would use the Overpass API or similar
+        const mockHotspots: Hotspot[] = [
+          { type: 'restaurant', name: 'Saravana Bhavan', distance: '0.3 km', icon: <Utensils className="h-4 w-4" /> },
+          { type: 'school', name: 'Chennai Public School', distance: '0.8 km', icon: <School className="h-4 w-4" /> },
+          { type: 'shopping', name: 'Phoenix Marketcity', distance: '1.2 km', icon: <ShoppingBag className="h-4 w-4" /> },
+          { type: 'hospital', name: 'Apollo Hospital', distance: '1.5 km', icon: <Ambulance className="h-4 w-4" /> },
+          { type: 'bus', name: 'Anna Nagar Bus Terminal', distance: '0.6 km', icon: <Bus className="h-4 w-4" /> },
+          { type: 'cafe', name: 'Cafe Coffee Day', distance: '0.4 km', icon: <Coffee className="h-4 w-4" /> },
+        ];
+        
+        setHotspots(mockHotspots);
+        setIsMapLoaded(true);
+      } catch (error) {
+        console.error('Error initializing map:', error);
+      }
     };
     
-    // For demonstration, we'll simulate the map loading
-    // In production, you would use the actual Google Maps API
-    setTimeout(() => {
-      setIsMapLoaded(true);
-      // Mock hotspots data
-      const mockHotspots: Hotspot[] = [
-        { type: 'restaurant', name: 'Saravana Bhavan', distance: '0.3 km', icon: <Utensils className="h-4 w-4" /> },
-        { type: 'school', name: 'Chennai Public School', distance: '0.8 km', icon: <School className="h-4 w-4" /> },
-        { type: 'shopping', name: 'Phoenix Marketcity', distance: '1.2 km', icon: <ShoppingBag className="h-4 w-4" /> },
-        { type: 'hospital', name: 'Apollo Hospital', distance: '1.5 km', icon: <Ambulance className="h-4 w-4" /> },
-        { type: 'bus', name: 'Anna Nagar Bus Terminal', distance: '0.6 km', icon: <Bus className="h-4 w-4" /> },
-        { type: 'cafe', name: 'Cafe Coffee Day', distance: '0.4 km', icon: <Coffee className="h-4 w-4" /> },
-      ];
-      setHotspots(mockHotspots);
-    }, 1000);
+    // Load Leaflet dynamically if it's not already loaded
+    if (!(window as any).L) {
+      const linkElement = document.createElement('link');
+      linkElement.rel = 'stylesheet';
+      linkElement.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+      document.head.appendChild(linkElement);
+      
+      const scriptElement = document.createElement('script');
+      scriptElement.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+      scriptElement.onload = initializeMap;
+      document.head.appendChild(scriptElement);
+    } else {
+      initializeMap();
+    }
     
-    // Uncomment this to use the actual Google Maps API
-    // loadGoogleMapsScript();
-    
+    return () => {
+      // Clean up
+      if ((window as any).L && mapRef.current) {
+        const L = (window as any).L;
+        if (L.map) {
+          const map = L.map(mapRef.current);
+          if (map) map.remove();
+        }
+      }
+    };
   }, [property]);
   
   return (
@@ -101,23 +104,13 @@ const PropertyLocation = ({ property }: PropertyLocationProps) => {
       <div 
         ref={mapRef} 
         className="aspect-video bg-gray-100 rounded-lg flex items-center justify-center mb-6 overflow-hidden"
+        style={{ minHeight: '300px' }}
       >
-        {!isMapLoaded ? (
+        {!isMapLoaded && (
           <div className="text-center p-4">
             <MapPin className="h-8 w-8 mb-2 mx-auto text-muted-foreground animate-pulse" />
             <p className="text-muted-foreground">Loading map...</p>
           </div>
-        ) : (
-          <iframe 
-            title="Property Location"
-            width="100%" 
-            height="100%" 
-            style={{border: 0}}
-            loading="lazy"
-            src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q=${encodeURIComponent(
-              `${property.address}, ${property.city}, ${property.state}`
-            )}`}
-          ></iframe>
         )}
       </div>
       

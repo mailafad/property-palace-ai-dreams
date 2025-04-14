@@ -45,7 +45,7 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
   
   return (
     <Link to={`/property/${id}`} className="group">
-      <div className="property-card overflow-hidden rounded-lg border bg-card shadow-sm transition-all hover:shadow-md">
+      <div className="property-card overflow-hidden rounded-lg border bg-card shadow-sm transition-all hover:shadow-md hover:shadow-green-400/50">
         <div className="relative">
           <img
             src={images[0] || '/placeholder.svg'}
@@ -70,7 +70,7 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
         <div className="p-4">
           <h3 className="font-semibold text-card-foreground">{title}</h3>
           <p className="text-sm text-muted-foreground">{address}, {city}, {state}</p>
-          <p className="my-2 text-lg font-bold">${price.toLocaleString()}</p>
+          <p className="my-2 text-lg font-bold">₹{price.toLocaleString('en-IN')}</p>
           <div className="flex justify-between text-xs text-muted-foreground">
             <span>{bedrooms} Beds</span>
             <span>{bathrooms} Baths</span>
