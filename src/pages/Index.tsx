@@ -7,6 +7,7 @@ import PropertyList from '@/components/PropertyList';
 import { Button } from '@/components/ui/button';
 import { useProperty } from '@/contexts/PropertyContext';
 import { Search, MapPin, Home, Building, CheckSquare } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 
 // Import the custom styles
 import '@/styles/ad-realtor-styles.css';
@@ -19,6 +20,17 @@ const Index = () => {
 
   return (
     <div className="flex flex-col min-h-screen overflow-x-hidden">
+      <Helmet>
+        <title>AD Realestate | Find Your Dream Home Today</title>
+        <meta name="description" content="Browse thousands of properties across India. We make buying, selling, and renting easy with AD Realestate." />
+        <meta name="keywords" content="real estate, property, India, buy home, sell home, rent property" />
+        <meta property="og:title" content="AD Realestate | Find Your Dream Home" />
+        <meta property="og:description" content="Find your perfect property with AD Realestate. Thousands of listings across India." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://adrealestate.com" />
+        <meta name="twitter:card" content="summary_large_image" />
+      </Helmet>
+      
       <NavBar />
       
       {/* Hero Section with updated styling */}
@@ -29,8 +41,8 @@ const Index = () => {
           <p className="mt-6 text-xl text-blue-100 max-w-3xl animate-fade-in">
             Browse thousands of properties across India. We make buying, selling, and renting easy.
           </p>
-          <div className="mt-10 animate-fade-in">
-            <div className="bg-white rounded-lg p-2 shadow-xl flex w-full max-w-md">
+          <div className="mt-10 animate-fade-in w-full max-w-md">
+            <div className="bg-white rounded-lg p-2 shadow-xl flex w-full">
               <input 
                 type="text" 
                 placeholder="Search by city, neighborhood, or PIN code" 

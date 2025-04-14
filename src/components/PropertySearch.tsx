@@ -44,7 +44,7 @@ const PropertySearch = () => {
   };
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-sm border">
+    <div className="bg-white p-4 md:p-6 rounded-lg shadow-sm border">
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
           <div className="relative">

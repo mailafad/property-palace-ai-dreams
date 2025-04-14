@@ -24,7 +24,7 @@ const NavBar = () => {
   };
 
   return (
-    <nav className="navbar shadow-lg">
+    <nav className="navbar shadow-lg bg-black">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex items-center">
@@ -36,7 +36,7 @@ const NavBar = () => {
 
           {isMobile ? (
             <div className="flex items-center">
-              <Button variant="ghost" onClick={toggleMobileMenu} className="p-2">
+              <Button variant="ghost" onClick={toggleMobileMenu} className="p-2 text-white">
                 <Menu className="h-6 w-6" />
               </Button>
             </div>

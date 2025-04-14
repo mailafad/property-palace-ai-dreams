@@ -53,20 +53,14 @@
     position: relative;
 }
 
-#property-grid div:hover {
-    box-shadow: 0 0 15px #00ff00; /* Fluorescent green glow */
-    transition: box-shadow 0.3s ease-in-out;
-}
-
 .property-card:hover {
-    transform: translateY(-5px) scale(1.02);
-    box-shadow: 0 10px 20px rgba(165, 255, 3, 0.4);
-    border: 5px solid rgba(55, 233, 43, 0.3);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(165, 255, 3, 0.3);
 }
 
 .property-card:active {
     transform: translateY(-2px) scale(0.98);
-    box-shadow: 0 5px 15px rgba(165, 255, 3, 0.6);
 }
 
 /* Carousel */
