@@ -19,6 +19,7 @@ const loginSchema = z.object({
 
 const registerSchema = loginSchema.extend({
   fullName: z.string().min(2, { message: 'Full name must be at least 2 characters' }),
+  phone: z.string().optional(),
   confirmPassword: z.string().min(6, { message: 'Password must be at least 6 characters' }),
 }).refine(data => data.password === data.confirmPassword, {
   message: "Passwords don't match",
@@ -49,6 +50,7 @@ const AuthForm = () => {
       email: '',
       password: '',
       confirmPassword: '',
+      phone: '',
     },
   });
 
@@ -65,7 +67,7 @@ const AuthForm = () => {
   const onRegisterSubmit = async (data: RegisterFormValues) => {
     try {
       setErrorMessage(null);
-      await signUp(data.email, data.password, data.fullName);
+      await signUp(data.email, data.password, data.fullName, data.phone || '');
       setAuthMode('login');
       registerForm.reset();
     } catch (error: any) {
@@ -151,6 +153,19 @@ const AuthForm = () => {
               />
               {registerForm.formState.errors.fullName && (
                 <p className="text-red-500 text-sm">{registerForm.formState.errors.fullName.message}</p>
+              )}
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="phone">Phone Number</Label>
+              <Input 
+                id="phone" 
+                type="tel" 
+                {...registerForm.register('phone')} 
+                disabled={loading}
+              />
+              {registerForm.formState.errors.phone && (
+                <p className="text-red-500 text-sm">{registerForm.formState.errors.phone.message}</p>
               )}
             </div>
             
