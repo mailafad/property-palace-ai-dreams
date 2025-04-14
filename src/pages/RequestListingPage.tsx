@@ -10,7 +10,6 @@ import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Label } from '@/components/ui/label';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Loader2 } from 'lucide-react';
@@ -65,7 +64,6 @@ const RequestListingPage = () => {
     try {
       // Convert numeric fields from string to numbers
       const numericData = {
-        ...data,
         price: parseFloat(data.price),
         bedrooms: parseInt(data.bedrooms),
         bathrooms: parseFloat(data.bathrooms),
@@ -73,16 +71,28 @@ const RequestListingPage = () => {
         year_built: parseInt(data.year_built),
       };
       
-      // Submit the listing request
+      // Submit the listing request with the correct field structure
+      // matching the Supabase table requirements
       const { error } = await supabase
         .from('listing_requests')
         .insert({
-          ...numericData,
+          title: data.title,
+          address: data.address,
+          city: data.city,
+          state: data.state,
+          zip_code: data.zip_code,
+          description: data.description,
+          type: data.type,
+          price: numericData.price,
+          bedrooms: numericData.bedrooms,
+          bathrooms: numericData.bathrooms,
+          area: numericData.area,
+          year_built: numericData.year_built,
           user_id: user.id,
-          contact_email: user.email,
-          contact_name: profile?.full_name || user.email,
+          contact_email: user.email || '',
+          contact_name: profile?.full_name || user.email || '',
           contact_phone: profile?.phone || '',
-          status: 'pending',
+          status: 'pending'
         });
       
       if (error) throw error;
