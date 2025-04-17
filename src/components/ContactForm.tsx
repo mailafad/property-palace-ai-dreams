@@ -52,6 +52,8 @@ const ContactForm: React.FC<ContactFormProps> = ({ property }) => {
     setIsSubmitting(true);
     
     try {
+      console.log('Submitting contact form:', formData);
+      
       // If property exists and user is logged in, add to favorites
       if (property && user) {
         await addToFavorites(property.id);
@@ -66,11 +68,11 @@ const ContactForm: React.FC<ContactFormProps> = ({ property }) => {
         });
       }
       
-      // Insert contact inquiry into database
+      // Insert contact inquiry into database with required fields
       const { error } = await supabase.from('contact_inquiries').insert({
         name: formData.name,
         email: formData.email,
-        phone: formData.phone,
+        phone: formData.phone || 'Not provided', // Ensure phone is never null
         message: formData.message,
         property_id: property?.id || null,
         user_id: user?.id || null,
@@ -78,10 +80,11 @@ const ContactForm: React.FC<ContactFormProps> = ({ property }) => {
       });
       
       if (error) {
+        console.error('Supabase error:', error);
         throw error;
       }
       
-      console.log('Form submitted to DB:', formData);
+      console.log('Form submitted to DB successfully:', formData);
       toast.success('Your message has been sent! A realtor will contact you shortly.');
       
       // Only reset message part of the form
@@ -90,7 +93,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ property }) => {
         message: '',
       }));
     } catch (error) {
-      console.error('Error:', error);
+      console.error('Error submitting contact form:', error);
       toast.error('There was an error sending your message. Please try again.');
     } finally {
       setIsSubmitting(false);

@@ -71,11 +71,31 @@ const Index = () => {
             
             <div className="hidden md:block hero-3d-element">
               <div className="floating-3d">
-                <img 
-                  src="https://images.unsplash.com/photo-1572635148818-ef6fd45eb394?ixlib=rb-4.0.3&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=600" 
-                  alt="Luxury interior" 
-                  className="rounded-lg shadow-2xl hover:shadow-[0_10px_40px_rgba(0,0,0,0.3)] transition-all duration-300"
-                />
+                <div className="relative">
+                  {/* Modern house 3D model representation */}
+                  <img 
+                    src="https://images.unsplash.com/photo-1567496898669-ee935f5f647a?ixlib=rb-4.0.3&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=600" 
+                    alt="Modern 3D House" 
+                    className="rounded-lg shadow-2xl hover:shadow-[0_10px_40px_rgba(0,0,0,0.3)] transition-all duration-300 relative z-10"
+                  />
+                  
+                  {/* Overlay elements to create 3D effect */}
+                  <div className="absolute top-10 -right-8 transform rotate-6 scale-90 z-0">
+                    <img 
+                      src="https://images.unsplash.com/photo-1542889601-399c4f3a8402?ixlib=rb-4.0.3&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400" 
+                      alt="Interior Design" 
+                      className="rounded-lg shadow-xl opacity-60 w-32 h-32 object-cover"
+                    />
+                  </div>
+                  
+                  <div className="absolute -bottom-8 -left-8 transform -rotate-6 scale-75 z-0">
+                    <img 
+                      src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400" 
+                      alt="Modern Architecture" 
+                      className="rounded-lg shadow-xl opacity-60 w-32 h-32 object-cover"
+                    />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
