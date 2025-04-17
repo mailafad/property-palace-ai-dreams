@@ -33,31 +33,49 @@ const Index = () => {
       
       <NavBar />
       
-      {/* Improved Hero Section with better responsiveness */}
-      <section className="relative py-20 md:py-32 bg-gradient-to-r from-blue-900 to-blue-700 text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-24">
-          <div className="text-center md:text-left">
-            <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl animate-fade-in max-w-3xl">
-              Find Your Dream Home Today
-            </h1>
-            <p className="mt-6 text-xl text-blue-100 max-w-3xl animate-fade-in">
-              Browse thousands of properties across India. We make buying, selling, and renting easy.
-            </p>
-            <div className="mt-10 animate-fade-in w-full max-w-xl mx-auto md:mx-0">
-              <div className="bg-white rounded-lg shadow-xl p-2 flex w-full">
-                <input 
-                  type="text" 
-                  placeholder="Search by city, neighborhood, or PIN code" 
-                  className="flex-1 px-4 py-3 focus:outline-none text-black w-full"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  style={{caretColor: 'black'}}
+      {/* Improved Hero Section with 3D-like effects and background image */}
+      <section className="hero-section relative py-20 md:py-32 text-white flex items-center">
+        <img 
+          src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1920" 
+          alt="Luxury home exterior" 
+          className="hero-background"
+        />
+        
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <div className="text-center md:text-left hero-content">
+              <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl animate-fade-in max-w-3xl">
+                Find Your Dream Home Today
+              </h1>
+              <p className="mt-6 text-xl text-white/90 max-w-3xl animate-fade-in">
+                Browse thousands of properties across India. We make buying, selling, and renting easy.
+              </p>
+              <div className="mt-10 animate-fade-in w-full max-w-xl mx-auto md:mx-0">
+                <div className="bg-white rounded-lg shadow-xl p-2 flex w-full">
+                  <input 
+                    type="text" 
+                    placeholder="Search by city, neighborhood, or PIN code" 
+                    className="flex-1 px-4 py-3 focus:outline-none text-black w-full"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    style={{caretColor: 'black'}}
+                  />
+                  <Link to={`/properties?search=${searchTerm}`}>
+                    <button className="btn-premium px-6 py-3 font-medium ml-2">
+                      <Search className="h-4 w-4" />
+                    </button>
+                  </Link>
+                </div>
+              </div>
+            </div>
+            
+            <div className="hidden md:block hero-3d-element">
+              <div className="floating-3d">
+                <img 
+                  src="https://images.unsplash.com/photo-1572635148818-ef6fd45eb394?ixlib=rb-4.0.3&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=600" 
+                  alt="Luxury interior" 
+                  className="rounded-lg shadow-2xl hover:shadow-[0_10px_40px_rgba(0,0,0,0.3)] transition-all duration-300"
                 />
-                <Link to={`/properties?search=${searchTerm}`}>
-                  <button className="btn-premium px-6 py-3 font-medium ml-2">
-                    <Search className="h-4 w-4" />
-                  </button>
-                </Link>
               </div>
             </div>
           </div>

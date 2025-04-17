@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
@@ -67,7 +66,8 @@ const AuthForm = () => {
   const onRegisterSubmit = async (data: RegisterFormValues) => {
     try {
       setErrorMessage(null);
-      await signUp(data.email, data.password, data.fullName, data.phone || '');
+      const phoneValue = data.phone || '';
+      await signUp(data.email, data.password, data.fullName, phoneValue);
       setAuthMode('login');
       registerForm.reset();
     } catch (error: any) {

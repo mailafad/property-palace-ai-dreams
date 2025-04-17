@@ -46,8 +46,8 @@ const AdminHeader = () => {
       
       {/* Mobile menu */}
       {mobileMenuOpen && (
-        <div className="fixed inset-0 bg-black/50 z-50">
-          <div className="bg-white h-full w-64 p-6 text-black">
+        <div className="mobile-menu">
+          <div className="mobile-menu-content">
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-lg font-bold">Admin Menu</h2>
               <Button variant="ghost" onClick={() => setMobileMenuOpen(false)}>

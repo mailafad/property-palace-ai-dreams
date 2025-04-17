@@ -9,6 +9,7 @@ import { Property } from '@/types/property';
 import { useAuth } from '@/contexts/AuthContext';
 import { useProperty } from '@/contexts/PropertyContext';
 import { useNavigate } from 'react-router-dom';
+import { supabase } from '@/lib/supabase';
 
 interface ContactFormProps {
   property?: Property;
@@ -65,8 +66,22 @@ const ContactForm: React.FC<ContactFormProps> = ({ property }) => {
         });
       }
       
-      // Simulate API call for the contact form
-      console.log('Form submitted:', formData);
+      // Insert contact inquiry into database
+      const { error } = await supabase.from('contact_inquiries').insert({
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        message: formData.message,
+        property_id: property?.id || null,
+        user_id: user?.id || null,
+        status: 'new'
+      });
+      
+      if (error) {
+        throw error;
+      }
+      
+      console.log('Form submitted to DB:', formData);
       toast.success('Your message has been sent! A realtor will contact you shortly.');
       
       // Only reset message part of the form
