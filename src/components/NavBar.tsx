@@ -36,8 +36,8 @@ const NavBar = () => {
 
           {isMobile ? (
             <div className="flex items-center">
-              <Button variant="ghost" onClick={toggleMobileMenu} className="p-2 text-white">
-                <Menu className="h-6 w-6" />
+              <Button variant="outline" onClick={toggleMobileMenu} className="p-2 text-white bg-transparent border-white">
+                <Menu className="h-6 w-6 text-white" />
               </Button>
             </div>
           ) : (
@@ -90,49 +90,49 @@ const NavBar = () => {
         </div>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu - Updated for better visibility */}
       {isMobile && mobileMenuOpen && (
         <div className="mobile-menu" onClick={() => setMobileMenuOpen(false)}>
           <div className="mobile-menu-content" onClick={(e) => e.stopPropagation()}>
             <div className="flex justify-between items-center mb-8">
-              <h2 className="text-lg font-bold">Menu</h2>
-              <Button variant="ghost" onClick={() => setMobileMenuOpen(false)} className="p-1">
+              <h2 className="text-lg font-bold text-black">Menu</h2>
+              <Button variant="ghost" onClick={() => setMobileMenuOpen(false)} className="p-1 text-black">
                 <X className="h-6 w-6" />
               </Button>
             </div>
             
             <div className="space-y-4">
-              <Link to="/properties?type=buy" className="block py-2 border-b" onClick={() => setMobileMenuOpen(false)}>Buy</Link>
-              <Link to="/properties?type=sell" className="block py-2 border-b" onClick={() => setMobileMenuOpen(false)}>Sell</Link>
-              <Link to="/properties?type=rent" className="block py-2 border-b" onClick={() => setMobileMenuOpen(false)}>Rent</Link>
-              <Link to="/contact" className="block py-2 border-b" onClick={() => setMobileMenuOpen(false)}>Contact</Link>
-              <Link to="/request-listing" className="block py-2 border-b" onClick={() => setMobileMenuOpen(false)}>Request Listing</Link>
+              <Link to="/properties?type=buy" className="block py-2 border-b text-black" onClick={() => setMobileMenuOpen(false)}>Buy</Link>
+              <Link to="/properties?type=sell" className="block py-2 border-b text-black" onClick={() => setMobileMenuOpen(false)}>Sell</Link>
+              <Link to="/properties?type=rent" className="block py-2 border-b text-black" onClick={() => setMobileMenuOpen(false)}>Rent</Link>
+              <Link to="/contact" className="block py-2 border-b text-black" onClick={() => setMobileMenuOpen(false)}>Contact</Link>
+              <Link to="/request-listing" className="block py-2 border-b text-black" onClick={() => setMobileMenuOpen(false)}>Request Listing</Link>
               
               {user ? (
                 <>
-                  <div className="py-2 border-b">
+                  <div className="py-2 border-b text-black">
                     <p className="font-medium">{profile?.full_name || user.email}</p>
                     <p className="text-xs text-muted-foreground">{user.email}</p>
                   </div>
                   
                   {isAdmin && (
-                    <Link to="/admin/dashboard" className="block py-2 border-b" onClick={() => setMobileMenuOpen(false)}>
+                    <Link to="/admin/dashboard" className="block py-2 border-b text-black" onClick={() => setMobileMenuOpen(false)}>
                       Admin Dashboard
                     </Link>
                   )}
                   
-                  <Link to="/favorites" className="flex items-center py-2 border-b" onClick={() => setMobileMenuOpen(false)}>
+                  <Link to="/favorites" className="flex items-center py-2 border-b text-black" onClick={() => setMobileMenuOpen(false)}>
                     <Heart className="mr-2 h-4 w-4 text-red-500" />
                     Saved Properties
                   </Link>
                   
-                  <button onClick={() => { signOut(); setMobileMenuOpen(false); }} className="flex items-center py-2 w-full text-left">
+                  <button onClick={() => { signOut(); setMobileMenuOpen(false); }} className="flex items-center py-2 w-full text-left text-black">
                     <LogOut className="mr-2 h-4 w-4" />
                     Sign Out
                   </button>
                 </>
               ) : (
-                <Link to="/auth" className="block py-2" onClick={() => setMobileMenuOpen(false)}>
+                <Link to="/auth" className="block py-2 text-black" onClick={() => setMobileMenuOpen(false)}>
                   Sign In
                 </Link>
               )}

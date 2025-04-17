@@ -33,29 +33,32 @@ const Index = () => {
       
       <NavBar />
       
-      {/* Hero Section with updated styling */}
-      <section className="relative py-20 md:py-32 hero max-w-full" style={{backgroundImage: `url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=1200')`}}>
-        <div className="absolute inset-0 bg-black bg-opacity-50"></div>
-        <div className="relative max-w-7xl mx-auto py-24 px-4 sm:py-32 sm:px-6 lg:px-8">
-          <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-5xl lg:text-6xl animate-fade-in">Find Your Dream Home Today</h1>
-          <p className="mt-6 text-xl text-blue-100 max-w-3xl animate-fade-in">
-            Browse thousands of properties across India. We make buying, selling, and renting easy.
-          </p>
-          <div className="mt-10 animate-fade-in w-full max-w-md">
-            <div className="bg-white rounded-lg p-2 shadow-xl flex w-full">
-              <input 
-                type="text" 
-                placeholder="Search by city, neighborhood, or PIN code" 
-                className="flex-1 px-4 py-3 focus:outline-none text-black"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                style={{caretColor: 'black'}}
-              />
-              <Link to={`/properties?search=${searchTerm}`}>
-                <button className="btn-premium px-6 py-3 font-medium">
-                  <Search className="h-4 w-4" />
-                </button>
-              </Link>
+      {/* Improved Hero Section with better responsiveness */}
+      <section className="relative py-20 md:py-32 bg-gradient-to-r from-blue-900 to-blue-700 text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-24">
+          <div className="text-center md:text-left">
+            <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl animate-fade-in max-w-3xl">
+              Find Your Dream Home Today
+            </h1>
+            <p className="mt-6 text-xl text-blue-100 max-w-3xl animate-fade-in">
+              Browse thousands of properties across India. We make buying, selling, and renting easy.
+            </p>
+            <div className="mt-10 animate-fade-in w-full max-w-xl mx-auto md:mx-0">
+              <div className="bg-white rounded-lg shadow-xl p-2 flex w-full">
+                <input 
+                  type="text" 
+                  placeholder="Search by city, neighborhood, or PIN code" 
+                  className="flex-1 px-4 py-3 focus:outline-none text-black w-full"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  style={{caretColor: 'black'}}
+                />
+                <Link to={`/properties?search=${searchTerm}`}>
+                  <button className="btn-premium px-6 py-3 font-medium ml-2">
+                    <Search className="h-4 w-4" />
+                  </button>
+                </Link>
+              </div>
             </div>
           </div>
         </div>
