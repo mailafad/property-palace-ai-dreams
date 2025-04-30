@@ -81,6 +81,7 @@ const AdminListingRequestsPage = () => {
         .from('listing_requests')
         .select('*')
         .order('created_at', { ascending: false });
+      console.log('Fetched listing requests:', data);
       
       if (error) throw error;
       

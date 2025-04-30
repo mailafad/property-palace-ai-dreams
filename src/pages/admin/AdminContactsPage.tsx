@@ -85,6 +85,7 @@ const AdminContactsPage = () => {
           *,
           properties(title)
         `);
+      console.log('Fetched contact inquiries:', data);
       
       if (error) throw error;
       
