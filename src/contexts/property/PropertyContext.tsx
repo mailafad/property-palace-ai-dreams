@@ -95,12 +95,23 @@ export const PropertyProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       if (!user) {
         throw new Error('You must be logged in to add favorites');
       }
+
+      const { data: existingFavorite } = await supabase
+        .from('favorites')
+        .select('*')
+        .eq('user_id', user.id)
+        .eq('property_id', propertyId)
+        .single();
+
+      if (existingFavorite) {
+        throw new Error('This property is already in your favorites');
+      }
       
       const { error } = await supabase
         .from('favorites')
-        .insert({ 
-          user_id: user.id, 
-          property_id: propertyId 
+        .insert({
+          user_id: user.id,
+          property_id: propertyId
         });
         
       if (error) throw error;
