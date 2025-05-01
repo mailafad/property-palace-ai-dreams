@@ -1,0 +1,300 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Property Palace - Find Your Dream Home</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .hero-section {
+      position: relative;
+      background: linear-gradient(90deg, rgba(34, 84, 133, 0.9), rgba(59, 130, 246, 0.9));
+      color: white;
+    }
+    
+    .property-card {
+      transition: all 0.3s;
+      border-radius: 0.5rem;
+      overflow: hidden;
+    }
+    
+    .property-card:hover {
+      box-shadow: 0 10px 15px -3px rgba(120, 230, 0, 0.3);
+      border-color: rgba(111, 181, 54, 0.3);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+  <!-- Navigation -->
+  <nav class="bg-black text-white p-4">
+    <div class="container mx-auto flex justify-between items-center">
+      <a href="index.html" class="text-xl font-bold">PropertyPalace</a>
+      <div class="hidden md:flex space-x-6">
+        <a href="index.html" class="hover:text-lime-400">Home</a>
+        <a href="properties.html" class="hover:text-lime-400">Properties</a>
+        <a href="contact.html" class="hover:text-lime-400">Contact</a>
+      </div>
+      <div class="flex items-center space-x-4">
+        <a href="favorites.html" class="hover:text-lime-400">Favorites</a>
+        <a href="auth.html" class="bg-lime-400 text-black px-4 py-2 rounded-md hover:bg-lime-500">Sign In</a>
+      </div>
+    </div>
+  </nav>
+  
+  <!-- Hero Section -->
+  <section class="hero-section py-20 md:py-32">
+    <div class="absolute inset-0 z-0">
+      <img 
+        src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=1200" 
+        alt="Hero Background" 
+        class="w-full h-full object-cover filter brightness-50"
+      />
+    </div>
+    <div class="container relative z-10 px-4 md:px-6 mx-auto">
+      <div class="max-w-3xl">
+        <h1 class="text-3xl md:text-5xl font-bold mb-4 animate-fade-in">Find Your Dream Property</h1>
+        <p class="text-lg md:text-xl mb-8 text-white/90 animate-fade-in">
+          Discover the perfect home with our AI-powered property listings.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 animate-fade-in">
+          <a href="properties.html" class="bg-lime-400 hover:bg-lime-500 text-black font-medium py-3 px-6 rounded-md flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            Browse Properties
+          </a>
+          <a href="contact.html" class="bg-white/10 hover:bg-white/20 text-white font-medium py-3 px-6 rounded-md border border-white/20 flex items-center justify-center">
+            Contact an Agent
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Featured Properties -->
+  <section class="py-16 bg-gray-50">
+    <div class="container px-4 md:px-6 mx-auto">
+      <div class="flex justify-between items-center mb-10">
+        <div>
+          <h2 class="text-2xl md:text-3xl font-bold">Featured Properties</h2>
+          <p class="text-gray-500 mt-1">Explore our handpicked selection of premium listings</p>
+        </div>
+        <a href="properties.html" class="border border-gray-300 text-gray-800 px-4 py-2 rounded-md hover:bg-gray-100">View All</a>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Property Card 1 -->
+        <div class="property-card border border-gray-200 bg-white">
+          <div class="relative">
+            <img src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=500" alt="Modern House" class="w-full h-48 object-cover">
+            <div class="absolute top-3 left-3 bg-lime-400 text-black px-2 py-1 text-xs rounded-md">Featured</div>
+          </div>
+          <div class="p-4">
+            <h3 class="text-lg font-semibold mb-1">Luxury Villa with Pool</h3>
+            <p class="text-gray-500 text-sm mb-2">123 Luxury Lane, Beverly Hills, CA</p>
+            <p class="text-xl font-bold text-lime-500 mb-4">$1,299,000</p>
+            <div class="flex justify-between text-sm text-gray-500">
+              <span>4 beds</span>
+              <span>3 baths</span>
+              <span>2,450 sqft</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Property Card 2 -->
+        <div class="property-card border border-gray-200 bg-white">
+          <div class="relative">
+            <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=500" alt="Modern House" class="w-full h-48 object-cover">
+            <div class="absolute top-3 left-3 bg-lime-400 text-black px-2 py-1 text-xs rounded-md">Featured</div>
+          </div>
+          <div class="p-4">
+            <h3 class="text-lg font-semibold mb-1">Modern Downtown Condo</h3>
+            <p class="text-gray-500 text-sm mb-2">456 Urban Ave, Los Angeles, CA</p>
+            <p class="text-xl font-bold text-lime-500 mb-4">$845,000</p>
+            <div class="flex justify-between text-sm text-gray-500">
+              <span>2 beds</span>
+              <span>2 baths</span>
+              <span>1,200 sqft</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Property Card 3 -->
+        <div class="property-card border border-gray-200 bg-white">
+          <div class="relative">
+            <img src="https://images.unsplash.com/photo-1576941089067-2de3c901e126?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=500" alt="Modern House" class="w-full h-48 object-cover">
+            <div class="absolute top-3 left-3 bg-blue-500 text-white px-2 py-1 text-xs rounded-md">For Rent</div>
+          </div>
+          <div class="p-4">
+            <h3 class="text-lg font-semibold mb-1">Cozy Family Home</h3>
+            <p class="text-gray-500 text-sm mb-2">789 Family Dr, San Diego, CA</p>
+            <p class="text-xl font-bold text-lime-500 mb-4">$3,500/mo</p>
+            <div class="flex justify-between text-sm text-gray-500">
+              <span>3 beds</span>
+              <span>2 baths</span>
+              <span>1,850 sqft</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Features Section -->
+  <section class="py-16">
+    <div class="container px-4 md:px-6 mx-auto">
+      <div class="text-center mb-12">
+        <h2 class="text-2xl md:text-3xl font-bold">Why Choose PropertyPalace</h2>
+        <p class="text-gray-500 mt-2 max-w-2xl mx-auto">
+          We combine cutting-edge AI technology with personalized service to make your property search easier than ever
+        </p>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="bg-white p-6 rounded-lg shadow-sm border text-center">
+          <div class="mx-auto w-12 h-12 flex items-center justify-center bg-lime-400/10 rounded-full mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-lime-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold mb-2">Smart Search</h3>
+          <p class="text-gray-500">
+            Our advanced search tools help you find exactly what you're looking for in seconds.
+          </p>
+        </div>
+        
+        <div class="bg-white p-6 rounded-lg shadow-sm border text-center">
+          <div class="mx-auto w-12 h-12 flex items-center justify-center bg-lime-400/10 rounded-full mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-lime-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+              <line x1="4" y1="10" x2="20" y2="10"></line>
+              <line x1="10" y1="4" x2="10" y2="20"></line>
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold mb-2">AI Property Insights</h3>
+          <p class="text-gray-500">
+            Get detailed AI-generated descriptions that highlight the unique features of each property.
+          </p>
+        </div>
+        
+        <div class="bg-white p-6 rounded-lg shadow-sm border text-center">
+          <div class="mx-auto w-12 h-12 flex items-center justify-center bg-lime-400/10 rounded-full mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-lime-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 11l3 3L22 4"></path>
+              <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold mb-2">Verified Listings</h3>
+          <p class="text-gray-500">
+            All our properties are verified and regularly updated to ensure accuracy.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- CTA Section -->
+  <section class="py-16 bg-lime-400 text-black">
+    <div class="container px-4 md:px-6 mx-auto">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+        <div>
+          <h2 class="text-2xl md:text-3xl font-bold mb-4">Ready to Find Your Dream Home?</h2>
+          <p class="text-black/80 mb-6">
+            Our experts are ready to help you through every step of your property journey.
+          </p>
+          <div class="flex flex-col sm:flex-row gap-4">
+            <a href="properties.html" class="bg-white text-black font-medium py-2 px-6 rounded-md hover:bg-gray-100 text-center">
+              Start Searching
+            </a>
+            <a href="contact.html" class="bg-black/10 hover:bg-black/20 border border-black/20 font-medium py-2 px-6 rounded-md text-center">
+              Contact Us
+            </a>
+          </div>
+        </div>
+        <div class="hidden md:block">
+          <img 
+            src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=600" 
+            alt="Modern Home" 
+            class="rounded-lg shadow-lg w-full h-[300px] object-cover"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Footer -->
+  <footer class="bg-gray-800 text-white py-12">
+    <div class="container mx-auto px-4">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div>
+          <h3 class="text-xl font-bold mb-4">PropertyPalace</h3>
+          <p class="text-gray-300 mb-4">Your trusted partner in finding the perfect property. We've been helping people find their dream homes since 2010.</p>
+        </div>
+        <div>
+          <h4 class="font-semibold mb-4">Quick Links</h4>
+          <ul class="space-y-2">
+            <li><a href="index.html" class="text-gray-300 hover:text-white">Home</a></li>
+            <li><a href="properties.html" class="text-gray-300 hover:text-white">Properties</a></li>
+            <li><a href="contact.html" class="text-gray-300 hover:text-white">Contact</a></li>
+            <li><a href="auth.html" class="text-gray-300 hover:text-white">Sign In</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-semibold mb-4">Property Types</h4>
+          <ul class="space-y-2">
+            <li><a href="#" class="text-gray-300 hover:text-white">Houses</a></li>
+            <li><a href="#" class="text-gray-300 hover:text-white">Apartments</a></li>
+            <li><a href="#" class="text-gray-300 hover:text-white">Condos</a></li>
+            <li><a href="#" class="text-gray-300 hover:text-white">Commercial</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-semibold mb-4">Contact Us</h4>
+          <address class="not-italic text-gray-300">
+            <p class="mb-2">123 Real Estate St</p>
+            <p class="mb-2">Property City, PC 12345</p>
+            <p class="mb-2">Email: info@propertypalace.com</p>
+            <p>Phone: (123) 456-7890</p>
+          </address>
+        </div>
+      </div>
+      <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-300">
+        <p>&copy; 2023 PropertyPalace. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Simple animation for fading in elements
+    document.addEventListener('DOMContentLoaded', function() {
+      const fadeElements = document.querySelectorAll('.animate-fade-in');
+      fadeElements.forEach((element, index) => {
+        setTimeout(() => {
+          element.style.opacity = '0';
+          element.style.animation = 'fadeIn 0.5s forwards';
+        }, index * 200);
+      });
+    });
+
+    // Define the fadeIn animation if it's not in your CSS
+    if (!document.querySelector('style#animations')) {
+      const style = document.createElement('style');
+      style.id = 'animations';
+      style.textContent = `
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+        .animate-fade-in {
+          opacity: 0;
+        }
+      `;
+      document.head.appendChild(style);
+    }
+  </script>
+</body>
+</html>

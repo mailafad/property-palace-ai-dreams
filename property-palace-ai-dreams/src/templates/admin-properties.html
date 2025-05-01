@@ -1,0 +1,436 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Properties - Property Palace Admin</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-gray-50">
+  <!-- Admin Header -->
+  <header class="bg-gray-900 text-white">
+    <div class="container mx-auto px-4">
+      <div class="flex items-center justify-between py-4">
+        <div class="flex items-center">
+          <a href="admin-dashboard.html" class="text-xl font-bold">PropertyPalace Admin</a>
+        </div>
+        
+        <div class="flex items-center space-x-4">
+          <div class="relative">
+            <button class="flex items-center text-sm focus:outline-none">
+              <span class="mr-2">Admin User</span>
+              <img class="h-8 w-8 rounded-full" src="https://ui-avatars.com/api/?name=Admin+User&background=random" alt="Avatar" />
+            </button>
+          </div>
+          <a href="index.html" class="text-sm text-gray-300 hover:text-white">View Site</a>
+        </div>
+      </div>
+      
+      <nav class="py-3">
+        <ul class="flex space-x-8">
+          <li>
+            <a href="admin-dashboard.html" class="py-2 text-gray-300 hover:text-white">Dashboard</a>
+          </li>
+          <li>
+            <a href="admin-properties.html" class="py-2 border-b-2 border-lime-400 text-white font-medium">Properties</a>
+          </li>
+          <li>
+            <a href="#" class="py-2 text-gray-300 hover:text-white">Users</a>
+          </li>
+          <li>
+            <a href="#" class="py-2 text-gray-300 hover:text-white">Settings</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  
+  <main class="container mx-auto px-4 py-8">
+    <div class="flex justify-between items-center mb-8">
+      <h1 class="text-3xl font-bold">Manage Properties</h1>
+      <a href="admin-properties-form.html" class="bg-lime-400 text-black px-4 py-2 rounded-md hover:bg-lime-500 flex items-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="mr-2 h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="5" x2="12" y2="19"></line>
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+        </svg>
+        Add New Property
+      </a>
+    </div>
+    
+    <div class="bg-white rounded-lg shadow-sm border p-6 mb-6">
+      <div class="flex flex-col md:flex-row gap-4 mb-6">
+        <div class="relative flex-1">
+          <svg xmlns="http://www.w3.org/2000/svg" class="absolute left-3 top-3 h-4 w-4 text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input
+            placeholder="Search properties..."
+            class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-lime-500 focus:border-lime-500"
+          />
+        </div>
+        <div class="flex space-x-2">
+          <select class="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-lime-500 focus:border-lime-500">
+            <option>All Types</option>
+            <option>House</option>
+            <option>Apartment</option>
+            <option>Condo</option>
+            <option>Commercial</option>
+          </select>
+          <select class="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-lime-500 focus:border-lime-500">
+            <option>All Status</option>
+            <option>For Sale</option>
+            <option>For Rent</option>
+            <option>Sold</option>
+            <option>Pending</option>
+          </select>
+        </div>
+      </div>
+      
+      <div class="rounded-md border overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Property</th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Location</th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Listed Date</th>
+              <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            <!-- Property 1 -->
+            <tr>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="flex items-center">
+                  <div class="h-10 w-10 rounded overflow-hidden mr-3">
+                    <img 
+                      src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=100" 
+                      alt="Property"
+                      class="h-full w-full object-cover"
+                    />
+                  </div>
+                  <div>
+                    <p class="font-medium">Luxury Villa with Pool</p>
+                    <p class="text-sm text-gray-500">ID: LP-1234</p>
+                  </div>
+                </div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                Beverly Hills, CA
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                $1,299,000
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <span class="px-2 py-1 text-xs text-white bg-green-500 rounded-full">For Sale</span>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-gray-500">
+                05/15/2023
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-right text-sm">
+                <div class="flex justify-end space-x-2">
+                  <div class="relative" id="dropdown1">
+                    <button onclick="toggleDropdown('dropdown1Menu', 'dropdown1')" class="text-gray-500 hover:text-gray-700">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="1"></circle>
+                        <circle cx="19" cy="12" r="1"></circle>
+                        <circle cx="5" cy="12" r="1"></circle>
+                      </svg>
+                    </button>
+                    <div id="dropdown1Menu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 border border-gray-200">
+                      <a href="property-detail.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="inline-block h-4 w-4 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                          <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                        View
+                      </a>
+                      <a href="admin-properties-form.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="inline-block h-4 w-4 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                          <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                        </svg>
+                        Edit
+                      </a>
+                      <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="inline-block h-4 w-4 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <polyline points="3 6 5 6 21 6"></polyline>
+                          <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                          <line x1="10" y1="11" x2="10" y2="17"></line>
+                          <line x1="14" y1="11" x2="14" y2="17"></line>
+                        </svg>
+                        Delete
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            
+            <!-- Property 2 -->
+            <tr>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="flex items-center">
+                  <div class="h-10 w-10 rounded overflow-hidden mr-3">
+                    <img 
+                      src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=100" 
+                      alt="Property"
+                      class="h-full w-full object-cover"
+                    />
+                  </div>
+                  <div>
+                    <p class="font-medium">Modern Downtown Condo</p>
+                    <p class="text-sm text-gray-500">ID: LP-1235</p>
+                  </div>
+                </div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                Los Angeles, CA
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                $845,000
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <span class="px-2 py-1 text-xs text-white bg-green-500 rounded-full">For Sale</span>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-gray-500">
+                05/18/2023
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-right text-sm">
+                <div class="flex justify-end space-x-2">
+                  <div class="relative" id="dropdown2">
+                    <button onclick="toggleDropdown('dropdown2Menu', 'dropdown2')" class="text-gray-500 hover:text-gray-700">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="1"></circle>
+                        <circle cx="19" cy="12" r="1"></circle>
+                        <circle cx="5" cy="12" r="1"></circle>
+                      </svg>
+                    </button>
+                    <div id="dropdown2Menu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 border border-gray-200">
+                      <a href="property-detail.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="inline-block h-4 w-4 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                          <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                        View
+                      </a>
+                      <a href="admin-properties-form.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="inline-block h-4 w-4 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                          <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                        </svg>
+                        Edit
+                      </a>
+                      <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="inline-block h-4 w-4 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <polyline points="3 6 5 6 21 6"></polyline>
+                          <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                          <line x1="10" y1="11" x2="10" y2="17"></line>
+                          <line x1="14" y1="11" x2="14" y2="17"></line>
+                        </svg>
+                        Delete
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            
+            <!-- Property 3 -->
+            <tr>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="flex items-center">
+                  <div class="h-10 w-10 rounded overflow-hidden mr-3">
+                    <img 
+                      src="https://images.unsplash.com/photo-1576941089067-2de3c901e126?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=100" 
+                      alt="Property"
+                      class="h-full w-full object-cover"
+                    />
+                  </div>
+                  <div>
+                    <p class="font-medium">Cozy Family Home</p>
+                    <p class="text-sm text-gray-500">ID: LP-1236</p>
+                  </div>
+                </div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                San Diego, CA
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                $3,500/mo
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <span class="px-2 py-1 text-xs text-white bg-blue-500 rounded-full">For Rent</span>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-gray-500">
+                05/20/2023
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-right text-sm">
+                <div class="flex justify-end space-x-2">
+                  <div class="relative" id="dropdown3">
+                    <button onclick="toggleDropdown('dropdown3Menu', 'dropdown3')" class="text-gray-500 hover:text-gray-700">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="1"></circle>
+                        <circle cx="19" cy="12" r="1"></circle>
+                        <circle cx="5" cy="12" r="1"></circle>
+                      </svg>
+                    </button>
+                    <div id="dropdown3Menu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 border border-gray-200">
+                      <a href="property-detail.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="inline-block h-4 w-4 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                          <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                        View
+                      </a>
+                      <a href="admin-properties-form.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="inline-block h-4 w-4 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                          <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                        </svg>
+                        Edit
+                      </a>
+                      <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="inline-block h-4 w-4 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <polyline points="3 6 5 6 21 6"></polyline>
+                          <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                          <line x1="10" y1="11" x2="10" y2="17"></line>
+                          <line x1="14" y1="11" x2="14" y2="17"></line>
+                        </svg>
+                        Delete
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            
+            <!-- Property 4 -->
+            <tr>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="flex items-center">
+                  <div class="h-10 w-10 rounded overflow-hidden mr-3">
+                    <img 
+                      src="https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=100" 
+                      alt="Property"
+                      class="h-full w-full object-cover"
+                    />
+                  </div>
+                  <div>
+                    <p class="font-medium">Urban Loft Apartment</p>
+                    <p class="text-sm text-gray-500">ID: LP-1237</p>
+                  </div>
+                </div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                San Francisco, CA
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                $925,000
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <span class="px-2 py-1 text-xs text-white bg-red-500 rounded-full">Sold</span>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-gray-500">
+                04/10/2023
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-right text-sm">
+                <div class="flex justify-end space-x-2">
+                  <div class="relative" id="dropdown4">
+                    <button onclick="toggleDropdown('dropdown4Menu', 'dropdown4')" class="text-gray-500 hover:text-gray-700">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="1"></circle>
+                        <circle cx="19" cy="12" r="1"></circle>
+                        <circle cx="5" cy="12" r="1"></circle>
+                      </svg>
+                    </button>
+                    <div id="dropdown4Menu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 border border-gray-200">
+                      <a href="property-detail.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="inline-block h-4 w-4 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                          <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                        View
+                      </a>
+                      <a href="admin-properties-form.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="inline-block h-4 w-4 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                          <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                        </svg>
+                        Edit
+                      </a>
+                      <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="inline-block h-4 w-4 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <polyline points="3 6 5 6 21 6"></polyline>
+                          <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                          <line x1="10" y1="11" x2="10" y2="17"></line>
+                          <line x1="14" y1="11" x2="14" y2="17"></line>
+                        </svg>
+                        Delete
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+      <!-- Pagination -->
+      <div class="flex items-center justify-between mt-6">
+        <p class="text-sm text-gray-500">
+          Showing 1-4 of 24 properties
+        </p>
+        <div class="flex items-center space-x-2">
+          <button class="border border-gray-300 rounded-md p-1" disabled>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <span class="text-sm">
+            Page 1 of 6
+          </span>
+          <button class="border border-gray-300 rounded-md p-1">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+  
+  <script>
+    function toggleDropdown(menuId, dropdownId) {
+      const menuElement = document.getElementById(menuId);
+      
+      // Close all other dropdowns first
+      const allDropdowns = document.querySelectorAll('[id$="Menu"]');
+      allDropdowns.forEach(dropdown => {
+        if (dropdown.id !== menuId) {
+          dropdown.classList.add('hidden');
+        }
+      });
+      
+      // Toggle current dropdown
+      menuElement.classList.toggle('hidden');
+      
+      // Add click outside to close
+      if (!menuElement.classList.contains('hidden')) {
+        document.addEventListener('click', function closeDropdown(e) {
+          const dropdown = document.getElementById(dropdownId);
+          if (!dropdown.contains(e.target)) {
+            menuElement.classList.add('hidden');
+            document.removeEventListener('click', closeDropdown);
+          }
+        });
+      }
+    }
+  </script>
+</body>
+</html>
