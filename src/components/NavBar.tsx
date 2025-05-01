@@ -29,7 +29,7 @@ const NavBar = () => {
         <div className="flex justify-between h-16">
           <div className="flex items-center">
             <div className="flex-shrink-0 flex items-center">
-              <i className="fas fa-home text-primary text-2xl mr-2"></i>
+              <img src="/logo.png" alt="Logo" className="h-8 w-8 mr-2" />
               <Link to="/" className="text-xl font-bold brand">AD REAL Estates</Link>
             </div>
           </div>
