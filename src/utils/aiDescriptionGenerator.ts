@@ -1,4 +1,3 @@
-
 // This is a simulated AI description generator
 // In a real application, you would connect to an AI service like OpenAI
 
@@ -31,39 +30,34 @@ export const generateAIDescription = async (features: PropertyFeatures): Promise
 
 const getIntroByPropertyType = (propertyType: string, location: string): string => {
   const intros = {
-    house: [
-      `Discover your dream home in this stunning ${propertyType} nestled in the heart of ${location}.`,
-      `Welcome to this exceptional residence located in the prestigious ${location} area.`,
-      `Experience the epitome of modern living in this remarkable ${propertyType} in ${location}.`
+    'land': [
+      `Discover this exceptional ${propertyType} opportunity in the prime location of ${location}.`,
+      `Exceptional investment potential awaits with this pristine ${propertyType} in ${location}.`,
+      `Prime ${propertyType} available in the highly sought-after ${location} area.`
     ],
-    apartment: [
-      `Elevate your lifestyle in this sophisticated ${propertyType} in the vibrant ${location} district.`,
-      `Urban luxury awaits in this stylish ${propertyType} situated in prime ${location}.`,
-      `Embrace city living at its finest in this contemporary ${propertyType} in desirable ${location}.`
+    'individual-house': [
+      `Welcome to this magnificent individual house nestled in the heart of ${location}.`,
+      `Experience luxury living in this stunning individual house in prestigious ${location}.`,
+      `Discover your dream home in this exceptional individual house in ${location}.`
     ],
-    condo: [
-      `Indulge in luxury living in this upscale ${propertyType} in the coveted ${location} neighborhood.`,
-      `Experience the perfect blend of comfort and convenience in this modern ${propertyType} in ${location}.`,
-      `Welcome to your private sanctuary in this elegant ${propertyType} in the sought-after ${location} area.`
+    'individual-bungalow': [
+      `Experience the grandeur of this luxurious bungalow in the exclusive ${location} area.`,
+      `Welcome to this stately bungalow offering the perfect blend of elegance and comfort in ${location}.`,
+      `Discover refined living in this distinguished bungalow in prime ${location}.`
     ],
-    townhouse: [
-      `Charm and character define this exceptional ${propertyType} in the picturesque ${location} community.`,
-      `Discover the perfect balance of space and location in this beautiful ${propertyType} in ${location}.`,
-      `Welcome home to this exquisite ${propertyType} in the desirable ${location} neighborhood.`
+    'flat-apartment': [
+      `Elevate your lifestyle in this sophisticated apartment in the vibrant ${location} district.`,
+      `Urban luxury awaits in this stylish apartment situated in prime ${location}.`,
+      `Embrace city living at its finest in this contemporary apartment in desirable ${location}.`
     ],
-    villa: [
-      `Experience unparalleled luxury in this magnificent ${propertyType} in prestigious ${location}.`,
-      `Indulge in the ultimate lifestyle in this breathtaking ${propertyType} situated in exclusive ${location}.`,
-      `Opulence and elegance define this extraordinary ${propertyType} in the premier ${location} enclave.`
-    ],
-    land: [
-      `Rare opportunity to own this pristine parcel in the coveted ${location} area.`,
-      `Build your dream home on this exceptional ${propertyType} in desirable ${location}.`,
-      `Unlimited potential awaits on this spectacular ${propertyType} in prime ${location}.`
+    'villa': [
+      `Experience unparalleled luxury in this magnificent villa in prestigious ${location}.`,
+      `Indulge in the ultimate lifestyle in this breathtaking villa situated in exclusive ${location}.`,
+      `Opulence and elegance define this extraordinary villa in the premier ${location} enclave.`
     ]
   };
   
-  const typeIntros = intros[propertyType as keyof typeof intros] || intros.house;
+  const typeIntros = intros[propertyType as keyof typeof intros] || intros['individual-house'];
   return typeIntros[Math.floor(Math.random() * typeIntros.length)];
 };
 
@@ -112,12 +106,39 @@ const getLocationBenefits = (location: string): string => {
 };
 
 const getConclusion = (propertyType: string): string => {
-  const conclusions = [
-    `Don't miss this exceptional opportunity to make this spectacular property your own.`,
-    `This property represents the perfect blend of luxury, comfort, and convenience.`,
-    `A rare offering in today's market, this property won't last long.`,
-    `Schedule your private showing today and experience everything this remarkable home has to offer.`
+  const conclusions = {
+    'land': [
+      "This is a rare opportunity to acquire prime land in a rapidly developing area.",
+      "Don't miss this chance to invest in a property with tremendous potential.",
+      "Perfect for development or building your dream project."
+    ],
+    'individual-house': [
+      "Schedule your private tour today and experience the comfort of this individual house.",
+      "This thoughtfully designed home offers the perfect setting for modern living.",
+      "A rare offering that combines location, comfort, and style."
+    ],
+    'individual-bungalow': [
+      "Experience the prestige of bungalow living in this exceptional property.",
+      "A truly unique opportunity to own a distinguished bungalow in a prime location.",
+      "This prestigious bungalow represents the pinnacle of luxury living."
+    ],
+    'flat-apartment': [
+      "Modern amenities and contemporary design make this apartment a must-see.",
+      "Experience the convenience of apartment living in this stellar property.",
+      "Don't miss this opportunity to secure your perfect urban retreat."
+    ],
+    'villa': [
+      "This extraordinary villa represents the epitome of luxury living.",
+      "A rare gem in today's market, this villa offers unparalleled elegance and comfort.",
+      "Schedule your private viewing to experience this exceptional villa firsthand."
+    ]
+  };
+
+  const typeConclusions = conclusions[propertyType as keyof typeof conclusions] || [
+    "Don't miss this exceptional opportunity to make this spectacular property your own.",
+    "This property represents the perfect blend of luxury, comfort, and convenience.",
+    "Schedule your private showing today and experience everything this remarkable home has to offer."
   ];
-  
-  return conclusions[Math.floor(Math.random() * conclusions.length)];
+
+  return typeConclusions[Math.floor(Math.random() * typeConclusions.length)];
 };

@@ -203,7 +203,8 @@ export type Database = {
           state: string
           status: string
           title: string
-          type: string
+          type_main: string
+          type_sub: string | null
           updated_at: string
           year_built: number
           zip_code: string
@@ -226,7 +227,8 @@ export type Database = {
           state: string
           status?: string
           title: string
-          type: string
+          type_main: string
+          type_sub?: string | null
           updated_at?: string
           year_built: number
           zip_code: string
@@ -249,7 +251,8 @@ export type Database = {
           state?: string
           status?: string
           title?: string
-          type?: string
+          type_main?: string
+          type_sub?: string | null
           updated_at?: string
           year_built?: number
           zip_code?: string

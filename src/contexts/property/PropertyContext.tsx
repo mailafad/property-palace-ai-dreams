@@ -1,23 +1,44 @@
+'use client';
 
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useMemo } from 'react';
+import type { ReactNode } from 'react';
 import { Property, PropertyFilter } from '@/types/property';
-import { PropertyContextType } from './types';
+import type { PropertyContextType } from './types';
 import { fetchProperties, addPropertyToDb, updatePropertyInDb, deletePropertyFromDb } from './propertyApi';
 import { applyFilters } from './filterUtils';
+import { useLocation } from 'react-router-dom';
 import { toast } from 'sonner';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/contexts/AuthContext';
 
-const PropertyContext = createContext<PropertyContextType | undefined>(undefined);
+// Create the context with a default value matching the shape
+export const PropertyContext = createContext<PropertyContextType>({
+  properties: [],
+  filteredProperties: [],
+  loading: false,
+  activeProperty: null,
+  filter: {},
+  favorites: [],
+  setFilter: () => {},
+  getPropertyById: () => undefined,
+  addProperty: async () => {},
+  updateProperty: async () => {},
+  deleteProperty: async () => {},
+  setActiveProperty: () => {},
+  addToFavorites: async () => {},
+  removeFromFavorites: async () => {},
+  isPropertyFavorite: () => false,
+});
 
-export const PropertyProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+// Create provider component
+const PropertyProvider = ({ children }: { children: ReactNode }) => {
   const [activeProperty, setActiveProperty] = useState<Property | null>(null);
   const [filter, setFilter] = useState<PropertyFilter>({});
-  const [filteredProperties, setFilteredProperties] = useState<Property[]>([]);
   const [favorites, setFavorites] = useState<string[]>([]);
   const queryClient = useQueryClient();
   const { user } = useAuth();
+  const location = useLocation();
 
   // Fetch properties with React Query
   const { data: properties = [], isLoading } = useQuery({
@@ -53,11 +74,7 @@ export const PropertyProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       }
     };
 
-    if (user) {
-      fetchFavorites();
-    } else {
-      setFavorites([]);
-    }
+    fetchFavorites();
   }, [user]);
 
   // Add property mutation
@@ -153,17 +170,17 @@ export const PropertyProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     }
   });
 
-  // Apply filters
-  useEffect(() => {
+  // Memoize filtered properties
+  const filteredProperties = useMemo(() => {
     let filtered = applyFilters(properties, filter);
     
     // If on favorites page, filter by favorites
-    if (window.location.pathname === '/favorites' && user) {
+    if (location.pathname === '/favorites' && user) {
       filtered = filtered.filter(property => favorites.includes(property.id));
     }
     
-    setFilteredProperties(filtered);
-  }, [filter, properties, favorites, user, window.location.pathname]);
+    return filtered;
+  }, [filter, properties, favorites, user, location.pathname]);
 
   const getPropertyById = (id: string): Property | undefined => {
     return properties.find(property => property.id === id);
@@ -193,35 +210,39 @@ export const PropertyProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     return favorites.includes(propertyId);
   };
 
+  const value = {
+    properties: properties || [],
+    filteredProperties,
+    loading: isLoading,
+    activeProperty,
+    filter,
+    favorites,
+    setFilter,
+    getPropertyById,
+    addProperty,
+    updateProperty,
+    deleteProperty,
+    setActiveProperty,
+    addToFavorites,
+    removeFromFavorites,
+    isPropertyFavorite,
+  };
+
   return (
-    <PropertyContext.Provider
-      value={{
-        properties: properties || [],
-        filteredProperties,
-        loading: isLoading,
-        activeProperty,
-        filter,
-        favorites,
-        setFilter,
-        getPropertyById,
-        addProperty,
-        updateProperty,
-        deleteProperty,
-        setActiveProperty,
-        addToFavorites,
-        removeFromFavorites,
-        isPropertyFavorite,
-      }}
-    >
+    <PropertyContext.Provider value={value}>
       {children}
     </PropertyContext.Provider>
   );
 };
 
-export const useProperty = (): PropertyContextType => {
+// Custom hook
+function useProperty() {
   const context = useContext(PropertyContext);
-  if (context === undefined) {
+  if (!context) {
     throw new Error('useProperty must be used within a PropertyProvider');
   }
   return context;
-};
+}
+
+export { PropertyProvider, useProperty };
+export type { PropertyContextType };

@@ -2,6 +2,7 @@
 import { Property } from '@/types/property';
 import { Separator } from '@/components/ui/separator';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { formatPropertyType } from '@/utils/propertyTypeUtils';
 import ContactForm from '@/components/ContactForm';
 import { User, Phone } from 'lucide-react';
 
@@ -10,6 +11,7 @@ interface PropertySidebarProps {
 }
 
 const PropertySidebar = ({ property }: PropertySidebarProps) => {
+  console.log("Property type debug:", property.type);
   return (
     <div className="space-y-6">
       {/* Contact Form Card */}
@@ -64,7 +66,7 @@ const PropertySidebar = ({ property }: PropertySidebarProps) => {
           </div>
           <div className="flex justify-between">
             <span className="text-muted-foreground">Property Type</span>
-            <span className="capitalize">{property.type}</span>
+            <span className="capitalize">{formatPropertyType(property)}</span>
           </div>
           <div className="flex justify-between">
             <span className="text-muted-foreground">Status</span>

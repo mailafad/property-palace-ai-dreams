@@ -1,5 +1,13 @@
+export type MainPropertyType = 'land' | 'individual-house' | 'individual-bungalow' | 'flat-apartment' | 'villa';
 
-export type PropertyType = 'house' | 'apartment' | 'condo' | 'townhouse' | 'villa' | 'land';
+export type LandType = 'residential' | 'commercial' | 'industrial' | 'agricultural';
+export type FlatApartmentType = 'studio' | 'duplex' | 'penthouse';
+export type VillaType = 'individual' | 'twin' | 'row-house' | 'semi-independent' | 'beach';
+
+export interface PropertyTypeDetails {
+  mainType: MainPropertyType;
+  subType?: LandType | FlatApartmentType | VillaType;
+}
 
 export interface Feature {
   name: string;
@@ -16,7 +24,7 @@ export interface Property {
   zipCode: string;
   description: string;
   aiDescription?: string;
-  type: PropertyType;
+  type: PropertyTypeDetails;
   bedrooms: number;
   bathrooms: number;
   area: number; // square feet
@@ -42,6 +50,7 @@ export interface PropertyFilter {
   maxPrice?: number;
   bedrooms?: number;
   bathrooms?: number;
-  propertyType?: PropertyType;
+  propertyType?: MainPropertyType;
+  propertySubType?: LandType | FlatApartmentType | VillaType;
   status?: Property['status'];
 }

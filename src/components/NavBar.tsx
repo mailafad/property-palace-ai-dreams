@@ -30,7 +30,7 @@ const NavBar = () => {
           <div className="flex items-center">
             <div className="flex-shrink-0 flex items-center">
               <i className="fas fa-home text-primary text-2xl mr-2"></i>
-              <Link to="/" className="text-xl font-bold brand">AD Realestate</Link>
+              <Link to="/" className="text-xl font-bold brand">AD REAL Estates</Link>
             </div>
           </div>
 

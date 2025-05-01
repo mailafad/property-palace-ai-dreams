@@ -1,4 +1,3 @@
-
 import { Property } from '@/types/property';
 
 export const properties: Property[] = [
@@ -12,7 +11,9 @@ export const properties: Property[] = [
     zipCode: '98101',
     description: 'Stunning lakefront property with panoramic views and direct water access.',
     aiDescription: 'Experience waterfront luxury in this breathtaking modern residence. Floor-to-ceiling windows showcase sparkling lake views from every room, while the open-concept design creates a seamless flow between indoor and outdoor living. The chef\'s kitchen features top-of-the-line appliances and a massive island perfect for entertaining. Relax on your private dock or enjoy sunset views from multiple terraces. This is Pacific Northwest living at its finest.',
-    type: 'house',
+    type: {
+      mainType: 'individual-house'
+    },
     bedrooms: 4,
     bathrooms: 3.5,
     area: 3200,
@@ -51,7 +52,10 @@ export const properties: Property[] = [
     zipCode: '97201',
     description: 'High-end condo in the heart of downtown with incredible city views.',
     aiDescription: 'Embrace city living at its finest in this sleek downtown condo offering breathtaking skyline views. The contemporary open floor plan is bathed in natural light thanks to floor-to-ceiling windows. Featuring premium finishes, a gourmet kitchen with waterfall countertops, and a primary suite with a spa-like bathroom. Building amenities include 24/7 concierge, fitness center, and rooftop terrace. Walking distance to top restaurants, shopping, and cultural attractions.',
-    type: 'condo',
+    type: {
+      mainType: 'flat-apartment',
+      subType: 'penthouse'
+    },
     bedrooms: 2,
     bathrooms: 2,
     area: 1450,
@@ -90,7 +94,10 @@ export const properties: Property[] = [
     zipCode: '98004',
     description: 'Beautifully renovated townhouse in a family-friendly neighborhood.',
     aiDescription: 'Welcome to this meticulously maintained townhome in a sought-after community. Recently renovated with designer touches throughout, including hardwood floors, custom lighting, and a gourmet kitchen featuring stainless steel appliances and quartz countertops. The spacious primary bedroom offers a walk-in closet and ensuite bathroom with dual vanities. Enjoy summer evenings on your private patio overlooking communal green space. Located in top-rated school district with easy access to shopping, dining, and major highways.',
-    type: 'townhouse',
+    type: {
+      mainType: 'villa',
+      subType: 'row-house'
+    },
     bedrooms: 3,
     bathrooms: 2.5,
     area: 1800,
@@ -129,7 +136,9 @@ export const properties: Property[] = [
     zipCode: '98661',
     description: 'Classic craftsman with modern updates and a large backyard.',
     aiDescription: 'Fall in love with this quintessential craftsman bungalow that perfectly blends historic charm with modern comfort. Original character details include wainscoting, built-ins, and a stone fireplace. The updated kitchen features custom cabinetry, high-end appliances, and a breakfast nook overlooking the lush backyard. Relax on the covered front porch or entertain on the back deck and patio. Located in a historic district with tree-lined streets, just minutes from downtown amenities and parks.',
-    type: 'house',
+    type: {
+      mainType: 'individual-bungalow'
+    },
     bedrooms: 3,
     bathrooms: 2,
     area: 1950,
@@ -168,7 +177,10 @@ export const properties: Property[] = [
     zipCode: '98033',
     description: 'Spectacular waterfront villa with private dock and panoramic lake views.',
     aiDescription: 'This breathtaking waterfront estate offers unparalleled luxury living with 180-degree lake and mountain views. The masterfully designed interior showcases soaring ceilings, walls of glass, and premium finishes throughout. The chef\'s kitchen is a culinary masterpiece with custom cabinetry, professional-grade appliances, and an expansive island. Entertain in style on multiple terraces or relax by the infinity pool overlooking the water. A private dock provides direct lake access for all your water activities.',
-    type: 'villa',
+    type: {
+      mainType: 'villa',
+      subType: 'beach'
+    },
     bedrooms: 5,
     bathrooms: 5.5,
     area: 6200,
@@ -208,7 +220,9 @@ export const properties: Property[] = [
     zipCode: '98112',
     description: 'Authentic mid-century modern house with original features and updated systems.',
     aiDescription: 'Step back in time with this impeccably preserved mid-century modern gem. Architectural features include post-and-beam construction, clerestory windows, and seamless indoor-outdoor flow. The thoughtfully updated kitchen maintains period-appropriate style while incorporating modern appliances and functionality. Walls of glass showcase verdant views of the surrounding landscape. Recent updates include new HVAC, electrical, and plumbing systems. A rare opportunity to own an architectural masterpiece in a coveted neighborhood.',
-    type: 'house',
+    type: {
+      mainType: 'individual-house'
+    },
     bedrooms: 3,
     bathrooms: 2,
     area: 2200,

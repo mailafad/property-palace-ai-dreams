@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import { MainPropertyType, LandType, FlatApartmentType, VillaType } from '@/types/property';
 import {
   Select,
   SelectContent,
@@ -40,6 +41,7 @@ const PropertyFormPage = () => {
   
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isGeneratingDescription, setIsGeneratingDescription] = useState(false);
+  const [showSubTypes, setShowSubTypes] = useState(false);
   
   const emptyProperty: Partial<Property> = {
     title: '',
@@ -50,7 +52,9 @@ const PropertyFormPage = () => {
     zipCode: '',
     description: '',
     aiDescription: '',
-    type: 'house',
+    type: {
+      mainType: 'individual-house'
+    },
     bedrooms: 0,
     bathrooms: 0,
     area: 0,
@@ -69,12 +73,53 @@ const PropertyFormPage = () => {
   };
   
   const [formData, setFormData] = useState<Partial<Property>>(emptyProperty);
+
+  const getSubTypeOptions = (mainType: MainPropertyType | undefined) => {
+    switch (mainType) {
+      case 'land':
+        return [
+          { value: 'residential', label: 'Residential' },
+          { value: 'commercial', label: 'Commercial' },
+          { value: 'industrial', label: 'Industrial' },
+          { value: 'agricultural', label: 'Agricultural' },
+        ];
+      case 'flat-apartment':
+        return [
+          { value: 'studio', label: 'Studio' },
+          { value: 'duplex', label: 'Duplex' },
+          { value: 'penthouse', label: 'Penthouse' },
+        ];
+      case 'villa':
+        return [
+          { value: 'individual', label: 'Individual Villa' },
+          { value: 'twin', label: 'Twin Villa' },
+          { value: 'row-house', label: 'Row House Villa' },
+          { value: 'semi-independent', label: 'Semi Independent Villa' },
+          { value: 'beach', label: 'Beach Villa' },
+        ];
+      default:
+        return [];
+    }
+  };
   
   useEffect(() => {
     if (!isAdmin) {
       navigate('/admin');
     }
   }, [isAdmin, navigate]);
+
+  useEffect(() => {
+    const hasSubTypes = ['land', 'flat-apartment', 'villa'].includes(formData.type?.mainType || '');
+    setShowSubTypes(hasSubTypes);
+    
+    // Clear subType if main type doesn't have subtypes
+    if (!hasSubTypes && formData.type?.subType) {
+      setFormData(prev => ({
+        ...prev,
+        type: { mainType: prev.type?.mainType || 'individual-house' }
+      }));
+    }
+  }, [formData.type?.mainType]);
   
   useEffect(() => {
     if (isEditing && id) {
@@ -135,11 +180,33 @@ const PropertyFormPage = () => {
     setIsSubmitting(true);
     
     try {
-      const validatedFormData = {
-        ...formData,
-        realtor: formData.realtor?.name ? formData.realtor : null
+      const { type, ...restFormData } = formData;
+      const validatedFormData: Omit<Property, "id" | "createdAt" | "updatedAt"> = {
+        ...restFormData as Omit<Property, "id" | "createdAt" | "updatedAt">,
+        type: {
+          mainType: type?.mainType || 'individual-house',
+          subType: type?.subType || null,
+        },
+        realtor: formData.realtor?.name ? formData.realtor : null,
+        title: formData.title || '',
+        price: formData.price || 0,
+        address: formData.address || '',
+        city: formData.city || '',
+        state: formData.state || '',
+        zipCode: formData.zipCode || '',
+        description: formData.description || '',
+        bedrooms: formData.bedrooms || 0,
+        bathrooms: formData.bathrooms || 0,
+        area: formData.area || 0,
+        yearBuilt: formData.yearBuilt || new Date().getFullYear(),
+        images: formData.images || [],
+        features: formData.features || [],
+        status: formData.status || 'for-sale',
+        featured: formData.featured || false
       };
       
+      console.log("Validated Form Data:", validatedFormData);
+
       if (isEditing && id) {
         await updateProperty(id, {
           ...validatedFormData,
@@ -149,7 +216,11 @@ const PropertyFormPage = () => {
       } else {
         if (formData.title && formData.address && formData.price) {
           await addProperty({
-            ...validatedFormData as Omit<Property, "id" | "createdAt" | "updatedAt">,
+            ...validatedFormData,
+            type: {
+              mainType: validatedFormData.type.mainType,
+              subType: validatedFormData.type.subType,
+            } as Property['type'],
           });
           toast.success('Property added successfully');
         } else {
@@ -162,7 +233,12 @@ const PropertyFormPage = () => {
       navigate('/admin/properties');
     } catch (error) {
       console.error('Error saving property:', error);
-      toast.error('An error occurred while saving the property');
+      if (error instanceof Error) {
+        console.error('Error details:', error.message);
+      } else {
+        console.error('Full error object:', JSON.stringify(error, null, 2));
+      }
+      toast.error('An error occurred while saving the property. Check console for details.');
       setIsSubmitting(false);
     }
   };
@@ -188,7 +264,7 @@ const PropertyFormPage = () => {
         bedrooms: formData.bedrooms || 0,
         bathrooms: formData.bathrooms || 0,
         squareFeet: formData.area || 0,
-        propertyType: formData.type || 'house',
+        propertyType: formData.type?.mainType || 'individual-house',
         yearBuilt: formData.yearBuilt || new Date().getFullYear(),
         location: `${formData.city}, ${formData.state}`,
         features: featureNames
@@ -270,22 +346,54 @@ const PropertyFormPage = () => {
                     <div className="space-y-2">
                       <Label htmlFor="type">Property Type*</Label>
                       <Select
-                        value={formData.type || 'house'}
-                        onValueChange={(value) => handleSelectChange(value, 'type')}
+                        value={formData.type?.mainType || 'individual-house'}
+                        onValueChange={(value) => {
+                          setFormData(prev => ({
+                            ...prev,
+                            type: { mainType: value as MainPropertyType }
+                          }));
+                        }}
                       >
                         <SelectTrigger id="type">
                           <SelectValue placeholder="Select type" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="house">House</SelectItem>
-                          <SelectItem value="apartment">Apartment</SelectItem>
-                          <SelectItem value="condo">Condo</SelectItem>
-                          <SelectItem value="townhouse">Townhouse</SelectItem>
+                          <SelectItem value="land">Land / Plot</SelectItem>
+                          <SelectItem value="individual-house">Individual House</SelectItem>
+                          <SelectItem value="individual-bungalow">Individual Bungalow</SelectItem>
+                          <SelectItem value="flat-apartment">Flat / Apartment</SelectItem>
                           <SelectItem value="villa">Villa</SelectItem>
-                          <SelectItem value="land">Land</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
+                    {showSubTypes && (
+                      <div className="space-y-2">
+                        <Label htmlFor="subType">Property Sub-Type</Label>
+                        <Select
+                          value={formData.type?.subType || ''}
+                          onValueChange={(value) => {
+                            setFormData(prev => ({
+                              ...prev,
+                              type: {
+                                ...prev.type,
+                                subType: value as LandType | FlatApartmentType | VillaType
+                              }
+                            }));
+                          }}
+                        >
+                          <SelectTrigger id="subType">
+                            <SelectValue placeholder="Select sub-type" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {getSubTypeOptions(formData.type?.mainType as MainPropertyType).map(option => (
+                              <SelectItem key={option.value} value={option.value}>
+                                {option.label}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    )}
                   </div>
                   
                   <div className="space-y-2">

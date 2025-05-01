@@ -1,5 +1,6 @@
 
 import { Property } from '@/types/property';
+import { formatPropertyType } from '@/utils/propertyTypeUtils';
 
 interface PropertyFeaturesProps {
   property: Property;
@@ -16,7 +17,7 @@ const PropertyFeatures = ({ property }: PropertyFeaturesProps) => {
           <ul className="space-y-2">
             <li className="flex justify-between">
               <span className="text-muted-foreground">Property Type</span>
-              <span className="font-medium capitalize">{property.type}</span>
+              <span className="font-medium capitalize">{formatPropertyType(property)}</span>
             </li>
             <li className="flex justify-between">
               <span className="text-muted-foreground">Year Built</span>

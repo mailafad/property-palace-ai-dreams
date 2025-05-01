@@ -1,4 +1,3 @@
-
 import { Property, PropertyFilter } from '@/types/property';
 
 export function applyFilters(properties: Property[], filter: PropertyFilter): Property[] {
@@ -34,7 +33,11 @@ export function applyFilters(properties: Property[], filter: PropertyFilter): Pr
   }
   
   if (filter.propertyType) {
-    result = result.filter(property => property.type === filter.propertyType);
+    result = result.filter(property => property.type.mainType === filter.propertyType);
+  }
+
+  if (filter.propertySubType) {
+    result = result.filter(property => property.type.subType === filter.propertySubType);
   }
   
   if (filter.status) {

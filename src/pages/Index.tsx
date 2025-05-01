@@ -21,10 +21,10 @@ const Index = () => {
   return (
     <div className="flex flex-col min-h-screen overflow-x-hidden">
       <Helmet>
-        <title>AD Realestate | Find Your Dream Home Today</title>
+        <title>AD Realestates | Find Your Dream Home Today</title>
         <meta name="description" content="Browse thousands of properties across India. We make buying, selling, and renting easy with AD Realestate." />
         <meta name="keywords" content="real estate, property, India, buy home, sell home, rent property" />
-        <meta property="og:title" content="AD Realestate | Find Your Dream Home" />
+        <meta property="og:title" content="AD Realestates | Find Your Dream Home" />
         <meta property="og:description" content="Find your perfect property with AD Realestate. Thousands of listings across India." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://adrealestate.com" />
@@ -36,7 +36,7 @@ const Index = () => {
       {/* Improved Hero Section with 3D-like effects and background image */}
       <section className="hero-section relative py-20 md:py-32 text-white flex items-center">
         <img 
-          src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1920" 
+          src="\ChatGPT Image May 1, 2025, 07_14_50 PM.png" 
           alt="Luxury home exterior" 
           className="hero-background"
         />
@@ -44,24 +44,26 @@ const Index = () => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div className="text-center md:text-left hero-content">
-              <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl animate-fade-in max-w-3xl">
-                Find Your Dream Home Today
+              <h1 className="text-5xl font-bold tracking-tight sm:text-6xl lg:text-7xl animate-fade-in max-w-3xl" style={{ color: '#a5ff03', textShadow: '0 0 5px #a5ff03' }}>
+                Find Your <span style={{ color: '#ffffff', textShadow: 'none' }}>Dream Home</span> Today
               </h1>
-              <p className="mt-6 text-xl text-white/90 max-w-3xl animate-fade-in">
+              <p className="mt-6 text-xl text-white max-w-3xl animate-fade-in">
                 Browse thousands of properties across India. We make buying, selling, and renting easy.
               </p>
-              <div className="mt-10 animate-fade-in w-full max-w-xl mx-auto md:mx-0">
-                <div className="bg-white rounded-lg shadow-xl p-2 flex w-full">
-                  <input 
-                    type="text" 
-                    placeholder="Search by city, neighborhood, or PIN code" 
-                    className="flex-1 px-4 py-3 focus:outline-none text-black w-full"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    style={{caretColor: 'black'}}
-                  />
+              <div className="mt-10 animate-fade-in w-full max-w-2xl">
+                <div className="flex gap-2">
+                  <div className="flex-1 bg-white rounded-lg shadow-xl border border-black overflow-hidden">
+                    <input
+                      type="text"
+                      placeholder="Search by city, neighborhood, or PIN code"
+                      className="w-full px-4 py-3 focus:outline-none text-black"
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      style={{caretColor: 'black'}}
+                    />
+                  </div>
                   <Link to={`/properties?search=${searchTerm}`}>
-                    <button className="btn-premium px-6 py-3 font-medium ml-2">
+                    <button className="btn-premium px-6 py-3 font-medium rounded-lg">
                       <Search className="h-4 w-4" />
                     </button>
                   </Link>
@@ -74,7 +76,7 @@ const Index = () => {
                 <div className="relative">
                   {/* Modern house 3D model representation */}
                   <img 
-                    src="https://images.unsplash.com/photo-1567496898669-ee935f5f647a?ixlib=rb-4.0.3&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=600" 
+                    src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=600" 
                     alt="Modern 3D House" 
                     className="rounded-lg shadow-2xl hover:shadow-[0_10px_40px_rgba(0,0,0,0.3)] transition-all duration-300 relative z-10"
                   />
@@ -177,19 +179,9 @@ const Index = () => {
           </Link>
         </div>
       </section>
-      
-      {/* AF Global Section - New from custom template */}
-      <section className="bg-gradient-to-r from-blue-50 to-indigo-50 py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mt-12 flex justify-center items-center space-x-6">
-            <img src="https://www.afglobalenterprises.com/images/logoh1.jpg" alt="AF Global Logo" className="h-16" />
-            <span className="text-gray-1000 text-xl font-medium">Part of AF Global Enterprises</span>
-          </div>
-        </div>
-      </section>
-      
-      {/* CTA Section - Modified from original */}
-      <section className="py-16 bg-primary text-white">
+
+            {/* CTA Section - Modified from original */}
+            <section className="py-16 bg-black text-white">
         <div className="container px-4 md:px-6 mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
             <div>
@@ -199,7 +191,7 @@ const Index = () => {
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link to="/properties">
-                  <Button size="lg" variant="secondary" className="w-full sm:w-auto">
+                  <Button size="lg" variant="secondary" className="w-full sm:w-auto hover:bg-[#a5ff03] hover:text-black transition-all">
                     Start Searching
                   </Button>
                 </Link>
@@ -212,14 +204,26 @@ const Index = () => {
             </div>
             <div className="hidden md:block">
               <img 
-                src="https://images.unsplash.com/photo-1572635148818-ef6fd45eb394?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=600" 
+                src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
                 alt="Modern Home in India" 
-                className="rounded-lg shadow-lg w-full h-[300px] object-cover"
+                className="rounded-lg shadow-lg w-full h-[300px] object-cover border-4 border-[#a5ff03]"
               />
             </div>
           </div>
         </div>
       </section>
+      
+      {/* AF Global Section - New from custom template */}
+      <section className="bg-gradient-to-r from-blue-50 to-indigo-50 py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mt-12 flex justify-center items-center space-x-6">
+            <img src="https://www.afglobalenterprises.com/images/logoh1.jpg" alt="AF Global Logo" className="h-16" />
+            <span className="text-gray-1000 text-xl font-medium">Unit of AF Global Enterprises</span>
+          </div>
+        </div>
+      </section>
+      
+
       
       <Footer />
     </div>

@@ -45,7 +45,11 @@ export async function fetchProperties() {
         zipCode: property.zip_code,
         description: property.description,
         aiDescription: property.ai_description,
-        type: property.type as Property['type'],
+        // Convert string type from database to our app's type structure
+        type: {
+          mainType: property.type_main as Property['type']['mainType'],
+          subType: property.type_sub || undefined
+        },
         bedrooms: property.bedrooms,
         bathrooms: property.bathrooms,
         area: property.area,
@@ -81,7 +85,8 @@ export async function addPropertyToDb(property: Omit<Property, 'id' | 'createdAt
     zip_code: propertyData.zipCode,
     description: propertyData.description,
     ai_description: propertyData.aiDescription,
-    type: propertyData.type,
+    type_main: property.type?.mainType || 'individual-house',
+    type_sub: property.type?.subType || null,
     bedrooms: propertyData.bedrooms,
     bathrooms: propertyData.bathrooms,
     area: propertyData.area,
@@ -130,7 +135,10 @@ export async function updatePropertyInDb(id: string, updatedFields: Partial<Prop
   if (propertyData.zipCode !== undefined) propertyToUpdate.zip_code = propertyData.zipCode;
   if (propertyData.description !== undefined) propertyToUpdate.description = propertyData.description;
   if (propertyData.aiDescription !== undefined) propertyToUpdate.ai_description = propertyData.aiDescription;
-  if (propertyData.type !== undefined) propertyToUpdate.type = propertyData.type;
+  if (propertyData.type !== undefined) {
+    propertyToUpdate.type_main = propertyData.type.mainType;
+    propertyToUpdate.type_sub = propertyData.type.subType;
+  }
   if (propertyData.bedrooms !== undefined) propertyToUpdate.bedrooms = propertyData.bedrooms;
   if (propertyData.bathrooms !== undefined) propertyToUpdate.bathrooms = propertyData.bathrooms;
   if (propertyData.area !== undefined) propertyToUpdate.area = propertyData.area;
