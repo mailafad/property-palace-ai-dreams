@@ -208,9 +208,9 @@ const PropertySearch = () => {
         </div>
 
         <div className="flex flex-wrap gap-2 justify-between">
-          <Button type="submit" className="flex-1">
-            <Search className="mr-2 h-4 w-4" />
-            Search Properties
+          <Button type="submit" className="flex-1 text-black">
+            <Search className="mr-2 h-4 w-4 text-black" />
+            <span className="text-black">Search Properties</span>
           </Button>
           <Button type="button" variant="outline" onClick={clearFilters}>
             <X className="mr-2 h-4 w-4" />

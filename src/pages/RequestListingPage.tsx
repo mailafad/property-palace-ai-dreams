@@ -313,14 +313,14 @@ const RequestListingPage = () => {
                   )}
                 />
                 
-                <Button type="submit" className="w-full" disabled={loading}>
+                <Button type="submit" className="w-full text-black" disabled={loading}>
                   {loading ? (
                     <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Submitting...
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin text-black" />
+                      <span className="text-black">Submitting...</span>
                     </>
                   ) : (
-                    'Submit Listing Request'
+                    <span className="text-black">Submit Listing Request</span>
                   )}
                 </Button>
               </form>

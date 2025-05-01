@@ -129,14 +129,14 @@ const AuthForm = () => {
               )}
             </div>
             
-            <Button type="submit" className="w-full" disabled={loading}>
+            <Button type="submit" className="w-full text-black" disabled={loading}>
               {loading ? (
                 <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Logging in...
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin text-black" />
+                  <span className="text-black">Logging in...</span>
                 </>
               ) : (
-                'Login'
+                <span className="text-black">Login</span>
               )}
             </Button>
           </form>
@@ -208,14 +208,14 @@ const AuthForm = () => {
               )}
             </div>
             
-            <Button type="submit" className="w-full" disabled={loading}>
+            <Button type="submit" className="w-full text-black" disabled={loading}>
               {loading ? (
                 <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Registering...
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin text-black" />
+                  <span className="text-black">Registering...</span>
                 </>
               ) : (
-                'Register'
+                <span className="text-black">Register</span>
               )}
             </Button>
           </form>
