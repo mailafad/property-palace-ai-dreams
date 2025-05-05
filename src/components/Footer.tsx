@@ -5,9 +5,9 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
             <h3 className="text-2xl font-bold mb-4">
-              <span className="text-[#a5ff03]">Ad</span>realestate
+              <span className="text-[#a5ff03]">Ad</span> REAL Estates
             </h3>
-            <p>Chennai's premier real estate platform connecting buyers and sellers.</p>
+            <p>India's premier real estate platform connecting buyers and sellers.</p>
           </div>
           <div>
             <h4 className="text-lg font-bold mb-4">Quick Links</h4>
@@ -37,7 +37,10 @@ export default function Footer() {
           </div>
         </div>
         <div className="border-t border-gray-800 mt-8 pt-8 text-center">
-          <p>&copy; 2025 Adrealestate. All rights reserved.</p>
+          <p>
+            &copy; 2025 Ad REAL Estates. All rights reserved.
+            <span style={{ color: "#09e65e" }}> Powered by Growt</span>
+          </p>
         </div>
       </div>
     </footer>

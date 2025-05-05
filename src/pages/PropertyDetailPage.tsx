@@ -21,20 +21,27 @@ const PropertyDetailPage = () => {
   const navigate = useNavigate();
   const [property, setProperty] = useState<Property | undefined>(undefined);
   
+  const { loading } = useProperty();
+
   useEffect(() => {
     if (!id) return;
-    
+
+    // Wait for properties to finish loading before checking
+    if (loading) return;
+
     const propertyData = getPropertyById(id);
     setProperty(propertyData);
-    
+
     if (!propertyData) {
       toast.error("Property not found");
       navigate('/properties');
     }
-    
+
     window.scrollTo(0, 0);
-  }, [id, getPropertyById, navigate]);
+  }, [id, getPropertyById, navigate, loading]);
   
+  const { loading: loadingProperties } = useProperty();
+  if (loadingProperties) return <div className="text-center py-10">Loading...</div>;
   if (!property) return null;
   
   return (
