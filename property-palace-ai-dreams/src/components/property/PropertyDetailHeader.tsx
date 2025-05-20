@@ -55,11 +55,11 @@ const PropertyDetailHeader = ({ property }: PropertyDetailHeaderProps) => {
     <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
       <div>
         <div className="flex items-center gap-2 mb-1">
-          <Badge variant="secondary" className={`${statusColors[property.status]} text-white`}>
+          <Badge variant="secondary" className={`bg-green-500 text-white px-4 py-1 rounded-full`}>
             {property.status.replace('-', ' ')}
           </Badge>
           {property.featured && (
-            <Badge variant="outline" className="bg-primary/10 text-primary border-primary/20">
+            <Badge variant="outline" className="bg-green-500 text-white px-4 py-1 rounded-full">
               Featured
             </Badge>
           )}

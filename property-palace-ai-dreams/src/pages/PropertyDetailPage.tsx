@@ -42,9 +42,9 @@ const PropertyDetailPage = () => {
       <NavBar />
       
       <main className="flex-1 container px-4 py-8">
-        <Link to="/properties" className="flex items-center text-primary hover:underline mb-4">
-          <ChevronLeft className="h-4 w-4 mr-1" />
-          Back to Properties
+        <Link to="/properties" className="flex items-center text-black hover:underline mb-4">
+          <ChevronLeft className="h-4 w-4 mr-1 text-black" />
+          <span className="text-black">Back to Properties</span>
         </Link>
         
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_350px] gap-8">

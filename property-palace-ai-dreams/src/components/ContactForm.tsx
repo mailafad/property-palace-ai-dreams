@@ -151,8 +151,8 @@ const ContactForm: React.FC<ContactFormProps> = ({ property }) => {
         />
       </div>
       
-      <Button type="submit" className="w-full" disabled={isSubmitting}>
-        {isSubmitting ? 'Sending...' : 'Send Message'}
+      <Button type="submit" className="w-full text-black" disabled={isSubmitting}>
+        {isSubmitting ? 'Sending...' : <span className="text-black">Send Message</span>}
       </Button>
       
       {property && !user && (
