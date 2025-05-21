@@ -582,9 +582,37 @@ const PropertyFormPage = () => {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="image1">Main Image URL</Label>
+                    <Label htmlFor="image1">Main Image</Label>
                     <Input
                       id="image1"
+                      type="file"
+                      accept="image/*"
+                      onChange={async (e) => {
+                        const file = e.target.files?.[0];
+                        if (!file) return;
+                        const formDataUpload = new FormData();
+                        formDataUpload.append('file', file);
+                        try {
+                          const res = await fetch('/api/upload-image', {
+                            method: 'POST',
+                            body: formDataUpload,
+                          });
+                          const data = await res.json();
+                          if (data.url) {
+                            const updatedImages = [...(formData.images || [])];
+                            updatedImages[0] = data.url;
+                            setFormData({ ...formData, images: updatedImages });
+                            toast.success('Image uploaded!');
+                          } else {
+                            toast.error('Image upload failed');
+                          }
+                        } catch {
+                          toast.error('Image upload failed');
+                        }
+                      }}
+                    />
+                    <Input
+                      id="image1-url"
                       placeholder="https://example.com/image.jpg"
                       value={formData.images?.[0] || ''}
                       onChange={(e) => {
@@ -596,9 +624,37 @@ const PropertyFormPage = () => {
                   </div>
                   
                   <div className="space-y-2">
-                    <Label htmlFor="image2">Additional Image URL</Label>
+                    <Label htmlFor="image2">Additional Image</Label>
                     <Input
                       id="image2"
+                      type="file"
+                      accept="image/*"
+                      onChange={async (e) => {
+                        const file = e.target.files?.[0];
+                        if (!file) return;
+                        const formDataUpload = new FormData();
+                        formDataUpload.append('file', file);
+                        try {
+                          const res = await fetch('/api/upload-image', {
+                            method: 'POST',
+                            body: formDataUpload,
+                          });
+                          const data = await res.json();
+                          if (data.url) {
+                            const updatedImages = [...(formData.images || [])];
+                            updatedImages[1] = data.url;
+                            setFormData({ ...formData, images: updatedImages });
+                            toast.success('Image uploaded!');
+                          } else {
+                            toast.error('Image upload failed');
+                          }
+                        } catch {
+                          toast.error('Image upload failed');
+                        }
+                      }}
+                    />
+                    <Input
+                      id="image2-url"
                       placeholder="https://example.com/image2.jpg"
                       value={formData.images?.[1] || ''}
                       onChange={(e) => {
@@ -610,9 +666,37 @@ const PropertyFormPage = () => {
                   </div>
                   
                   <div className="space-y-2">
-                    <Label htmlFor="image3">Additional Image URL</Label>
+                    <Label htmlFor="image3">Additional Image</Label>
                     <Input
                       id="image3"
+                      type="file"
+                      accept="image/*"
+                      onChange={async (e) => {
+                        const file = e.target.files?.[0];
+                        if (!file) return;
+                        const formDataUpload = new FormData();
+                        formDataUpload.append('file', file);
+                        try {
+                          const res = await fetch('/api/upload-image', {
+                            method: 'POST',
+                            body: formDataUpload,
+                          });
+                          const data = await res.json();
+                          if (data.url) {
+                            const updatedImages = [...(formData.images || [])];
+                            updatedImages[2] = data.url;
+                            setFormData({ ...formData, images: updatedImages });
+                            toast.success('Image uploaded!');
+                          } else {
+                            toast.error('Image upload failed');
+                          }
+                        } catch {
+                          toast.error('Image upload failed');
+                        }
+                      }}
+                    />
+                    <Input
+                      id="image3-url"
                       placeholder="https://example.com/image3.jpg"
                       value={formData.images?.[2] || ''}
                       onChange={(e) => {
