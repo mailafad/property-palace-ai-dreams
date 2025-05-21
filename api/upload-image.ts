@@ -1,5 +1,3 @@
-import type { VercelRequest, VercelResponse } from '@vercel/node';
-import formidable from 'formidable';
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 
 const R2_ENDPOINT = "https://f03575aba5adc8b38d5d4c3a14e1a3d8.r2.cloudflarestorage.com";
@@ -9,9 +7,8 @@ const R2_BUCKET = "adrealestates";
 const R2_PUBLIC_URL = "https://pub-1c1af3c130fa48289cdc911af4e9c00f.r2.dev"; // e.g. https://accountid.r2.cloudflarestorage.com/bucket/
 
 export const config = {
-  api: {
-    bodyParser: false,
-  },
+  runtime: 'nodejs',
+  maxDuration: 15,
 };
 
 const s3 = new S3Client({
@@ -23,42 +20,35 @@ const s3 = new S3Client({
   },
 });
 
-const handler = async (req: VercelRequest, res: VercelResponse) => {
-  if (req.method !== 'POST') {
-    res.status(405).json({ error: 'Method not allowed' });
-    return;
-  }
-
-  const form = new formidable.IncomingForm();
-  form.parse(req, async (err, fields, files) => {
-    if (err) {
-      res.status(400).json({ error: 'Error parsing form data' });
-      return;
+export async function POST(request: Request) {
+  try {
+    const contentType = request.headers.get('content-type') || '';
+    if (!contentType.startsWith('multipart/form-data')) {
+      return new Response(JSON.stringify({ error: 'Invalid content type' }), { status: 400 });
     }
-    const file = files.file;
+
+    // Read the form data as a buffer
+    const formData = await request.formData();
+    const file = formData.get('file') as File;
     if (!file) {
-      res.status(400).json({ error: 'No file uploaded' });
-      return;
+      return new Response(JSON.stringify({ error: 'No file uploaded' }), { status: 400 });
     }
-    const fs = await import('fs');
-    const path = file.filepath || file.path;
-    const fileStream = fs.createReadStream(path);
-    const key = `${Date.now()}_${file.originalFilename || file.name}`;
 
-    try {
-      await s3.send(new PutObjectCommand({
-        Bucket: R2_BUCKET,
-        Key: key,
-        Body: fileStream,
-        ContentType: file.mimetype || 'application/octet-stream',
-      }));
-      const publicUrl = `${R2_PUBLIC_URL}/${key}`;
-      res.status(200).json({ url: publicUrl });
-    } catch (e) {
-      console.error('Upload error:', e);
-      res.status(500).json({ error: 'Upload failed', details: e instanceof Error ? e.message : e });
-    }
-  });
-};
+    const arrayBuffer = await file.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+    const key = `${Date.now()}_${file.name}`;
 
-export default handler;
+    await s3.send(new PutObjectCommand({
+      Bucket: R2_BUCKET,
+      Key: key,
+      Body: buffer,
+      ContentType: file.type || 'application/octet-stream',
+    }));
+
+    const publicUrl = `${R2_PUBLIC_URL}/${key}`;
+    return new Response(JSON.stringify({ url: publicUrl }), { status: 200, headers: { 'Content-Type': 'application/json' } });
+  } catch (e) {
+    console.error('Upload error:', e);
+    return new Response(JSON.stringify({ error: 'Upload failed', details: e instanceof Error ? e.message : String(e) }), { status: 500 });
+  }
+}
