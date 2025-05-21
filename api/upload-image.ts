@@ -55,7 +55,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       const publicUrl = `${R2_PUBLIC_URL}/${key}`;
       res.status(200).json({ url: publicUrl });
     } catch (e) {
-      res.status(500).json({ error: 'Upload failed', details: e });
+      console.error('Upload error:', e);
+      res.status(500).json({ error: 'Upload failed', details: e instanceof Error ? e.message : e });
     }
   });
 }
