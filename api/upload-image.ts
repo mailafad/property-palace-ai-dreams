@@ -7,7 +7,6 @@ const R2_BUCKET = "adrealestates";
 const R2_PUBLIC_URL = "https://pub-1c1af3c130fa48289cdc911af4e9c00f.r2.dev"; // e.g. https://accountid.r2.cloudflarestorage.com/bucket/
 
 export const config = {
-  runtime: 'nodejs',
   maxDuration: 15,
 };
 
