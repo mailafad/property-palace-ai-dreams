@@ -23,7 +23,7 @@ const s3 = new S3Client({
   },
 });
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
+const handler = async (req: VercelRequest, res: VercelResponse) => {
   if (req.method !== 'POST') {
     res.status(405).json({ error: 'Method not allowed' });
     return;
@@ -59,4 +59,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       res.status(500).json({ error: 'Upload failed', details: e instanceof Error ? e.message : e });
     }
   });
-}
+};
+
+export default handler;
