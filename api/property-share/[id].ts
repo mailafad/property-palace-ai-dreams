@@ -1,16 +1,11 @@
+import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { supabase } from '../../src/integrations/supabase/client';
 
-export const config = {
-  runtime: 'edge',
-};
-
-export async function GET(request: Request) {
-  // Extract property ID from URL
-  const url = new URL(request.url);
-  const id = url.pathname.split('/').pop();
-
-  if (!id) {
-    return new Response('Missing property ID', { status: 400 });
+export default async function handler(req: VercelRequest, res: VercelResponse) {
+  const { id } = req.query;
+  if (!id || typeof id !== 'string') {
+    res.status(400).send('Missing property ID');
+    return;
   }
 
   // Fetch property from Supabase
@@ -21,7 +16,8 @@ export async function GET(request: Request) {
     .single();
 
   if (error || !property) {
-    return new Response('Property not found', { status: 404 });
+    res.status(404).send('Property not found');
+    return;
   }
 
   const image = Array.isArray(property.images) && property.images.length > 0
@@ -52,8 +48,6 @@ export async function GET(request: Request) {
     </html>
   `;
 
-  return new Response(html, {
-    status: 200,
-    headers: { 'Content-Type': 'text/html' },
-  });
+  res.setHeader('Content-Type', 'text/html');
+  res.status(200).send(html);
 }
