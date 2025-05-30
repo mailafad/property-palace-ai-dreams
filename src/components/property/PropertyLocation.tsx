@@ -20,58 +20,120 @@ const PropertyLocation = ({ property }: PropertyLocationProps) => {
   const [hotspots, setHotspots] = useState<Hotspot[]>([]);
   
   useEffect(() => {
-    // Function to initialize the OpenStreetMap
-    const initializeMap = () => {
-      if (!mapRef.current || typeof window === 'undefined') return;
-      
+    // Helper to fetch coordinates from Nominatim
+    const fetchCoordinates = async (query: string) => {
       try {
-        // Create a variable to hold OSM libraries
+        const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}`;
+        const response = await fetch(url);
+        const data = await response.json();
+        if (data && data.length > 0) {
+          return [parseFloat(data[0].lat), parseFloat(data[0].lon)];
+        }
+      } catch (e) {
+        console.error('Geocoding failed:', e);
+      }
+      // Default to Chennai if not found
+      return [13.0827, 80.2707];
+    };
+
+    const initializeMap = async () => {
+      if (!mapRef.current || typeof window === 'undefined') return;
+
+      try {
         const L = (window as any).L;
-        
         if (!L) {
           console.error('Leaflet library not loaded');
           return;
         }
-        
-        // Chennai coordinates (default) - in a real app, get from property
-        const propertyLatLng = [13.0827, 80.2707]; 
-        
-        // Initialize the map
-        const map = L.map(mapRef.current).setView(propertyLatLng, 15);
-        
+
+        // Build query from property area/city/state
+        const query = [property.address, property.city, property.state].filter(Boolean).join(', ');
+        const propertyLatLng = await fetchCoordinates(query);
+
+        // Initialize the map centered on the area
+        const map = L.map(mapRef.current).setView(propertyLatLng, 13);
+
         // Add OpenStreetMap tile layer
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
           attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
-        
-        // Add property marker
-        L.marker(propertyLatLng).addTo(map)
-          .bindPopup(`<b>${property.title}</b><br>${property.address}`);
-        
-        // Mock nearby places - in a real app, you would use the Overpass API or similar
-        const mockHotspots: Hotspot[] = [
-          { type: 'restaurant', name: 'Saravana Bhavan', distance: '0.3 km', icon: <Utensils className="h-4 w-4" /> },
-          { type: 'school', name: 'Chennai Public School', distance: '0.8 km', icon: <School className="h-4 w-4" /> },
-          { type: 'shopping', name: 'Phoenix Marketcity', distance: '1.2 km', icon: <ShoppingBag className="h-4 w-4" /> },
-          { type: 'hospital', name: 'Apollo Hospital', distance: '1.5 km', icon: <Ambulance className="h-4 w-4" /> },
-          { type: 'bus', name: 'Anna Nagar Bus Terminal', distance: '0.6 km', icon: <Bus className="h-4 w-4" /> },
-          { type: 'cafe', name: 'Cafe Coffee Day', distance: '0.4 km', icon: <Coffee className="h-4 w-4" /> },
-        ];
-        
-        setHotspots(mockHotspots);
+
+        // Do NOT add a marker
+
+        // Fetch real nearby amenities using Overpass API
+        const overpassQuery = `[out:json][timeout:25];
+          (
+            node["amenity"](around:1000,${propertyLatLng[0]},${propertyLatLng[1]});
+            way["amenity"](around:1000,${propertyLatLng[0]},${propertyLatLng[1]});
+            relation["amenity"](around:1000,${propertyLatLng[0]},${propertyLatLng[1]});
+          );
+          out center;`;
+
+        const overpassUrl = "https://overpass-api.de/api/interpreter";
+        let realHotspots: Hotspot[] = [];
+        try {
+          const response = await fetch(overpassUrl, {
+            method: "POST",
+            body: overpassQuery,
+            headers: { "Content-Type": "text/plain" }
+          });
+          const data = await response.json();
+          if (data && data.elements) {
+            // Map amenity types to icons
+            const iconMap: Record<string, React.ReactNode> = {
+              restaurant: <Utensils className="h-4 w-4" />,
+              cafe: <Coffee className="h-4 w-4" />,
+              school: <School className="h-4 w-4" />,
+              hospital: <Ambulance className="h-4 w-4" />,
+              bus_station: <Bus className="h-4 w-4" />,
+              college: <School className="h-4 w-4" />,
+              university: <School className="h-4 w-4" />,
+              shopping_mall: <ShoppingBag className="h-4 w-4" />,
+              supermarket: <ShoppingBag className="h-4 w-4" />,
+              // Add more mappings as needed
+            };
+            realHotspots = data.elements
+              .filter((el: any) => el.tags && el.tags.amenity && el.tags.name)
+              .slice(0, 10) // Limit to 10 for performance
+              .map((el: any) => {
+                // Calculate distance (rough, haversine formula)
+                const R = 6371; // km
+                const dLat = ((el.lat - propertyLatLng[0]) * Math.PI) / 180;
+                const dLon = ((el.lon - propertyLatLng[1]) * Math.PI) / 180;
+                const a =
+                  Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                  Math.cos((propertyLatLng[0] * Math.PI) / 180) *
+                    Math.cos((el.lat * Math.PI) / 180) *
+                    Math.sin(dLon / 2) *
+                    Math.sin(dLon / 2);
+                const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+                const d = R * c;
+                return {
+                  type: el.tags.amenity,
+                  name: el.tags.name,
+                  distance: `${d.toFixed(2)} km`,
+                  icon: iconMap[el.tags.amenity] || <Building className="h-4 w-4" />,
+                };
+              });
+          }
+        } catch (err) {
+          console.error("Overpass API error:", err);
+        }
+
+        setHotspots(realHotspots);
         setIsMapLoaded(true);
       } catch (error) {
         console.error('Error initializing map:', error);
       }
     };
-    
+
     // Load Leaflet dynamically if it's not already loaded
     if (!(window as any).L) {
       const linkElement = document.createElement('link');
       linkElement.rel = 'stylesheet';
       linkElement.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
       document.head.appendChild(linkElement);
-      
+
       const scriptElement = document.createElement('script');
       scriptElement.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
       scriptElement.onload = initializeMap;
@@ -79,7 +141,7 @@ const PropertyLocation = ({ property }: PropertyLocationProps) => {
     } else {
       initializeMap();
     }
-    
+
     return () => {
       // Clean up
       if ((window as any).L && mapRef.current) {

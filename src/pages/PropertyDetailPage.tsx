@@ -41,9 +41,59 @@ const PropertyDetailPage = () => {
   }, [id, getPropertyById, navigate, loading]);
   
   const { loading: loadingProperties } = useProperty();
+  // Share button handler
+  const handleShare = async () => {
+    if (!property) return;
+    const shareUrl = window.location.href;
+    const shareTitle = property.title;
+    const shareText = `Check out this property: ${property.title}`;
+    const shareImage = property.images?.[0];
+
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: shareTitle,
+          text: shareText,
+          url: shareUrl,
+        });
+      } catch (err) {
+        // User cancelled or error
+      }
+    } else {
+      // Fallback: copy link
+      await navigator.clipboard.writeText(shareUrl);
+      toast.success("Link copied to clipboard!");
+    }
+  };
+
+  // Set Open Graph meta tags for sharing preview
+  useEffect(() => {
+    if (!property) return;
+    const metaTags = [
+      { property: "og:title", content: property.title },
+      { property: "og:description", content: property.description || "" },
+      { property: "og:image", content: property.images?.[0] || "" },
+      { property: "og:url", content: window.location.href },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: property.title },
+      { name: "twitter:description", content: property.description || "" },
+      { name: "twitter:image", content: property.images?.[0] || "" },
+    ];
+    metaTags.forEach(tag => {
+      let element = document.querySelector(`meta[${tag.property ? "property" : "name"}="${tag.property || tag.name}"]`);
+      if (!element) {
+        element = document.createElement("meta");
+        if (tag.property) element.setAttribute("property", tag.property);
+        if (tag.name) element.setAttribute("name", tag.name);
+        document.head.appendChild(element);
+      }
+      element.setAttribute("content", tag.content);
+    });
+  }, [property]);
+
   if (loadingProperties) return <div className="text-center py-10">Loading...</div>;
   if (!property) return null;
-  
+
   return (
     <div className="flex flex-col min-h-screen">
       <NavBar />
@@ -53,12 +103,28 @@ const PropertyDetailPage = () => {
           <ChevronLeft className="h-4 w-4 mr-1 text-black" />
           <span className="text-black">Back to Properties</span>
         </Link>
+
+        {/* Share Button */}
+        <div className="flex justify-end mb-4">
+          <button
+            onClick={handleShare}
+            className="inline-flex items-center px-4 py-2 bg-primary text-white rounded hover:bg-primary/90 transition"
+            aria-label="Share property"
+          >
+            <svg className="h-5 w-5 mr-2" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15 8a3 3 0 11-6 0 3 3 0 016 0zm6 8a3 3 0 11-6 0 3 3 0 016 0zm-6 0a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            Share
+          </button>
+        </div>
         
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_350px] gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_350px] gap-8 w-full max-w-full">
           <div>
             <PropertyDetailHeader property={property} />
             <PropertyPriceCard property={property} />
-            <PropertyImageGallery property={property} />
+            <div className="mb-10 md:mb-6">
+              <PropertyImageGallery property={property} />
+            </div>
             <PropertyDetailTabs property={property} />
           </div>
           

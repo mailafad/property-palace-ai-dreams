@@ -13,9 +13,9 @@ interface PropertySidebarProps {
 const PropertySidebar = ({ property }: PropertySidebarProps) => {
   console.log("Property type debug:", property.type);
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 w-full max-w-full">
       {/* Contact Form Card */}
-      <Card>
+      <Card className="w-full max-w-full">
         <CardHeader>
           <CardTitle>Contact Realtor</CardTitle>
           <CardDescription>Interested in this property? Send a message to the listing agent.</CardDescription>
@@ -51,7 +51,7 @@ const PropertySidebar = ({ property }: PropertySidebarProps) => {
       </Card>
       
       {/* Property Details Card */}
-      <Card>
+      <Card className="w-full max-w-full">
         <CardHeader>
           <CardTitle>Property Details</CardTitle>
         </CardHeader>

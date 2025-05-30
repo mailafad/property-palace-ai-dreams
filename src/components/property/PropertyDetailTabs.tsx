@@ -17,10 +17,10 @@ const PropertyDetailTabs = ({ property }: PropertyDetailTabsProps) => {
   
   return (
     <Tabs value={activeTab} onValueChange={setActiveTab} className="mt-6">
-      <TabsList className={`grid ${isMobile ? 'grid-cols-1 gap-2' : 'grid-cols-3'} mb-6`}>
-        <TabsTrigger value="description">Description</TabsTrigger>
-        <TabsTrigger value="features">Features</TabsTrigger>
-        <TabsTrigger value="location">Location</TabsTrigger>
+      <TabsList className={`mb-8 ${isMobile ? 'flex flex-col w-full gap-2' : 'grid grid-cols-3'}`}>
+        <TabsTrigger value="description" className={isMobile ? 'w-full' : ''}>Description</TabsTrigger>
+        <TabsTrigger value="features" className={isMobile ? 'w-full' : ''}>Features</TabsTrigger>
+        <TabsTrigger value="location" className={isMobile ? 'w-full' : ''}>Location</TabsTrigger>
       </TabsList>
       
       <TabsContent value="description">
