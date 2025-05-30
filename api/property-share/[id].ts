@@ -1,39 +1,35 @@
-import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { supabase } from '../../src/integrations/supabase/client';
 
-// Helper to fetch property by ID from Supabase
-async function getPropertyById(id: string) {
-  const { data, error } = await supabase
+export const config = {
+  runtime: 'edge',
+};
+
+export async function GET(request: Request) {
+  // Extract property ID from URL
+  const url = new URL(request.url);
+  const id = url.pathname.split('/').pop();
+
+  if (!id) {
+    return new Response('Missing property ID', { status: 400 });
+  }
+
+  // Fetch property from Supabase
+  const { data: property, error } = await supabase
     .from('properties')
     .select('id,title,description,images')
     .eq('id', id)
     .single();
 
-  if (error || !data) return null;
-  return data;
-}
-
-export default async function handler(req: VercelRequest, res: VercelResponse) {
-  const { id } = req.query;
-  if (!id || typeof id !== 'string') {
-    res.status(400).send('Missing property ID');
-    return;
-  }
-
-  const property = await getPropertyById(id);
-
-  if (!property) {
-    res.status(404).send('Property not found');
-    return;
+  if (error || !property) {
+    return new Response('Property not found', { status: 404 });
   }
 
   const image = Array.isArray(property.images) && property.images.length > 0
     ? property.images[0]
     : 'https://www.adrealestates.in/default-image.jpg';
 
-  const url = `https://www.adrealestates.in/properties/${property.id}`;
+  const redirectUrl = `https://www.adrealestates.in/property/${property.id}`;
 
-  // HTML with Open Graph meta tags
   const html = `
     <!DOCTYPE html>
     <html lang="en">
@@ -43,12 +39,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       <meta property="og:title" content="${property.title}" />
       <meta property="og:description" content="${property.description}" />
       <meta property="og:image" content="${image}" />
-      <meta property="og:url" content="${url}" />
+      <meta property="og:url" content="${redirectUrl}" />
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content="${property.title}" />
       <meta name="twitter:description" content="${property.description}" />
       <meta name="twitter:image" content="${image}" />
-      <meta http-equiv="refresh" content="0; url=${url}" />
+      <meta http-equiv="refresh" content="0; url=${redirectUrl}" />
     </head>
     <body>
       <p>Redirecting to property page...</p>
@@ -56,6 +52,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     </html>
   `;
 
-  res.setHeader('Content-Type', 'text/html');
-  res.status(200).send(html);
+  return new Response(html, {
+    status: 200,
+    headers: { 'Content-Type': 'text/html' },
+  });
 }
