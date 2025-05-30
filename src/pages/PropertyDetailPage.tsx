@@ -104,23 +104,10 @@ const PropertyDetailPage = () => {
           <span className="text-black">Back to Properties</span>
         </Link>
 
-        {/* Share Button */}
-        <div className="flex justify-end mb-4">
-          <button
-            onClick={handleShare}
-            className="inline-flex items-center px-4 py-2 bg-primary text-white rounded hover:bg-primary/90 transition"
-            aria-label="Share property"
-          >
-            <svg className="h-5 w-5 mr-2" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M15 8a3 3 0 11-6 0 3 3 0 016 0zm6 8a3 3 0 11-6 0 3 3 0 016 0zm-6 0a3 3 0 11-6 0 3 3 0 016 0z" />
-            </svg>
-            Share
-          </button>
-        </div>
         
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_350px] gap-8 w-full max-w-full">
           <div>
-            <PropertyDetailHeader property={property} />
+            <PropertyDetailHeader property={property} onShare={handleShare} />
             <PropertyPriceCard property={property} />
             <div className="mb-10 md:mb-6">
               <PropertyImageGallery property={property} />
