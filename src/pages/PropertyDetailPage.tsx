@@ -44,7 +44,7 @@ const PropertyDetailPage = () => {
   // Share button handler
   const handleShare = async () => {
     if (!property) return;
-    const shareUrl = window.location.href;
+    const shareUrl = `https://www.adrealestates.in/api/property-share-id?id=${property.id}`;
     const shareTitle = property.title;
     const shareText = `Check out this property: ${property.title}`;
     const shareImage = property.images?.[0];
