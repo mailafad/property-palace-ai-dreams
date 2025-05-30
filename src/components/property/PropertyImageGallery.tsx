@@ -35,14 +35,7 @@ const PropertyImageGallery = ({ property }: PropertyImageGalleryProps) => {
     <div className="mb-8">
       <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-2 rounded-lg overflow-hidden">
         <div className="aspect-[16/9] overflow-hidden relative cursor-pointer" onClick={() => openOverlay(0)}>
-          <img
-            src={images[0]}
-            alt={property.title}
-            className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
-          />
-          {images.length > 0 && (
-            <span className="absolute inset-0" />
-          )}
+          <HeroImageWithSkeleton src={images[0]} alt={property.title} />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-1 gap-2">
           {images.slice(1, maxThumbs).map((image, index) => {
@@ -115,6 +108,24 @@ const PropertyImageGallery = ({ property }: PropertyImageGalleryProps) => {
         </div>
       )}
     </div>
+  );
+};
+
+const HeroImageWithSkeleton = ({ src, alt }: { src: string; alt: string }) => {
+  const [loaded, setLoaded] = useState(false);
+  return (
+    <>
+      {!loaded && (
+        <div className="absolute inset-0 bg-gray-200 animate-pulse" />
+      )}
+      <img
+        src={src}
+        alt={alt}
+        className={`w-full h-full object-cover hover:scale-105 transition-transform duration-500 ${loaded ? 'opacity-100' : 'opacity-0'}`}
+        onLoad={() => setLoaded(true)}
+        style={{ transition: 'opacity 0.3s' }}
+      />
+    </>
   );
 };
 
