@@ -581,131 +581,69 @@ const PropertyFormPage = () => {
                   <CardDescription>Add images of the property</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="image1">Main Image</Label>
-                    <Input
-                      id="image1"
-                      type="file"
-                      accept="image/*"
-                      onChange={async (e) => {
-                        const file = e.target.files?.[0];
-                        if (!file) return;
-                        const formDataUpload = new FormData();
-                        formDataUpload.append('file', file);
-                        try {
-                          const res = await fetch('/api/upload-image', {
-                            method: 'POST',
-                            body: formDataUpload,
-                          });
-                          const data = await res.json();
-                          if (data.url) {
+                  {formData.images?.map((img, idx) => (
+                    <div className="space-y-2 border-b pb-4 mb-4 last:border-0 last:pb-0" key={idx}>
+                      <Label>Image {idx + 1}</Label>
+                      <div className="flex gap-2 items-center">
+                        <Input
+                          type="file"
+                          accept="image/*"
+                          onChange={async (e) => {
+                            const file = e.target.files?.[0];
+                            if (!file) return;
+                            const formDataUpload = new FormData();
+                            formDataUpload.append('file', file);
+                            try {
+                              const res = await fetch('/api/upload-image', {
+                                method: 'POST',
+                                body: formDataUpload,
+                              });
+                              const data = await res.json();
+                              if (data.url) {
+                                const updatedImages = [...(formData.images || [])];
+                                updatedImages[idx] = data.url;
+                                setFormData({ ...formData, images: updatedImages });
+                                toast.success('Image uploaded!');
+                              } else {
+                                toast.error('Image upload failed');
+                              }
+                            } catch {
+                              toast.error('Image upload failed');
+                            }
+                          }}
+                        />
+                        <Input
+                          placeholder="https://example.com/image.jpg"
+                          value={formData.images?.[idx] || ''}
+                          onChange={(e) => {
                             const updatedImages = [...(formData.images || [])];
-                            updatedImages[0] = data.url;
+                            updatedImages[idx] = e.target.value;
                             setFormData({ ...formData, images: updatedImages });
-                            toast.success('Image uploaded!');
-                          } else {
-                            toast.error('Image upload failed');
-                          }
-                        } catch {
-                          toast.error('Image upload failed');
-                        }
-                      }}
-                    />
-                    <Input
-                      id="image1-url"
-                      placeholder="https://example.com/image.jpg"
-                      value={formData.images?.[0] || ''}
-                      onChange={(e) => {
-                        const updatedImages = [...(formData.images || [])];
-                        updatedImages[0] = e.target.value;
-                        setFormData({ ...formData, images: updatedImages });
-                      }}
-                    />
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="image2">Additional Image</Label>
-                    <Input
-                      id="image2"
-                      type="file"
-                      accept="image/*"
-                      onChange={async (e) => {
-                        const file = e.target.files?.[0];
-                        if (!file) return;
-                        const formDataUpload = new FormData();
-                        formDataUpload.append('file', file);
-                        try {
-                          const res = await fetch('/api/upload-image', {
-                            method: 'POST',
-                            body: formDataUpload,
-                          });
-                          const data = await res.json();
-                          if (data.url) {
+                          }}
+                        />
+                        <Button
+                          type="button"
+                          variant="destructive"
+                          size="icon"
+                          onClick={() => {
                             const updatedImages = [...(formData.images || [])];
-                            updatedImages[1] = data.url;
+                            updatedImages.splice(idx, 1);
                             setFormData({ ...formData, images: updatedImages });
-                            toast.success('Image uploaded!');
-                          } else {
-                            toast.error('Image upload failed');
-                          }
-                        } catch {
-                          toast.error('Image upload failed');
-                        }
-                      }}
-                    />
-                    <Input
-                      id="image2-url"
-                      placeholder="https://example.com/image2.jpg"
-                      value={formData.images?.[1] || ''}
-                      onChange={(e) => {
-                        const updatedImages = [...(formData.images || [])];
-                        updatedImages[1] = e.target.value;
-                        setFormData({ ...formData, images: updatedImages });
-                      }}
-                    />
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="image3">Additional Image</Label>
-                    <Input
-                      id="image3"
-                      type="file"
-                      accept="image/*"
-                      onChange={async (e) => {
-                        const file = e.target.files?.[0];
-                        if (!file) return;
-                        const formDataUpload = new FormData();
-                        formDataUpload.append('file', file);
-                        try {
-                          const res = await fetch('/api/upload-image', {
-                            method: 'POST',
-                            body: formDataUpload,
-                          });
-                          const data = await res.json();
-                          if (data.url) {
-                            const updatedImages = [...(formData.images || [])];
-                            updatedImages[2] = data.url;
-                            setFormData({ ...formData, images: updatedImages });
-                            toast.success('Image uploaded!');
-                          } else {
-                            toast.error('Image upload failed');
-                          }
-                        } catch {
-                          toast.error('Image upload failed');
-                        }
-                      }}
-                    />
-                    <Input
-                      id="image3-url"
-                      placeholder="https://example.com/image3.jpg"
-                      value={formData.images?.[2] || ''}
-                      onChange={(e) => {
-                        const updatedImages = [...(formData.images || [])];
-                        updatedImages[2] = e.target.value;
-                        setFormData({ ...formData, images: updatedImages });
-                      }}
-                    />
-                  </div>
+                          }}
+                          aria-label="Remove image"
+                        >
+                          &times;
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => setFormData({ ...formData, images: [...(formData.images || []), ''] })}
+                  >
+                    + Add Image
+                  </Button>
                 </CardContent>
               </Card>
               

@@ -112,7 +112,10 @@ const AdminDashboard = () => {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {properties.slice(0, 5).map(property => (
+                {[...properties]
+                  .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+                  .slice(0, 5)
+                  .map(property => (
                   <div key={property.id} className="flex items-center justify-between border-b pb-4 last:border-0 last:pb-0">
                     <div className="flex items-center">
                       <div className="h-12 w-12 rounded overflow-hidden mr-3">

@@ -1,6 +1,7 @@
 
 import { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -44,9 +45,9 @@ import AdminHeader from '@/components/admin/AdminHeader';
 
 const AdminPropertiesPage = () => {
   const { properties, deleteProperty } = useProperty();
+  const { isAdmin, loading } = useAuth();
   const navigate = useNavigate();
   
-  const [isAdmin, setIsAdmin] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredProperties, setFilteredProperties] = useState(properties);
   const [propertyToDelete, setPropertyToDelete] = useState<string | null>(null);
@@ -54,13 +55,10 @@ const AdminPropertiesPage = () => {
   const itemsPerPage = 10;
   
   useEffect(() => {
-    const adminAuthenticated = localStorage.getItem('adminAuthenticated');
-    if (adminAuthenticated !== 'true') {
+    if (!loading && !isAdmin) {
       navigate('/admin');
-    } else {
-      setIsAdmin(true);
     }
-  }, [navigate]);
+  }, [isAdmin, loading, navigate]);
   
   useEffect(() => {
     const filtered = properties.filter(property => 
@@ -73,6 +71,7 @@ const AdminPropertiesPage = () => {
     setCurrentPage(1); // Reset to first page when search changes
   }, [searchTerm, properties]);
   
+  if (loading) return null;
   if (!isAdmin) return null;
   
   const statusColors = {
