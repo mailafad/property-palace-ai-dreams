@@ -46,7 +46,9 @@ const PropertyDescription = ({ property }: PropertyDescriptionProps) => {
           <Badge variant="secondary" className="mb-2">
             {formatPropertyType(property)}
           </Badge>
-          <p className="mt-4" style={{ whiteSpace: "pre-line" }}>{property.description}</p>
+          <div className="mt-4 prose prose-sm prose-a:text-blue-600 prose-strong:text-black prose-em:text-gray-700">
+            <ReactMarkdown>{property.description}</ReactMarkdown>
+          </div>
         </div>
         <div className="mt-6 p-4 bg-primary/5 rounded-lg border border-primary/10">
           <h3 className="text-lg font-medium mb-2">Property Highlights</h3>
