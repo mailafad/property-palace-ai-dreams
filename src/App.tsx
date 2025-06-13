@@ -13,6 +13,7 @@ import Index from "./pages/Index";
 import PropertiesPage from "./pages/PropertiesPage";
 import PropertyDetailPage from "./pages/PropertyDetailPage";
 import ContactPage from "./pages/ContactPage";
+import AboutUs from "./pages/AboutUs";
 import AuthPage from "./pages/AuthPage";
 import AdminLoginPage from "./pages/AdminLoginPage";
 import AdminDashboard from "./pages/admin";
@@ -80,6 +81,7 @@ const AppRoutes = () => (
     <Route path="/properties" element={<PropertiesPage />} />
     <Route path="/property/:id" element={<PropertyDetailPage />} />
     <Route path="/contact" element={<ContactPage />} />
+    <Route path="/aboutus" element={<AboutUs />} />
     <Route path="/auth" element={<AuthPage />} />
     <Route path="/request-listing" element={<RequestListingPage />} />
     
