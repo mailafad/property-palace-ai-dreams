@@ -32,10 +32,15 @@ ${location ? "\nLocation: " + location : ""}
       })
     });
     const data = await response.json();
-    const text = data?.candidates?.[0]?.content?.parts?.[0]?.text || "No highlights generated.";
+    console.log("Gemini API raw response:", JSON.stringify(data));
+    const text =
+      data?.candidates?.[0]?.content?.parts?.[0]?.text ||
+      data?.candidates?.[0]?.content?.parts?.[0]?.stringValue ||
+      data?.candidates?.[0]?.content?.text ||
+      "No highlights generated.";
     // Remove common AI intro phrases if present
     const cleaned = text.replace(/^(Sure,|Here are|As an AI|AI:|Highlights:|Property highlights:|Some highlights:|The highlights:|Key highlights:|Strong points:|)/i, '').trim();
-    res.status(200).json({ highlights: cleaned });
+    res.status(200).json({ highlights: cleaned, debug: data });
   } catch (error) {
     res.status(500).json({ error: "Failed to generate highlights" });
   }
