@@ -9,6 +9,8 @@ interface PropertyDescriptionProps {
 import React, { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 
+import remarkGfm from "remark-gfm";
+
 const PropertyDescription = ({ property }: PropertyDescriptionProps) => {
   const [highlights, setHighlights] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -47,8 +49,8 @@ const PropertyDescription = ({ property }: PropertyDescriptionProps) => {
           <Badge variant="secondary" className="mb-2">
             {formatPropertyType(property)}
           </Badge>
-          <div className="mt-4 prose prose-sm prose-a:text-blue-600 prose-strong:text-black prose-em:text-gray-700">
-            <ReactMarkdown>{property.description}</ReactMarkdown>
+          <div className="mt-4 prose prose-sm prose-a:text-blue-600 prose-strong:text-black prose-em:text-gray-700" style={{ whiteSpace: "pre-line" }}>
+            <ReactMarkdown remarkPlugins={[remarkGfm]}>{property.description}</ReactMarkdown>
           </div>
         </div>
         <div className="mt-6 p-4 bg-primary/5 rounded-lg border border-primary/10">
@@ -56,7 +58,9 @@ const PropertyDescription = ({ property }: PropertyDescriptionProps) => {
           {loading ? (
             <p className="text-muted-foreground">Generating highlights...</p>
           ) : highlights ? (
-            <p className="text-muted-foreground" style={{ whiteSpace: "pre-line" }}>{highlights}</p>
+            <div className="text-muted-foreground" style={{ whiteSpace: "pre-line" }}>
+              <ReactMarkdown remarkPlugins={[remarkGfm]}>{highlights || ""}</ReactMarkdown>
+            </div>
           ) : (
             <p className="text-muted-foreground">No highlights available.</p>
           )}
