@@ -7,6 +7,7 @@ interface PropertyDescriptionProps {
 }
 
 import React, { useEffect, useState } from "react";
+import ReactMarkdown from "react-markdown";
 
 const PropertyDescription = ({ property }: PropertyDescriptionProps) => {
   const [highlights, setHighlights] = useState<string | null>(null);
