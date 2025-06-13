@@ -13,19 +13,35 @@ type PropertyFeatures = {
 
 export const generateAIDescription = async (features: PropertyFeatures): Promise<string> => {
   console.log('Generating AI description with features:', features);
-  
-  // In a real implementation, this would be an API call to an AI service
-  // For now, we'll simulate with a template-based approach
-  
-  // Simulate API delay
-  await new Promise(resolve => setTimeout(resolve, 1500));
-  
-  const intro = getIntroByPropertyType(features.propertyType, features.location);
-  const mainFeatures = getMainFeatures(features);
-  const locationBenefits = getLocationBenefits(features.location);
-  const conclusion = getConclusion(features.propertyType);
-  
-  return `${intro} ${mainFeatures} ${locationBenefits} ${conclusion}`;
+
+  // Compose a prompt for Gemini
+  const prompt = `
+You are a real estate market expert. Given the following property details, analyze and provide strong selling points and highlights, considering current market trends and the growth of the area. Do not start your response with generic phrases like "Sure," "Here are," or "As an AI." Go straight to the highlights.
+
+Property Details:
+Bedrooms: ${features.bedrooms}
+Bathrooms: ${features.bathrooms}
+Square Feet: ${features.squareFeet}
+Property Type: ${features.propertyType}
+Year Built: ${features.yearBuilt}
+Location: ${features.location}
+Features: ${features.features.join(", ")}
+`;
+
+  try {
+    const res = await fetch("/api/gemini-property-highlights", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        description: prompt,
+        location: features.location
+      })
+    });
+    const data = await res.json();
+    return data.highlights || "No highlights generated.";
+  } catch (e) {
+    return "Failed to generate highlights.";
+  }
 };
 
 const getIntroByPropertyType = (propertyType: string, location: string): string => {
