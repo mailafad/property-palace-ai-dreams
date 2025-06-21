@@ -24,6 +24,7 @@ import RequestListingPage from "./pages/RequestListingPage";
 import AdminListingRequestsPage from "./pages/admin/AdminListingRequestsPage";
 import AdminContactsPage from "./pages/admin/AdminContactsPage";
 import NotFound from "./pages/NotFound";
+import PropMateChatWidget from "./components/PropMateChatWidget";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -131,21 +132,24 @@ const AppRoutes = () => (
 );
 
 const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <HelmetProvider>
-      <BrowserRouter>
-        <AuthProvider>
-          <PropertyProvider>
-            <TooltipProvider>
-              <Toaster />
-              <Sonner />
-              <AppRoutes />
-            </TooltipProvider>
-          </PropertyProvider>
-        </AuthProvider>
-      </BrowserRouter>
-    </HelmetProvider>
-  </QueryClientProvider>
+  <>
+    <QueryClientProvider client={queryClient}>
+      <HelmetProvider>
+        <BrowserRouter>
+          <AuthProvider>
+            <PropertyProvider>
+              <TooltipProvider>
+                <Toaster />
+                <Sonner />
+                <AppRoutes />
+              </TooltipProvider>
+            </PropertyProvider>
+          </AuthProvider>
+        </BrowserRouter>
+      </HelmetProvider>
+    </QueryClientProvider>
+    <PropMateChatWidget />
+  </>
 );
 
 export default App;
