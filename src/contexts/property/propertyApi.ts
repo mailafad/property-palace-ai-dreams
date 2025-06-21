@@ -20,7 +20,7 @@ export async function fetchProperties() {
       `);
     
     if (error) {
-      toast.error('Error loading properties');
+      console.error('Error loading properties', error);
       throw error;
     }
     
@@ -115,7 +115,7 @@ export async function addPropertyToDb(property: Omit<Property, 'id' | 'createdAt
     .single();
   
   if (error) {
-    toast.error('Error adding property');
+    console.error('Error adding property', error);
     throw error;
   }
   
@@ -161,7 +161,7 @@ export async function updatePropertyInDb(id: string, updatedFields: Partial<Prop
     .eq('id', id);
   
   if (error) {
-    toast.error('Error updating property');
+    console.error('Error updating property', error);
     throw error;
   }
 }
@@ -173,7 +173,7 @@ export async function deletePropertyFromDb(id: string) {
     .eq('id', id);
   
   if (error) {
-    toast.error('Error deleting property');
+    console.error('Error deleting property', error);
     throw error;
   }
 }
