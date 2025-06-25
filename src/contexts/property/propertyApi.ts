@@ -10,6 +10,7 @@ export async function fetchProperties() {
       .from('properties')
       .select(`
         *,
+        property_code,
         realtors:realtor_id (
           id,
           name,
@@ -24,45 +25,66 @@ export async function fetchProperties() {
       throw error;
     }
     
-    return data.map(item => {
-      const { realtors, ...property } = item;
-      
-      // Convert the database features (Json) to our app's Feature[] type
-      const features: Feature[] = Array.isArray(property.features) 
-        ? property.features.map((item: any) => ({
-            name: item.name || '',
-            value: item.value !== undefined ? item.value : ''
-          }))
-        : [];
-      
-      return {
-        id: property.id,
-        title: property.title,
-        price: property.price,
-        address: property.address,
-        city: property.city,
-        state: property.state,
-        zipCode: property.zip_code,
-        description: property.description,
-        aiDescription: property.ai_description,
-        // Convert string type from database to our app's type structure
-        type: {
-          mainType: property.type_main as Property['type']['mainType'],
-          subType: property.type_sub || undefined
-        },
-        bedrooms: property.bedrooms,
-        bathrooms: property.bathrooms,
-        area: property.area,
-        yearBuilt: property.year_built,
-        features: features,
-        images: property.images,
-        featured: property.featured,
-        status: property.status as Property['status'],
-        createdAt: property.created_at,
-        updatedAt: property.updated_at,
-        realtor: realtors || { id: '', name: '', phone: '', email: '', photo: null }
-      } as Property;
-    });
+    return data
+      .filter(item => typeof item === 'object' && item !== null)
+      .map(item => {
+        // item may have property_code and realtors as separate keys
+        // Defensive: Only destructure if keys exist
+        const realtors = (item as any).realtors ?? null;
+        const property_code = (item as any).property_code ?? undefined;
+        // Only spread if item is an object
+        let property: any = {};
+        // Only spread if item is a plain object and not null/array
+        if (
+          typeof item === 'object' &&
+          item !== null &&
+          !Array.isArray(item)
+        ) {
+          property = { ...(item as Record<string, any>) };
+          delete property.realtors;
+          delete property.property_code;
+        } else {
+          // If not a plain object, skip this item
+          return null;
+        }
+
+        // Convert the database features (Json) to our app's Feature[] type
+        const features: Feature[] = Array.isArray(property.features)
+          ? property.features.map((item: any) => ({
+              name: item.name || '',
+              value: item.value !== undefined ? item.value : ''
+            }))
+          : [];
+
+        return {
+          id: property.id,
+          propertyCode: property_code || undefined,
+          title: property.title,
+          price: property.price,
+          address: property.address,
+          city: property.city,
+          state: property.state,
+          zipCode: property.zip_code,
+          description: property.description,
+          aiDescription: property.ai_description,
+          // Convert string type from database to our app's type structure
+          type: {
+            mainType: property.type_main as Property['type']['mainType'],
+            subType: property.type_sub || undefined
+          },
+          bedrooms: property.bedrooms,
+          bathrooms: property.bathrooms,
+          area: property.area,
+          yearBuilt: property.year_built,
+          features: features,
+          images: property.images,
+          featured: property.featured,
+          status: property.status as Property['status'],
+          createdAt: property.created_at,
+          updatedAt: property.updated_at,
+          realtor: realtors || { id: '', name: '', phone: '', email: '', photo: null }
+        } as Property;
+      }).filter(Boolean);
   } catch (error) {
     console.error('Error in fetchProperties:', error);
     return [];

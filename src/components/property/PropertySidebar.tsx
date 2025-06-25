@@ -61,6 +61,10 @@ const PropertySidebar = ({ property }: PropertySidebarProps) => {
             <span>{new Date(property.createdAt).toLocaleDateString()}</span>
           </div>
           <div className="flex justify-between">
+            <span className="text-muted-foreground">Property Code</span>
+            <span className="font-mono">{property.propertyCode ? property.propertyCode.toUpperCase() : '-'}</span>
+          </div>
+          <div className="flex justify-between">
             <span className="text-muted-foreground">Property ID</span>
             <span>#{property.id}</span>
           </div>

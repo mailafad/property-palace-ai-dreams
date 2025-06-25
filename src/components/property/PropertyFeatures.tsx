@@ -16,6 +16,10 @@ const PropertyFeatures = ({ property }: PropertyFeaturesProps) => {
           <h3 className="text-lg font-medium mb-2">Basic Information</h3>
           <ul className="space-y-2">
             <li className="flex justify-between">
+              <span className="text-muted-foreground">Property Code</span>
+              <span className="font-mono font-medium">{property.propertyCode ? property.propertyCode.toUpperCase() : '-'}</span>
+            </li>
+            <li className="flex justify-between">
               <span className="text-muted-foreground">Property Type</span>
               <span className="font-medium capitalize">{formatPropertyType(property)}</span>
             </li>
