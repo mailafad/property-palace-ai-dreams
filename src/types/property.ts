@@ -1,4 +1,4 @@
-export type MainPropertyType = 'land' | 'individual-house' | 'individual-bungalow' | 'flat-apartment' | 'villa';
+export type MainPropertyType = 'land' | 'individual-house' | 'individual-bungalow' | 'flat-apartment' | 'villa' | 'shop' | 'office' | 'commercial-space';
 
 export type LandType = 'residential' | 'commercial' | 'industrial' | 'agricultural';
 export type FlatApartmentType = 'studio' | 'duplex' | 'penthouse';
@@ -25,10 +25,10 @@ export interface Property {
   description: string;
   aiDescription?: string;
   type: PropertyTypeDetails;
-  bedrooms: number;
-  bathrooms: number;
+  bedrooms?: number; // Optional for commercial/land
+  bathrooms?: number; // Optional for commercial/land
   area: number; // square feet
-  yearBuilt: number;
+  yearBuilt?: number; // Optional for commercial/land
   features: Feature[];
   images: string[];
   featured: boolean;

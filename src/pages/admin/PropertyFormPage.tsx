@@ -244,7 +244,13 @@ const PropertyFormPage = () => {
   };
   
   const generatePropertyDescription = async () => {
-    if (!formData.bedrooms || !formData.bathrooms || !formData.area || !formData.city) {
+    // For residential types, require bedrooms and bathrooms; for others, only area and city/state
+    const isResidential = ['individual-house', 'individual-bungalow', 'flat-apartment', 'villa'].includes(formData.type?.mainType || '');
+    if (
+      !formData.area ||
+      !formData.city ||
+      (isResidential && (!formData.bedrooms || !formData.bathrooms))
+    ) {
       toast.error('Please fill in basic property details first');
       return;
     }
@@ -363,6 +369,9 @@ const PropertyFormPage = () => {
                           <SelectItem value="individual-bungalow">Individual Bungalow</SelectItem>
                           <SelectItem value="flat-apartment">Flat / Apartment</SelectItem>
                           <SelectItem value="villa">Villa</SelectItem>
+                          <SelectItem value="shop">Shop</SelectItem>
+                          <SelectItem value="office">Office</SelectItem>
+                          <SelectItem value="commercial-space">Commercial Space</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
@@ -449,27 +458,33 @@ const PropertyFormPage = () => {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="bedrooms">Bedrooms</Label>
-                      <Input
-                        id="bedrooms"
-                        name="bedrooms"
-                        type="number"
-                        value={formData.bedrooms || ''}
-                        onChange={handleChange}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="bathrooms">Bathrooms</Label>
-                      <Input
-                        id="bathrooms"
-                        name="bathrooms"
-                        type="number"
-                        step="0.5"
-                        value={formData.bathrooms || ''}
-                        onChange={handleChange}
-                      />
-                    </div>
+                    {/* Show bedrooms and bathrooms only for residential types */}
+                    {['individual-house', 'individual-bungalow', 'flat-apartment', 'villa'].includes(formData.type?.mainType || '') && (
+                      <>
+                        <div className="space-y-2">
+                          <Label htmlFor="bedrooms">Bedrooms</Label>
+                          <Input
+                            id="bedrooms"
+                            name="bedrooms"
+                            type="number"
+                            value={formData.bedrooms || ''}
+                            onChange={handleChange}
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="bathrooms">Bathrooms</Label>
+                          <Input
+                            id="bathrooms"
+                            name="bathrooms"
+                            type="number"
+                            step="0.5"
+                            value={formData.bathrooms || ''}
+                            onChange={handleChange}
+                          />
+                        </div>
+                      </>
+                    )}
+                    {/* Area is always shown */}
                     <div className="space-y-2">
                       <Label htmlFor="area">Square Feet</Label>
                       <Input
@@ -480,16 +495,19 @@ const PropertyFormPage = () => {
                         onChange={handleChange}
                       />
                     </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="yearBuilt">Year Built</Label>
-                      <Input
-                        id="yearBuilt"
-                        name="yearBuilt"
-                        type="number"
-                        value={formData.yearBuilt || ''}
-                        onChange={handleChange}
-                      />
-                    </div>
+                    {/* Show year built only for residential types */}
+                    {['individual-house', 'individual-bungalow', 'flat-apartment', 'villa'].includes(formData.type?.mainType || '') && (
+                      <div className="space-y-2">
+                        <Label htmlFor="yearBuilt">Year Built</Label>
+                        <Input
+                          id="yearBuilt"
+                          name="yearBuilt"
+                          type="number"
+                          value={formData.yearBuilt || ''}
+                          onChange={handleChange}
+                        />
+                      </div>
+                    )}
                   </div>
                   
                   <Separator className="my-4" />

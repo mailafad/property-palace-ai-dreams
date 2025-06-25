@@ -2,13 +2,13 @@
 // In a real application, you would connect to an AI service like OpenAI
 
 type PropertyFeatures = {
-  bedrooms: number;
-  bathrooms: number;
-  squareFeet: number;
+  bedrooms?: number;
+  bathrooms?: number;
+  squareFeet?: number;
   propertyType: string;
-  yearBuilt: number;
+  yearBuilt?: number;
   location: string;
-  features: string[];
+  features?: string[];
 };
 
 export const generateAIDescription = async (features: PropertyFeatures): Promise<string> => {
@@ -19,13 +19,13 @@ export const generateAIDescription = async (features: PropertyFeatures): Promise
 You are a real estate market expert. Given the following property details, analyze and provide strong selling points and highlights, considering current market trends and the growth of the area. Do not start your response with generic phrases like "Sure," "Here are," or "As an AI." Go straight to the highlights.
 
 Property Details:
-Bedrooms: ${features.bedrooms}
-Bathrooms: ${features.bathrooms}
-Square Feet: ${features.squareFeet}
+${typeof features.bedrooms === 'number' ? `Bedrooms: ${features.bedrooms}\n` : ''}
+${typeof features.bathrooms === 'number' ? `Bathrooms: ${features.bathrooms}\n` : ''}
+${typeof features.squareFeet === 'number' ? `Square Feet: ${features.squareFeet}\n` : ''}
 Property Type: ${features.propertyType}
-Year Built: ${features.yearBuilt}
+${typeof features.yearBuilt === 'number' ? `Year Built: ${features.yearBuilt}\n` : ''}
 Location: ${features.location}
-Features: ${features.features.join(", ")}
+${features.features && features.features.length > 0 ? `Features: ${features.features.join(", ")}\n` : ''}
 `;
 
   try {
@@ -70,6 +70,21 @@ const getIntroByPropertyType = (propertyType: string, location: string): string 
       `Experience unparalleled luxury in this magnificent villa in prestigious ${location}.`,
       `Indulge in the ultimate lifestyle in this breathtaking villa situated in exclusive ${location}.`,
       `Opulence and elegance define this extraordinary villa in the premier ${location} enclave.`
+    ],
+    'shop': [
+      `Prime retail shop opportunity in the bustling area of ${location}.`,
+      `Unlock your business potential with this well-located shop in ${location}.`,
+      `Exceptional shop space available in the heart of ${location}.`
+    ],
+    'office': [
+      `Modern office space in a strategic location at ${location}.`,
+      `Elevate your business with this premium office in ${location}.`,
+      `Professional office environment in the thriving area of ${location}.`
+    ],
+    'commercial-space': [
+      `Versatile commercial space in the prime business district of ${location}.`,
+      `Expand your enterprise with this outstanding commercial property in ${location}.`,
+      `Exceptional commercial space available in the sought-after ${location} area.`
     ]
   };
   
@@ -78,35 +93,40 @@ const getIntroByPropertyType = (propertyType: string, location: string): string 
 };
 
 const getMainFeatures = (features: PropertyFeatures): string => {
-  const bedroomText = features.bedrooms > 0 
-    ? `${features.bedrooms} spacious bedroom${features.bedrooms > 1 ? 's' : ''}` 
+  const bedroomText = typeof features.bedrooms === 'number' && features.bedrooms > 0
+    ? `${features.bedrooms} spacious bedroom${features.bedrooms > 1 ? 's' : ''}`
     : '';
-  
-  const bathroomText = features.bathrooms > 0 
-    ? `${features.bathrooms} designer bathroom${features.bathrooms > 1 ? 's' : ''}` 
+
+  const bathroomText = typeof features.bathrooms === 'number' && features.bathrooms > 0
+    ? `${features.bathrooms} designer bathroom${features.bathrooms > 1 ? 's' : ''}`
     : '';
-  
-  const spaceText = features.squareFeet > 0 
-    ? `approximately ${features.squareFeet} square feet of living space` 
+
+  const spaceText = typeof features.squareFeet === 'number' && features.squareFeet > 0
+    ? `approximately ${features.squareFeet} square feet of space`
     : '';
-  
-  const yearText = features.yearBuilt > 0 
-    ? features.yearBuilt > 2000 
-      ? `built in ${features.yearBuilt} with modern finishes` 
-      : `built in ${features.yearBuilt} with timeless charm` 
+
+  const yearText = typeof features.yearBuilt === 'number' && features.yearBuilt > 0
+    ? features.yearBuilt > 2000
+      ? `built in ${features.yearBuilt} with modern finishes`
+      : `built in ${features.yearBuilt} with timeless charm`
     : '';
-  
-  const featuresText = features.features.length > 0 
+
+  const featuresText = features.features && features.features.length > 0
     ? `Impressive amenities include ${features.features.slice(0, 3).join(', ')}${features.features.length > 3 ? ', and more' : ''}.`
     : '';
-  
+
   let mainText = 'This property offers ';
   const featuresArray = [bedroomText, bathroomText, spaceText, yearText].filter(Boolean);
-  
+
   if (featuresArray.length) {
     mainText += featuresArray.join(', ') + '. ';
+  } else if (featuresText) {
+    mainText += featuresText;
+    return mainText;
+  } else {
+    return '';
   }
-  
+
   return mainText + featuresText;
 };
 
@@ -147,6 +167,21 @@ const getConclusion = (propertyType: string): string => {
       "This extraordinary villa represents the epitome of luxury living.",
       "A rare gem in today's market, this villa offers unparalleled elegance and comfort.",
       "Schedule your private viewing to experience this exceptional villa firsthand."
+    ],
+    'shop': [
+      "Don't miss this chance to secure a prime retail location for your business.",
+      "A rare opportunity for entrepreneurs to establish their presence in a thriving area.",
+      "Take your business to the next level with this exceptional shop space."
+    ],
+    'office': [
+      "Elevate your company's image with this outstanding office space.",
+      "A strategic location for your growing business needs.",
+      "Schedule a viewing to experience this professional office environment."
+    ],
+    'commercial-space': [
+      "Unlock the potential of your business with this versatile commercial property.",
+      "A unique opportunity to expand in a high-demand commercial district.",
+      "Contact us today to explore this exceptional commercial space."
     ]
   };
 
