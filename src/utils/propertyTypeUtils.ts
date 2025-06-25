@@ -10,7 +10,10 @@ export const formatPropertyType = (property: Property) => {
     'individual-house': 'Individual House',
     'individual-bungalow': 'Individual Bungalow',
     'flat-apartment': 'Flat / Apartment',
-    'villa': 'Villa'
+    'villa': 'Villa',
+    'shop': 'Shop',
+    'office': 'Office',
+    'commercial-space': 'Commercial Space'
   };
 
   const subTypeMap = {

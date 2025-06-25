@@ -65,7 +65,14 @@ const PropertyDetailHeader = ({ property, onShare }: PropertyDetailHeaderProps) 
             </Badge>
           )}
         </div>
-        <h1 className="text-2xl md:text-3xl font-bold">{property.title}</h1>
+        <h1 className="text-2xl md:text-3xl font-bold flex items-center gap-2">
+          {property.title}
+          {property.propertyCode && (
+            <span className="text-base font-mono text-gray-500 bg-gray-100 px-2 py-1 rounded ml-2">
+              {property.propertyCode.toUpperCase()}
+            </span>
+          )}
+        </h1>
         <div className="flex items-center text-muted-foreground mt-1">
           <MapPin className="h-4 w-4 mr-1" />
           <p>{property.address}, {property.city}, {property.state} {property.zipCode}</p>

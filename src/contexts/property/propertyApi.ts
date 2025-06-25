@@ -71,10 +71,29 @@ export async function fetchProperties() {
 
 export async function addPropertyToDb(property: Omit<Property, 'id' | 'createdAt' | 'updatedAt'>) {
   const { realtor, ...propertyData } = property;
-  
+
   // Convert our app's Feature[] to Json format for the database
   const featuresJson = propertyData.features as unknown as Json;
-  
+
+  // 1. Get the current max property_code number
+  let nextCode = 'ad1';
+  const { data: codeRows, error: codeError } = await supabase
+    .from('properties')
+    .select('property_code')
+    .order('created_at', { ascending: true });
+
+  if (!codeError && Array.isArray(codeRows)) {
+    // Extract numbers from codes like 'ad1', 'ad2', ...
+    const nums = codeRows
+      .map((row: any) => {
+        const match = typeof row.property_code === 'string' && row.property_code.match(/^ad(\d+)$/);
+        return match ? parseInt(match[1], 10) : null;
+      })
+      .filter((n: number | null) => n !== null) as number[];
+    const maxNum = nums.length > 0 ? Math.max(...nums) : 0;
+    nextCode = `ad${maxNum + 1}`;
+  }
+
   // Create the property object to insert, ensuring we don't pass empty UUID values
   const propertyToInsert = {
     title: propertyData.title,
@@ -95,10 +114,11 @@ export async function addPropertyToDb(property: Omit<Property, 'id' | 'createdAt
     images: propertyData.images,
     featured: propertyData.featured,
     status: propertyData.status,
+    property_code: nextCode,
     // Only include realtor_id if it's a valid non-empty string
     ...(realtor?.id && realtor.id !== '' ? { realtor_id: realtor.id } : {})
   };
-  
+
   const { data, error } = await supabase
     .from('properties')
     .insert(propertyToInsert)
@@ -113,12 +133,12 @@ export async function addPropertyToDb(property: Omit<Property, 'id' | 'createdAt
       )
     `)
     .single();
-  
+
   if (error) {
     console.error('Error adding property', error);
     throw error;
   }
-  
+
   return data;
 }
 

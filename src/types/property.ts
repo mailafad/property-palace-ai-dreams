@@ -16,6 +16,7 @@ export interface Feature {
 
 export interface Property {
   id: string;
+  propertyCode?: string; // Human-friendly code like ad1, ad2
   title: string;
   price: number;
   address: string;
