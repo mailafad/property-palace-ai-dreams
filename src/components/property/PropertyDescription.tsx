@@ -49,6 +49,16 @@ const PropertyDescription = ({ property }: PropertyDescriptionProps) => {
           <Badge variant="secondary" className="mb-2">
             {formatPropertyType(property)}
           </Badge>
+          <div className="flex flex-wrap gap-4 text-sm text-gray-700 mb-2">
+            <div>
+              <span className="font-semibold">Property Code:</span>{" "}
+              {property.propertyCode ? property.propertyCode.toUpperCase() : "-"}
+            </div>
+            <div>
+              <span className="font-semibold">Property ID:</span>{" "}
+              <span className="font-mono text-xs text-gray-500">#{property.id}</span>
+            </div>
+          </div>
           <div className="mt-4 prose prose-sm prose-a:text-blue-600 prose-strong:text-black prose-em:text-gray-700" style={{ whiteSpace: "pre-line" }}>
             <ReactMarkdown remarkPlugins={[remarkGfm]}>{property.description}</ReactMarkdown>
           </div>

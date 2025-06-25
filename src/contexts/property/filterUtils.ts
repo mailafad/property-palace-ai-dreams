@@ -8,11 +8,12 @@ export function applyFilters(properties: Property[], filter: PropertyFilter): Pr
   if (filter.search) {
     const searchLower = filter.search.toLowerCase();
     result = result.filter(property => 
-      property.title.toLowerCase().includes(searchLower) || 
+      property.title.toLowerCase().includes(searchLower) ||
       property.address.toLowerCase().includes(searchLower) ||
       property.city.toLowerCase().includes(searchLower) ||
       property.state.toLowerCase().includes(searchLower) ||
-      property.zipCode.includes(filter.search)
+      property.zipCode.includes(filter.search) ||
+      (property.propertyCode && property.propertyCode.toLowerCase().includes(searchLower))
     );
   }
   
