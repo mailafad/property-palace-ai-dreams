@@ -86,10 +86,18 @@ const ContactPage = () => {
             </div>
             
             <div className="mt-8 aspect-[4/3] bg-gray-100 rounded-lg flex items-center justify-center">
-              <div className="text-center p-4">
-                <MapPin className="h-8 w-8 mb-2 mx-auto text-muted-foreground" />
-                <p className="text-muted-foreground">Map would be displayed here</p>
-              </div>
+              <div className="mt-0 bg-gray-100 rounded-lg overflow-hidden w-full h-[350px]">
+                  <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d8874.861323607745!2d80.144663729492!3d12.977492157551284!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a525e2d7354b699%3A0x5e69889436be4ebf!2s1%2C%20Kalaignar%20Rd%2C%20Anna%20Nagar%2C%20Mallika%20Nagar%2C%20Meenambakkam%2C%20Chennai%2C%20Tamil%20Nadu%20600016!5e0!3m2!1sen!2sin!4v1754545216452!5m2!1sen!2sin"
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0 }}
+                    allowFullScreen
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    title="Company Location"/>
+                </div>
+
             </div>
           </div>
         </div>
