@@ -10,7 +10,7 @@ A modern real estate platform built with React, TypeScript, Vite, and Supabase. 
 - **AI Chat Assistant**: PropMate - AI-powered real estate assistant
 - **Responsive Design**: Mobile-first approach with Tailwind CSS
 - **Modern UI**: Built with shadcn/ui components and Radix UI
-- **Image Management**: AWS S3 integration for property images
+- **Image Management**: Cloudflare R2 integration for property images
 - **Type Safety**: Full TypeScript support
 
 ## 🛠️ Tech Stack
@@ -57,29 +57,86 @@ bun install
 
 ### 3. Environment Setup
 
-Create a `.env.local` file in the root directory and add your environment variables:
+**⚠️ IMPORTANT SECURITY NOTICE**: This project currently has hardcoded credentials that should be moved to environment variables for production use.
+
+#### Currently Hardcoded Values Found:
+
+**Supabase Configuration** (in `src/integrations/supabase/client.ts`):
+- URL: `https://bilfqlcylzhcahvoodvf.supabase.co`
+- Anon Key: `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...` (hardcoded)
+
+**Gemini AI API** (in `api/prop-mate-chat.ts`):
+- API Key: `AIzaSyBZ3Jit0dXfhOFPM9gtA0v9BT4GNzTy4A4` (hardcoded)
+
+**Cloudflare R2 Storage** (in `api/upload-image.ts`):
+- Endpoint: `https://f03575aba5adc8b38d5d4c3a14e1a3d8.r2.cloudflarestorage.com`
+- Access Key: `e58a6a28d82e3cf184423f2c1dde1aa7` (hardcoded)
+- Secret Key: `bc44bf27a3ea398545d08b6e12c048ce429fea5a985027102a5dba4002ec8b1c` (hardcoded)
+- Bucket: `adrealestates`
+- Public URL: `https://pub-1c1af3c130fa48289cdc911af4e9c00f.r2.dev`
+
+**Contact Information** (in `src/components/Footer.tsx`):
+- Phone: `+91 97908 42020`
+- Email: `mailafad2k25@gmail.com`
+- Address: `No.1, Kalaignar Street, Anna Nagar, Pammal, Chennai-75`
+
+#### Recommended Environment Variables Setup:
+
+Create a `.env.local` file in the root directory and move these hardcoded values:
 
 ```env
 # Supabase Configuration
-VITE_SUPABASE_URL=your_supabase_project_url
-VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+VITE_SUPABASE_URL=https://bilfqlcylzhcahvoodvf.supabase.co
+VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJpbGZxbGN5bHpoY2Fodm9vZHZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQzODQwMDgsImV4cCI6MjA1OTk2MDAwOH0.osmxgTf-GTBrPPwSTMXFi17K8UG9_F9_HM-4dKGe73U
 
-# AWS S3 Configuration (for image uploads)
-VITE_AWS_ACCESS_KEY_ID=your_aws_access_key
-VITE_AWS_SECRET_ACCESS_KEY=your_aws_secret_key
-VITE_AWS_REGION=your_aws_region
-VITE_AWS_BUCKET_NAME=your_s3_bucket_name
+# Gemini AI Configuration
+VITE_GEMINI_API_KEY=AIzaSyBZ3Jit0dXfhOFPM9gtA0v9BT4GNzTy4A4
 
-# Optional: API Keys for AI features
-VITE_GEMINI_API_KEY=your_gemini_api_key
+# Cloudflare R2 Configuration
+VITE_R2_ENDPOINT=https://f03575aba5adc8b38d5d4c3a14e1a3d8.r2.cloudflarestorage.com
+VITE_R2_ACCESS_KEY_ID=e58a6a28d82e3cf184423f2c1dde1aa7
+VITE_R2_SECRET_ACCESS_KEY=bc44bf27a3ea398545d08b6e12c048ce429fea5a985027102a5dba4002ec8b1c
+VITE_R2_BUCKET=adrealestates
+VITE_R2_PUBLIC_URL=https://pub-1c1af3c130fa48289cdc911af4e9c00f.r2.dev
+
+# Contact Information (optional to make configurable)
+VITE_CONTACT_PHONE=+91 97908 42020
+VITE_CONTACT_EMAIL=mailafad2k25@gmail.com
+VITE_CONTACT_ADDRESS=No.1, Kalaignar Street, Anna Nagar, Pammal, Chennai-75
 ```
 
-#### Getting Supabase Credentials:
+#### Security Recommendations:
 
+1. **Move hardcoded credentials to environment variables**
+2. **Add `.env.local` to `.gitignore`** (currently missing)
+3. **Regenerate API keys and credentials** if this code is public
+4. **Use different credentials for development and production**
+
+#### For New Setup:
+
+If you're setting up fresh credentials:
 1. Visit [Supabase](https://supabase.com/) and create a new project
-2. Go to Settings → API
-3. Copy your project URL and anon key
-4. Set up your database tables (see Database Setup below)
+2. Visit [Google AI Studio](https://makersuite.google.com/) for Gemini API key
+3. Visit [Cloudflare R2](https://developers.cloudflare.com/r2/) for storage setup
+
+### ⚡ Current Setup (Hardcoded - Works Out of the Box)
+
+The project is currently configured to work immediately without any environment setup because all credentials are hardcoded in the source code. This means:
+
+✅ **Pros:**
+- Clone and run immediately with `npm install && npm run dev`
+- No environment configuration needed
+- All services (Supabase, Gemini AI, R2 storage) work instantly
+
+❌ **Cons:**
+- Security risk (credentials exposed in code)
+- Shared API limits across all users
+- Not suitable for production deployment
+- Cannot use your own services/databases
+
+### 🔒 Recommended Setup (Environment Variables)
+
+For production or to use your own services, follow the environment setup above and refactor the code to use environment variables instead of hardcoded values.
 
 ### 4. Database Setup
 
@@ -154,6 +211,8 @@ npm run preview      # Preview production build
 
 ### Deploy to Vercel
 
+**⚠️ Important**: Since credentials are currently hardcoded, the project will work as-is but this is NOT recommended for production.
+
 1. Install Vercel CLI:
 ```bash
 npm i -g vercel
@@ -165,7 +224,7 @@ vercel login
 vercel --prod
 ```
 
-3. Set environment variables in your Vercel dashboard
+3. **For Production**: Set environment variables in your Vercel dashboard and update the code to use them instead of hardcoded values
 
 ### Deploy to Other Platforms
 
@@ -173,7 +232,15 @@ The project can be deployed to any static hosting service:
 
 1. Build the project: `npm run build`
 2. Upload the `dist/` folder to your hosting service
-3. Configure environment variables on your hosting platform
+3. **Currently works without additional configuration** due to hardcoded credentials
+4. **For Production**: Configure environment variables on your hosting platform and refactor code
+
+### Security Notes for Production:
+
+- **Never commit API keys or credentials to version control**
+- **Regenerate all API keys before production deployment**
+- **Use different credentials for development and production environments**
+- **Add proper environment variable validation**
 
 ## 🔐 Authentication & Admin Access
 
@@ -220,15 +287,24 @@ The application is fully responsive and optimized for:
 ### Common Issues
 
 1. **Build Errors**: Ensure all dependencies are installed with `npm install`
-2. **Environment Variables**: Check that all required environment variables are set
-3. **Supabase Connection**: Verify your Supabase URL and keys are correct
+2. **API Limits**: The hardcoded Gemini API key may have usage limits
+3. **Supabase Connection**: Currently uses hardcoded credentials (project: bilfqlcylzhcahvoodvf)
 4. **Port Conflicts**: The dev server runs on port 8080 by default
+5. **Image Upload Issues**: R2 storage credentials are hardcoded, check if they're still valid
+
+### Current Limitations
+
+- **Hardcoded credentials** may stop working if keys are rotated
+- **No environment variable validation**
+- **Shared API limits** across all deployments using the same keys
+- **Security vulnerabilities** due to exposed credentials
 
 ### Getting Help
 
 - Check the [Issues](../../issues) section for known problems
 - Review the console for error messages
 - Ensure your Node.js version is compatible (v18+)
+- If APIs fail, check if hardcoded keys are still valid
 
 ## 📄 License
 
