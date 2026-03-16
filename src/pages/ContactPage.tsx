@@ -56,7 +56,7 @@ const ContactPage = () => {
                 <div>
                   <h3 className="font-medium text-lg">Phone</h3>
                   <p className="text-muted-foreground mb-1">Our agents are available during business hours</p>
-                  <p className="font-medium">+91 9003111000</p>
+                  <p className="font-medium">+91 9790842020</p>
                 </div>
               </div>
               

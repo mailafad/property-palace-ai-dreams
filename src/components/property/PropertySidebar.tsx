@@ -39,7 +39,7 @@ const PropertySidebar = ({ property }: PropertySidebarProps) => {
               <p className="font-medium">{property.realtor?.name || 'Agent'}</p>
               <div className="flex items-center text-sm text-muted-foreground">
                 <Phone className="h-3 w-3 mr-1" />
-                <span>{property.realtor?.phone || '+91 9003111000'}</span>
+                <span>{property.realtor?.phone || '+91 9790842020'}</span>
               </div>
             </div>
           </div>
