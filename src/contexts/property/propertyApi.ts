@@ -65,6 +65,7 @@ export async function fetchProperties() {
           city: property.city,
           state: property.state,
           zipCode: property.zip_code,
+          youtubeLink: property.youtube_link || undefined,
           description: property.description,
           aiDescription: property.ai_description,
           // Convert string type from database to our app's type structure
@@ -124,6 +125,7 @@ export async function addPropertyToDb(property: Omit<Property, 'id' | 'createdAt
     city: propertyData.city,
     state: propertyData.state,
     zip_code: propertyData.zipCode,
+    youtube_link: propertyData.youtubeLink || null,
     description: propertyData.description,
     ai_description: propertyData.aiDescription,
     type_main: property.type?.mainType || 'individual-house',
@@ -175,6 +177,7 @@ export async function updatePropertyInDb(id: string, updatedFields: Partial<Prop
   if (propertyData.city !== undefined) propertyToUpdate.city = propertyData.city;
   if (propertyData.state !== undefined) propertyToUpdate.state = propertyData.state;
   if (propertyData.zipCode !== undefined) propertyToUpdate.zip_code = propertyData.zipCode;
+  if (propertyData.youtubeLink !== undefined) propertyToUpdate.youtube_link = propertyData.youtubeLink || null;
   if (propertyData.description !== undefined) propertyToUpdate.description = propertyData.description;
   if (propertyData.aiDescription !== undefined) propertyToUpdate.ai_description = propertyData.aiDescription;
   if (propertyData.type !== undefined) {

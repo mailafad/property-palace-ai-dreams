@@ -23,6 +23,7 @@ export interface Property {
   city: string;
   state: string;
   zipCode: string;
+  youtubeLink?: string;
   description: string;
   aiDescription?: string;
   type: PropertyTypeDetails;

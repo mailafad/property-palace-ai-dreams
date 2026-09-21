@@ -15,7 +15,7 @@ import '@/styles/button-styles.css';
 
 const Index = () => {
   const { properties } = useProperty();
-  const featuredProperties = properties.filter(property => property.featured);
+  const featuredProperties = properties.filter(property => property.youtubeLink);
   const [searchTerm, setSearchTerm] = useState('');
 
   return (
@@ -109,8 +109,8 @@ const Index = () => {
         <div className="container px-4 md:px-6 mx-auto">
           <div className="flex justify-between items-center mb-10">
             <div>
-              <h2 className="text-2xl md:text-3xl font-bold">Featured Properties</h2>
-              <p className="text-muted-foreground mt-1">Explore our handpicked selection of premium listings</p>
+              <h2 className="text-2xl md:text-3xl font-bold">Property Videos</h2>
+              <p className="text-muted-foreground mt-1">Explore our available properties through video</p>
             </div>
             <Link to="/properties">
               <Button variant="outline">View All</Button>

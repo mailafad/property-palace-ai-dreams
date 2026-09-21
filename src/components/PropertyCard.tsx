@@ -1,23 +1,39 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { Heart } from 'lucide-react';
 import { Property } from '@/types/property';
 import { useProperty } from '@/contexts/PropertyContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'sonner';
-import { formatPropertyType } from '@/utils/propertyTypeUtils';
+
+const getYouTubeVideoId = (url?: string) => {
+  if (!url) return null;
+
+  try {
+    const parsedUrl = new URL(url);
+    if (parsedUrl.hostname === 'youtu.be') return parsedUrl.pathname.slice(1).split('/')[0] || null;
+    if (parsedUrl.hostname.includes('youtube.com')) {
+      return parsedUrl.searchParams.get('v') || parsedUrl.pathname.split('/').filter(Boolean).pop() || null;
+    }
+  } catch {
+    return null;
+  }
+
+  return null;
+};
 
 interface PropertyCardProps {
   property: Property;
 }
 
 const PropertyCard = ({ property }: PropertyCardProps) => {
-  const { id, title, price, address, city, state, bedrooms, bathrooms, area, images, status } = property;
+  const { id, title, price, address, city, state, bedrooms, bathrooms, area, images, status, youtubeLink } = property;
   const { addToFavorites, removeFromFavorites, isPropertyFavorite } = useProperty();
   const { user } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   
   const isFavorite = isPropertyFavorite(id);
+  const youtubeVideoId = getYouTubeVideoId(youtubeLink);
+  const cardUrl = youtubeLink || `/property/${id}`;
   
   const handleFavoriteClick = async (e: React.MouseEvent) => {
     e.preventDefault();
@@ -56,11 +72,16 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
   };
   
   return (
-    <Link to={`/property/${id}`} className="group">
+    <a
+      href={cardUrl}
+      target={youtubeLink ? '_blank' : undefined}
+      rel={youtubeLink ? 'noreferrer' : undefined}
+      className="group"
+    >
       <div className="property-card">
         <div className="relative h-48">
           <img
-            src={images[0] || '/placeholder.svg'}
+            src={youtubeVideoId ? `https://img.youtube.com/vi/${youtubeVideoId}/hqdefault.jpg` : (images[0] || '/placeholder.svg')}
             alt={title}
             className="h-full w-full object-cover"
           />
@@ -78,6 +99,11 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
               {getBadgeText(status)}
             </span>
           </div>
+          {youtubeVideoId && (
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+              <span className="rounded-full bg-red-600 px-4 py-2 text-sm font-semibold text-white shadow-lg">Watch Video</span>
+            </div>
+          )}
         </div>
         <div className="p-6">
           <h3 className="text-xl font-bold mb-2 text-black hover:text-[#a5ff03] transition-colors">
@@ -104,12 +130,12 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
               </div>
             </div>
           </div>
-          <button className="w-full bg-black text-white py-2 rounded-md hover:bg-opacity-90 transition-all duration-300 hover:shadow-[0_0_15px_rgba(165,255,3,0.5)]">
-            View Details
-          </button>
+          <span className="block w-full bg-black text-center text-white py-2 rounded-md hover:bg-opacity-90 transition-all duration-300 hover:shadow-[0_0_15px_rgba(165,255,3,0.5)]">
+            {youtubeVideoId ? 'Open YouTube Video' : 'View Details'}
+          </span>
         </div>
       </div>
-    </Link>
+    </a>
   );
 };
 

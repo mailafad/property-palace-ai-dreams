@@ -50,6 +50,7 @@ const PropertyFormPage = () => {
     city: '',
     state: '',
     zipCode: '',
+    youtubeLink: '',
     description: '',
     aiDescription: '',
     type: {
@@ -447,6 +448,21 @@ const PropertyFormPage = () => {
                         required
                       />
                     </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="youtubeLink">YouTube Property Video</Label>
+                    <Input
+                      id="youtubeLink"
+                      name="youtubeLink"
+                      type="url"
+                      value={formData.youtubeLink || ''}
+                      onChange={handleChange}
+                      placeholder="https://www.youtube.com/watch?v=..."
+                    />
+                    <p className="text-sm text-muted-foreground">
+                      Properties with a video link appear on the homepage using the YouTube thumbnail.
+                    </p>
                   </div>
                 </CardContent>
               </Card>

@@ -24,7 +24,6 @@ import RequestListingPage from "./pages/RequestListingPage";
 import AdminListingRequestsPage from "./pages/admin/AdminListingRequestsPage";
 import AdminContactsPage from "./pages/admin/AdminContactsPage";
 import NotFound from "./pages/NotFound";
-import PropMateChatWidget from "./components/PropMateChatWidget";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -148,7 +147,6 @@ const App = () => (
         </BrowserRouter>
       </HelmetProvider>
     </QueryClientProvider>
-    <PropMateChatWidget />
   </>
 );
 

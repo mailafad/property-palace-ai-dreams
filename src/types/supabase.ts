@@ -19,6 +19,7 @@ export interface Database {
           city: string
           state: string
           zip_code: string
+          youtube_link: string | null
           description: string
           ai_description: string | null
           type: string
@@ -42,6 +43,7 @@ export interface Database {
           city: string
           state: string
           zip_code: string
+          youtube_link?: string | null
           description: string
           ai_description?: string | null
           type: string
@@ -65,6 +67,7 @@ export interface Database {
           city?: string
           state?: string
           zip_code?: string
+          youtube_link?: string | null
           description?: string
           ai_description?: string | null
           type?: string
