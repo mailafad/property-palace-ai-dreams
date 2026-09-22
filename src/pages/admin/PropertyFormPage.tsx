@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { MainPropertyType, LandType, FlatApartmentType, VillaType } from '@/types/property';
+import { MainPropertyType, LandType, FlatApartmentType, VillaType, PriceUnit } from '@/types/property';
 import {
   Select,
   SelectContent,
@@ -46,6 +46,7 @@ const PropertyFormPage = () => {
   const emptyProperty: Partial<Property> = {
     title: '',
     price: 0,
+    priceUnit: 'none',
     address: '',
     city: '',
     state: '',
@@ -191,6 +192,7 @@ const PropertyFormPage = () => {
         realtor: formData.realtor?.name ? formData.realtor : null,
         title: formData.title || '',
         price: formData.price || 0,
+        priceUnit: formData.priceUnit || 'none',
         address: formData.address || '',
         city: formData.city || '',
         state: formData.state || '',
@@ -349,6 +351,26 @@ const PropertyFormPage = () => {
                         onChange={handleChange}
                         required
                       />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="priceUnit">Price Unit</Label>
+                      <Select
+                        value={formData.priceUnit || 'none'}
+                        onValueChange={(value) => setFormData(prev => ({ ...prev, priceUnit: value as PriceUnit }))}
+                      >
+                        <SelectTrigger id="priceUnit">
+                          <SelectValue placeholder="Select price unit" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="none">None</SelectItem>
+                          <SelectItem value="sq-ft">/ sq.ft</SelectItem>
+                          <SelectItem value="sq-yard">/ sq.yard</SelectItem>
+                          <SelectItem value="cent">/ cent</SelectItem>
+                          <SelectItem value="acre">/ acre</SelectItem>
+                          <SelectItem value="ground">/ ground</SelectItem>
+                          <SelectItem value="unit">/ unit</SelectItem>
+                        </SelectContent>
+                      </Select>
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="type">Property Type*</Label>

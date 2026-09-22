@@ -99,6 +99,7 @@ export type Database = {
           description: string
           id: string
           price: number
+          price_unit: string | null
           state: string
           status: string
           title: string
@@ -120,6 +121,7 @@ export type Database = {
           description: string
           id?: string
           price: number
+          price_unit?: string | null
           state: string
           status?: string
           title: string
@@ -141,6 +143,7 @@ export type Database = {
           description?: string
           id?: string
           price?: number
+          price_unit?: string | null
           state?: string
           status?: string
           title?: string

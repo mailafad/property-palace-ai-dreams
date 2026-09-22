@@ -3,6 +3,7 @@ export type MainPropertyType = 'land' | 'individual-house' | 'individual-bungalo
 export type LandType = 'residential' | 'commercial' | 'industrial' | 'agricultural';
 export type FlatApartmentType = 'studio' | 'duplex' | 'penthouse';
 export type VillaType = 'individual' | 'twin' | 'row-house' | 'semi-independent' | 'beach';
+export type PriceUnit = 'none' | 'sq-ft' | 'sq-yard' | 'cent' | 'acre' | 'ground' | 'unit';
 
 export interface PropertyTypeDetails {
   mainType: MainPropertyType;
@@ -19,6 +20,7 @@ export interface Property {
   propertyCode?: string; // Human-friendly code like ad1, ad2
   title: string;
   price: number;
+  priceUnit?: PriceUnit;
   address: string;
   city: string;
   state: string;

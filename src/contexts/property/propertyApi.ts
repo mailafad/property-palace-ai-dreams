@@ -61,6 +61,7 @@ export async function fetchProperties() {
           propertyCode: property_code || undefined,
           title: property.title,
           price: property.price,
+          priceUnit: property.price_unit || 'none',
           address: property.address,
           city: property.city,
           state: property.state,
@@ -121,6 +122,7 @@ export async function addPropertyToDb(property: Omit<Property, 'id' | 'createdAt
   const propertyToInsert = {
     title: propertyData.title,
     price: propertyData.price,
+    price_unit: propertyData.priceUnit || 'none',
     address: propertyData.address,
     city: propertyData.city,
     state: propertyData.state,
@@ -173,6 +175,7 @@ export async function updatePropertyInDb(id: string, updatedFields: Partial<Prop
   
   if (propertyData.title !== undefined) propertyToUpdate.title = propertyData.title;
   if (propertyData.price !== undefined) propertyToUpdate.price = propertyData.price;
+  if (propertyData.priceUnit !== undefined) propertyToUpdate.price_unit = propertyData.priceUnit || 'none';
   if (propertyData.address !== undefined) propertyToUpdate.address = propertyData.address;
   if (propertyData.city !== undefined) propertyToUpdate.city = propertyData.city;
   if (propertyData.state !== undefined) propertyToUpdate.state = propertyData.state;

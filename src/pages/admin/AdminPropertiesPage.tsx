@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Badge } from '@/components/ui/badge';
 import { useProperty } from '@/contexts/PropertyContext';
-import { formatCurrency } from '@/lib/utils';
+import { formatPropertyPrice } from '@/lib/utils';
 import { 
   Plus, 
   MoreHorizontal, 
@@ -162,7 +162,7 @@ const AdminPropertiesPage = () => {
                         {property.city}, {property.state}
                       </TableCell>
                       <TableCell>
-                        {formatCurrency(property.price)}
+                        {formatPropertyPrice(property.price, property.priceUnit)}
                       </TableCell>
                       <TableCell>
                         <Badge variant="secondary" className={`${statusColors[property.status]} text-white`}>

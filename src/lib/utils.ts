@@ -1,6 +1,7 @@
 
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
+import { PriceUnit } from '@/types/property';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -12,6 +13,20 @@ export function formatCurrency(amount: number): string {
     currency: 'INR',
     maximumFractionDigits: 0
   }).format(amount);
+}
+
+export function formatPropertyPrice(amount: number, unit: PriceUnit = 'none'): string {
+  const price = formatCurrency(amount);
+  const suffixes: Record<Exclude<PriceUnit, 'none'>, string> = {
+    'sq-ft': '/ sq.ft',
+    'sq-yard': '/ sq.yard',
+    cent: '/ cent',
+    acre: '/ acre',
+    ground: '/ ground',
+    unit: '/ unit'
+  };
+
+  return unit === 'none' ? price : `${price} ${suffixes[unit]}`;
 }
 
 export function truncateText(text: string, maxLength: number): string {

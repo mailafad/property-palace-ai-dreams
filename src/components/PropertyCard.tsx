@@ -4,6 +4,7 @@ import { Property } from '@/types/property';
 import { useProperty } from '@/contexts/PropertyContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'sonner';
+import { formatPropertyPrice } from '@/lib/utils';
 
 const getYouTubeVideoId = (url?: string) => {
   if (!url) return null;
@@ -26,7 +27,7 @@ interface PropertyCardProps {
 }
 
 const PropertyCard = ({ property }: PropertyCardProps) => {
-  const { id, title, price, address, city, state, bedrooms, bathrooms, area, images, status, youtubeLink } = property;
+  const { id, title, price, address, city, state, images, status, youtubeLink } = property;
   const { addToFavorites, removeFromFavorites, isPropertyFavorite } = useProperty();
   const { user } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
@@ -79,7 +80,7 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
       className="group"
     >
       <div className="property-card">
-        <div className="relative h-48">
+        <div className="relative aspect-video">
           <img
             src={youtubeVideoId ? `https://img.youtube.com/vi/${youtubeVideoId}/hqdefault.jpg` : (images[0] || '/placeholder.svg')}
             alt={title}
@@ -99,11 +100,6 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
               {getBadgeText(status)}
             </span>
           </div>
-          {youtubeVideoId && (
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-              <span className="rounded-full bg-red-600 px-4 py-2 text-sm font-semibold text-white shadow-lg">Watch Video</span>
-            </div>
-          )}
         </div>
         <div className="p-6">
           <h3 className="text-xl font-bold mb-2 text-black hover:text-[#a5ff03] transition-colors">
@@ -114,25 +110,8 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
             {address}, {city}, {state}
           </p>
           <div className="flex flex-col mb-4">
-            <span className="text-lg font-bold text-black mb-4">₹{price.toLocaleString('en-IN')}</span>
-            <div className="grid grid-cols-3 gap-4">
-              <div className="feature-item">
-                <i className="fas fa-bed text-gray-700 mb-1"></i>
-                <span className="block">{bedrooms}</span>
-              </div>
-              <div className="feature-item">
-                <i className="fas fa-bath text-gray-700 mb-1"></i>
-                <span className="block">{bathrooms}</span>
-              </div>
-              <div className="feature-item">
-                <i className="fas fa-vector-square text-gray-700 mb-1"></i>
-                <span className="block">{area.toLocaleString()}</span>
-              </div>
-            </div>
+            <span className="text-lg font-bold text-black mb-4">{formatPropertyPrice(price, property.priceUnit)}</span>
           </div>
-          <span className="block w-full bg-black text-center text-white py-2 rounded-md hover:bg-opacity-90 transition-all duration-300 hover:shadow-[0_0_15px_rgba(165,255,3,0.5)]">
-            {youtubeVideoId ? 'Open YouTube Video' : 'View Details'}
-          </span>
         </div>
       </div>
     </a>

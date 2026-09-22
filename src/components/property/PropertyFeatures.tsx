@@ -27,18 +27,6 @@ const PropertyFeatures = ({ property }: PropertyFeaturesProps) => {
               <span className="text-muted-foreground">Year Built</span>
               <span className="font-medium">{property.yearBuilt}</span>
             </li>
-            <li className="flex justify-between">
-              <span className="text-muted-foreground">Square Footage</span>
-              <span className="font-medium">{property.area} sq ft</span>
-            </li>
-            <li className="flex justify-between">
-              <span className="text-muted-foreground">Bedrooms</span>
-              <span className="font-medium">{property.bedrooms}</span>
-            </li>
-            <li className="flex justify-between">
-              <span className="text-muted-foreground">Bathrooms</span>
-              <span className="font-medium">{property.bathrooms}</span>
-            </li>
           </ul>
         </div>
         
