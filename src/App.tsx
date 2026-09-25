@@ -1,3 +1,4 @@
+import { lazy, Suspense } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -8,22 +9,22 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { HelmetProvider } from "react-helmet-async";
 
-// Pages
-import Index from "./pages/Index";
-import PropertiesPage from "./pages/PropertiesPage";
-import PropertyDetailPage from "./pages/PropertyDetailPage";
-import ContactPage from "./pages/ContactPage";
-import AboutUs from "./pages/AboutUs";
-import AuthPage from "./pages/AuthPage";
-import AdminLoginPage from "./pages/AdminLoginPage";
-import AdminDashboard from "./pages/admin";
-import AdminPropertiesPage from "./pages/admin/AdminPropertiesPage";
-import PropertyFormPage from "./pages/admin/PropertyFormPage";
-import FavoritesPage from "./pages/FavoritesPage";
-import RequestListingPage from "./pages/RequestListingPage";
-import AdminListingRequestsPage from "./pages/admin/AdminListingRequestsPage";
-import AdminContactsPage from "./pages/admin/AdminContactsPage";
-import NotFound from "./pages/NotFound";
+// Load route-specific code only when a route is visited.
+const Index = lazy(() => import("./pages/Index"));
+const PropertiesPage = lazy(() => import("./pages/PropertiesPage"));
+const PropertyDetailPage = lazy(() => import("./pages/PropertyDetailPage"));
+const ContactPage = lazy(() => import("./pages/ContactPage"));
+const AboutUs = lazy(() => import("./pages/AboutUs"));
+const AuthPage = lazy(() => import("./pages/AuthPage"));
+const AdminLoginPage = lazy(() => import("./pages/AdminLoginPage"));
+const AdminDashboard = lazy(() => import("./pages/admin"));
+const AdminPropertiesPage = lazy(() => import("./pages/admin/AdminPropertiesPage"));
+const PropertyFormPage = lazy(() => import("./pages/admin/PropertyFormPage"));
+const FavoritesPage = lazy(() => import("./pages/FavoritesPage"));
+const RequestListingPage = lazy(() => import("./pages/RequestListingPage"));
+const AdminListingRequestsPage = lazy(() => import("./pages/admin/AdminListingRequestsPage"));
+const AdminContactsPage = lazy(() => import("./pages/admin/AdminContactsPage"));
+const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -140,7 +141,9 @@ const App = () => (
               <TooltipProvider>
                 <Toaster />
                 <Sonner />
-                <AppRoutes />
+                <Suspense fallback={<div className="flex min-h-screen items-center justify-center">Loading...</div>}>
+                  <AppRoutes />
+                </Suspense>
               </TooltipProvider>
             </PropertyProvider>
           </AuthProvider>
