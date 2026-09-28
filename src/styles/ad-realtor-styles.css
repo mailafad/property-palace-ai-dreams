@@ -1,6 +1,6 @@
 
 :root {
-    --primary: #a5ff03;
+    --brand-primary: #a5ff03;
     --primary-dark: #84cc02;
     --card-bg: #ffffff;
     --footer-bg: #1f2937;
@@ -103,8 +103,8 @@
 
 .property-card:hover {
     transform: translateY(-2px);
-    box-shadow: 0 0 20px var(--primary);
-    border: 1px solid var(--primary);
+    box-shadow: 0 0 20px var(--brand-primary);
+    border: 1px solid var(--brand-primary);
 }
 
 .property-card:active {
@@ -115,7 +115,7 @@
     position: absolute;
     top: 1rem;
     left: 1rem;
-    background-color: var(--primary);
+    background-color: var(--brand-primary);
     color: black;
     padding: 0.25rem 0.75rem;
     border-radius: 9999px;
@@ -161,7 +161,7 @@
 }
 
 .property-card .view-button:hover {
-    box-shadow: 0 0 15px var(--primary);
+    box-shadow: 0 0 15px var(--brand-primary);
     background-color: rgba(0, 0, 0, 0.9);
 }
 
@@ -190,7 +190,7 @@
 }
 
 .property-card .location i {
-    color: var(--primary);
+    color: var(--brand-primary);
 }
 
 /* Carousel */
